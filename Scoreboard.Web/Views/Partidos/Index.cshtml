@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Scoreboard.Web.Models.Partido>
+    @{
+    ViewData["Title"] = "Partidos";
+    }
+    <h1>Partidos</h1>
+    <p>
+        <a asp-controller="Home" asp-action="Index">← Volver</a> |
+        <a class="btn btn-primary" asp-action="Create">Crear partido</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Casa</th>
+                <th>Visita</th>
+                <th>Marcador</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+  {
+            <tr>
+                <td>@p.Fecha.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@p.EquipoCasa?.Nombre</td>
+                <td>@p.EquipoVisita?.Nombre</td>
+                <td>@p.CarrerasCasa - @p.CarrerasVisita</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@p.Id">Detalles</a> |
+                    <a asp-action="Edit" asp-route-id="@p.Id">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@p.Id">Eliminar</a>
+                </td>
+            </tr>
+  }
+        </tbody>
+    </table>

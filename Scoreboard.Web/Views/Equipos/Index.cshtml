@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Scoreboard.Web.Models.Equipo>
+    @{
+    ViewData["Title"] = "Equipos";
+    }
+
+    <h1>Equipos</h1>
+    <p>
+        <a asp-controller="Home" asp-action="Index">← Volver al inicio</a> |
+        <a class="btn btn-primary" asp-action="Create">Crear equipo</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Ciudad</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model)
+    {
+            <tr>
+                <td>@e.Id</td>
+                <td>@e.Nombre</td>
+                <td>@e.Ciudad</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@e.Id">Detalles</a> |
+                    <a asp-action="Edit" asp-route-id="@e.Id">Editar</a> |
+                    <a asp-action="Delete" asp-route-id="@e.Id">Eliminar</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>

@@ -1,0 +1,23 @@
+@model Scoreboard.Web.Models.Partido
+@{
+    ViewData["Title"] = "Eliminar partido";
+}
+<h1>Eliminar partido</h1>
+<p>¿Seguro que deseas eliminar este partido?</p>
+
+<dl class="row">
+    <dt class="col-sm-2">Fecha</dt>
+    <dd class="col-sm-10">@Model.Fecha.ToString("yyyy-MM-dd HH:mm")</dd>
+    <dt class="col-sm-2">Casa</dt>
+    <dd class="col-sm-10">@Model.EquipoCasa?.Nombre</dd>
+    <dt class="col-sm-2">Visita</dt>
+    <dd class="col-sm-10">@Model.EquipoVisita?.Nombre</dd>
+    <dt class="col-sm-2">Marcador</dt>
+    <dd class="col-sm-10">@Model.CarrerasCasa - @Model.CarrerasVisita</dd>
+</dl>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
