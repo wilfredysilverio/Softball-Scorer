@@ -19,6 +19,9 @@ public class Jugador
 	public int EquipoId { get; set; }
 	public Equipo? Equipo { get; set; }
 
-	
+	[Required]	
+	public Posicion Posicion { get; set; }
+
+
 
 }

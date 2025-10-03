@@ -1,39 +1,74 @@
+// USINGS: son instrucciones para poder usar tipos de otros paquetes/espacios de nombres.
 using Microsoft.EntityFrameworkCore;
 using Scoreboard.Web.Models;
 
-namespace Scoreboard.Web.Datos;
-
-public class ContextoMarcador : DbContext
+namespace Scoreboard.Web.Datos
 {
-    public ContextoMarcador(DbContextOptions<ContextoMarcador> opciones) : base(opciones) { }
-
-    // Tablas
-    public DbSet<Equipo> Equipos => Set<Equipo>();
-    public DbSet<Jugador> Jugadores => Set<Jugador>();
-    public DbSet<Partido> Partidos => Set<Partido>();
-
-    protected override void OnModelCreating(ModelBuilder mb)
+    /// <Resumen>
+    /// CLASE: ContextoMarcador
+    /// - La clase hereda de DbContext (EF Core).
+    /// - Representa la conexión y el modelo de tu base de datos.
+    /// </Resumen>
+    public class ContextoMarcador : DbContext
     {
-        base.OnModelCreating(mb);
+        /// <Resumen>
+        /// CONSTRUCTOR: recibe las opciones (cadena de conexión, proveedor MySQL, etc.).
+        /// Llama al constructor base de DbContext.
+        /// </Resumen>
+        public ContextoMarcador(DbContextOptions<ContextoMarcador> opciones)
+            : base(opciones)
+        {
+        }
 
-        // Evitar borrado en cascada entre Partido y Equipo (dos FKs hacia la misma tabla)
-        mb.Entity<Partido>()
-          .HasOne(p => p.EquipoCasa)
-          .WithMany()
-          .HasForeignKey(p => p.EquipoCasaId)
-          .OnDelete(DeleteBehavior.Restrict);
+        // ======== DbSet<T> => TABLAS =========
+        // PROPIEDAD: Cada DbSet será una tabla en la BD.
+        public DbSet<Equipo> Equipos { get; set; } = default!;
+        public DbSet<Jugador> Jugadores { get; set; } = default!;
+        public DbSet<Partido> Partidos { get; set; } = default!;
 
-        mb.Entity<Partido>()
-          .HasOne(p => p.EquipoVisita)
-          .WithMany()
-          .HasForeignKey(p => p.EquipoVisitaId)
-          .OnDelete(DeleteBehavior.Restrict);
+        /// <Resumen>
+        /// MÉTODO: OnModelCreating
+        /// - Configura relaciones y reglas entre entidades/tablas (Fluent API).
+        /// </Resumen>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-        // (Opcional) Índices útiles
-        mb.Entity<Jugador>()
-          .HasIndex(j => new { j.EquipoId, j.Dorsal });
+            // ========================== RELACIONES ==========================
+            // PARTIDO -> EQUIPO (Casa)
+            // Un Partido tiene un EquipoCasa (FK: EquipoCasaId).
+            // WithMany() sin colección inversa (no tenemos List<Partido> en Equipo).
+            // OnDelete(Restict) evita borrado en cascada que chocaría con EquipoVisita.
+            modelBuilder.Entity<Partido>()
+                .HasOne(p => p.EquipoCasa)
+                .WithMany()
+                .HasForeignKey(p => p.EquipoCasaId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-        mb.Entity<Equipo>()
-          .HasIndex(e => e.Nombre);
+            // PARTIDO -> EQUIPO (Visita)
+            modelBuilder.Entity<Partido>()
+                .HasOne(p => p.EquipoVisita)
+                .WithMany()
+                .HasForeignKey(p => p.EquipoVisitaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // JUGADOR -> EQUIPO
+            // Un Jugador pertenece a un Equipo (FK: EquipoId).
+            modelBuilder.Entity<Jugador>()
+                .HasOne(j => j.Equipo)
+                .WithMany()
+                .HasForeignKey(j => j.EquipoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ===================== RESTRICCIONES/VALIDACIONES =====================
+            // modelBuilder.Entity<Equipo>()
+            //     .Property(e => e.Nombre).IsRequired().HasMaxLength(100);
+            //
+            // modelBuilder.Entity<Partido>()
+            //     .Property(p => p.EntradaActual).HasDefaultValue(1);
+            //
+            // modelBuilder.Entity<Partido>()
+            //     .Property(p => p.Mitad).HasDefaultValue(MitadEntrada.Alta);
+        }
     }
 }

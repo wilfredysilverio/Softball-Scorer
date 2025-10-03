@@ -1,51 +1,274 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@* Views/Shared/_Layout.cshtml *@
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Softball-Scorer</title>
-    <script type="importmap"></script>
+
+    <!-- Bootstrap (ya lo tenías) -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Bootstrap Icons (para iconos del menú; opcional) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Scoreboard.Web.styles.css" asp-append-version="true" />
+
+    <style>
+        /* ==== Layout lateral ==== */
+        :root {
+            --sb-width: 260px;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sb-width);
+            flex: 0 0 var(--sb-width);
+            background: #111827; /* gris oscuro */
+            color: #e5e7eb;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+            .sidebar .brand {
+                font-weight: 700;
+                padding: 1rem 1.25rem;
+                border-bottom: 1px solid rgba(255,255,255,.08);
+            }
+
+            .sidebar a.nav-link {
+                color: #e5e7eb;
+                border-radius: .5rem;
+                padding: .6rem .9rem;
+                display: flex;
+                align-items: center;
+                gap: .6rem;
+            }
+
+                .sidebar a.nav-link:hover,
+                .sidebar a.nav-link.active {
+                    background: #1f2937;
+                    color: #fff;
+                }
+
+            .sidebar .section-title {
+                font-size: .75rem;
+                letter-spacing: .08em;
+                color: #9ca3af;
+                padding: .75rem 1.25rem .25rem;
+                text-transform: uppercase;
+            }
+
+        /* Contenido */
+        .app-main {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            background: #f8fafc;
+        }
+
+        .app-topbar {
+            border-bottom: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+
+        .app-content {
+            padding: 1.25rem;
+        }
+
+        /* Responsive: en pantallas chicas el sidebar es offcanvas */
+        @@media (max-width: 991.98px) {
+            body {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                inset: 0 auto 0 0;
+                transform: translateX(-100%);
+                transition: transform .25s ease-in-out;
+                z-index: 1045;
+            }
+
+                .sidebar.show {
+                    transform: translateX(0);
+                }
+
+            .offcanvas-backdrop-custom {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,.35);
+                z-index: 1040;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Equipos" asp-action="Index">Softball-Scorer</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Equipos" asp-action="Index">Equipos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Partidos" asp-action="Index">Partidos</a>
-                        </li>
-                    </ul>
 
-                </div>
+    <!-- ========== Sidebar izquierdo ========== -->
+    <aside id="sb" class="sidebar">
+        <div class="brand d-flex align-items-center justify-content-between">
+            <a class="text-decoration-none text-white" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-trophy-fill me-1"></i> Softball-Scorer
+            </a>
+            <button class="btn btn-sm btn-outline-light d-lg-none" id="btnCloseSidebar" title="Cerrar menú">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <nav class="p-3">
+            <div class="section-title">Navegación</div>
+            <ul class="nav flex-column gap-1">
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+                       asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-house-door"></i> Inicio
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Jugadores" ? "active" : "")"
+                       asp-controller="Jugadores" asp-action="Index">
+                        <i class="bi bi-people"></i> Jugadores
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Equipos" ? "active" : "")"
+                       asp-controller="Equipos" asp-action="Index">
+                        <i class="bi bi-shield"></i> Equipos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Partidos" ? "active" : "")"
+                       asp-controller="Partidos" asp-action="Index">
+                        <i class="bi bi-flag"></i> Partidos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Estadisticas" ? "active" : "")"
+                       asp-controller="Estadisticas" asp-action="Index">
+                        <i class="bi bi-bar-chart"></i> Estadísticas
+                    </a>
+                </li>
+            </ul>
+
+            <div class="section-title">Herramientas</div>
+            <ul class="nav flex-column gap-1">
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Exportaciones" asp-action="Index">
+                        <i class="bi bi-file-earmark-arrow-down"></i> Exportar (PDF/Excel)
+                    </a>
+                </li>
+            </ul>
+
+            <hr class="border-secondary-subtle my-3" />
+
+            <div class="d-grid gap-2">
+                <!-- Botón Salir / Cerrar sesión -->
+                <button id="btnSalir" class="btn btn-outline-light">
+                    <i class="bi bi-box-arrow-right"></i> Salir / Cerrar sesión
+                </button>
             </div>
         </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    </aside>
+
+    <!-- ========== Panel derecho (topbar + contenido) ========== -->
+    <div class="app-main">
+        <header class="app-topbar py-2 px-3 d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-outline-secondary d-lg-none" id="btnOpenSidebar" title="Abrir menú">
+                    <i class="bi bi-list"></i>
+                </button>
+                <span class="fw-semibold">@ViewData["Title"]</span>
+            </div>
+            <div class="d-none d-lg-flex align-items-center gap-2">
+                <!-- espacio para breadcrumbs, estado, usuario, etc. -->
+            </div>
+        </header>
+
+        <main class="app-content">
             @RenderBody()
         </main>
+
+        <footer class="border-top bg-white text-muted py-2 px-3">
+            &copy; 2025 - Softball-Scorer
+        </footer>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Softball-Scorer
-        </div>
-    </footer>
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        // ====== Sidebar en móviles (mostrar/ocultar con backdrop) ======
+        (function () {
+            const sb = document.getElementById('sb');
+            const openBtn = document.getElementById('btnOpenSidebar');
+            const closeBtn = document.getElementById('btnCloseSidebar');
+            let backdrop;
+
+            function open() {
+                sb.classList.add('show');
+                backdrop = document.createElement('div');
+                backdrop.className = 'offcanvas-backdrop-custom';
+                backdrop.addEventListener('click', close);
+                document.body.appendChild(backdrop);
+            }
+            function close() {
+                sb.classList.remove('show');
+                if (backdrop) { backdrop.remove(); backdrop = null; }
+            }
+
+            openBtn?.addEventListener('click', open);
+            closeBtn?.addEventListener('click', close);
+        })();
+
+        // ====== Botón Salir / Cerrar sesión ======
+        (function () {
+            const btn = document.getElementById('btnSalir');
+            if (!btn) return;
+
+            btn.addEventListener('click', async () => {
+                // Intenta cierre de sesión por POST (ajusta la URL a tu proyecto)
+                const logoutUrls = [
+                    '/Account/Logout',          // Identity por defecto
+                    '/Cuenta/Salir',            // posible controlador propio
+                    '/Auth/Logout'              // alternativa
+                ];
+
+                for (const url of logoutUrls) {
+                    try {
+                        const r = await fetch(url, { method: 'POST', headers: { 'RequestVerificationToken': getAntiforgery() } });
+                        if (r.ok || r.status === 302) { location.href = '/'; return; }
+                    } catch (_) { /* sigue intentando */ }
+                }
+
+                // Plan B: cerrar pestaña (solo si el navegador lo permite)
+                window.close();
+                // Plan C: redirigir al inicio
+                location.href = '/';
+            });
+
+            // Si usas antiforgery en tus formularios (AddAntiforgery), intenta leerlo
+            function getAntiforgery() {
+                const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                return tokenInput ? tokenInput.value : '';
+            }
+        })();
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
