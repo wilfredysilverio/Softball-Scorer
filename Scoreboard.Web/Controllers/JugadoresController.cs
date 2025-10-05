@@ -34,7 +34,8 @@ namespace Scoreboard.Web.Controllers
             if (equipoId.HasValue)
                 consulta = consulta.Where(j => j.EquipoId == equipoId.Value);
 
-            ViewData["Equipos"] = new SelectList(await _db.Equipos.OrderBy(e => e.Nombre).ToListAsync(), "Id", "Nombre", equipoId);
+            ViewData["Equipos"] = new SelectList(
+                await _db.Equipos.OrderBy(e => e.Nombre).ToListAsync(), "Id", "Nombre", equipoId);
             ViewData["q"] = q;
 
             var lista = await consulta
@@ -131,6 +132,27 @@ namespace Scoreboard.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Estadisticas(int id)
+        {
+            var jugador = await _db.Jugadores
+                                   .Include(j => j.Equipo)
+                                   .FirstOrDefaultAsync(j => j.Id == id);
+            if (jugador == null) return NotFound();
+
+            var vm = new EstadisticasJugadorVm
+            {
+                Jugador = jugador,
+                PartidosJugados = 0,
+                Turnos = 0,
+                Hits = 0,
+                Carreras = 0,
+                HomeRuns = 0,
+                Promedio = 0m
+            };
+
+            return View(vm);
+        }
 
         private async Task CargarEquiposAsync(int? seleccionado = null)
         {
@@ -138,17 +160,5 @@ namespace Scoreboard.Web.Controllers
                 await _db.Equipos.OrderBy(e => e.Nombre).ToListAsync(),
                 "Id", "Nombre", seleccionado);
         }
-    }
-
-    // ViewModel simple para estadísticas
-    public class EstadisticasJugadorVm
-    {
-        public Jugador Jugador { get; set; } = default!;
-        public int PartidosJugados { get; set; }
-        public int Turnos { get; set; }
-        public int Hits { get; set; }
-        public int Carreras { get; set; }
-        public int HomeRuns { get; set; }
-        public decimal Promedio { get; set; } // AVG = Hits / Turnos
     }
 }

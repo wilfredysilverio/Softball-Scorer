@@ -33,8 +33,7 @@
 
     <div class="mb-3">
         <label asp-for="EquipoId" class="form-label">Equipo</label>
-        <select asp-for="EquipoId" class="form-select"
-                asp-items="@(ViewBag.EquipoId as IEnumerable<SelectListItem>)">
+        <select asp-for="EquipoId" class="form-select" asp-items="ViewBag.EquipoId">
             <option value="">-- Selecciona un equipo --</option>
         </select>
         <span asp-validation-for="EquipoId" class="text-danger"></span>
@@ -44,7 +43,7 @@
         <label asp-for="Posicion" class="form-label">Posición</label>
         <select asp-for="Posicion" class="form-select"
                 asp-items="Html.GetEnumSelectList<Scoreboard.Web.Modelos.Posicion>()">
-            <option value="">Seleccione una posición</option>
+            <option value="">-- Selecciona una posición --</option>
         </select>
         <span asp-validation-for="Posicion" class="text-danger"></span>
     </div>

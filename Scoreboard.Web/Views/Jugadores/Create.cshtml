@@ -1,14 +1,14 @@
 @model Scoreboard.Web.Modelos.Jugador
 @using Microsoft.AspNetCore.Mvc.Rendering
-@{
-    ViewData["Title"] = "Editar jugador";
-    var equipos = (SelectList)ViewData["EquipoId"];
-}
-<h1 class="mb-4">Editar jugador</h1>
 
-<form asp-action="Edit" method="post">
+@{
+    ViewData["Title"] = "Crear jugador";
+}
+
+<h1 class="mb-4">Crear jugador</h1>
+
+<form asp-action="Create" method="post">
     @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="Id" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
@@ -31,26 +31,27 @@
 
     <div class="mb-3">
         <label asp-for="EquipoId" class="form-label">Equipo</label>
-        <select asp-for="EquipoId" class="form-select" asp-items="equipos">
+        <select asp-for="EquipoId" class="form-select" asp-items="ViewBag.EquipoId">
             <option value="">-- Selecciona un equipo --</option>
         </select>
         <span asp-validation-for="EquipoId" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Posicion" class="form-label"></label>
-        <select asp-for="Posicion"
-                asp-items="Html.GetEnumSelectList<Scoreboard.Web.Modelos.Posicion>()"
-                class="form-select">
+        <label asp-for="Posicion" class="form-label">Posición</label>
+        <select asp-for="Posicion" class="form-select"
+                asp-items="Html.GetEnumSelectList<Scoreboard.Web.Modelos.Posicion>()">
+            <option value="">-- Selecciona una posición --</option>
         </select>
         <span asp-validation-for="Posicion" class="text-danger"></span>
     </div>
 
     <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
         <a asp-action="Index" class="btn btn-secondary">Volver</a>
     </div>
 </form>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" /> }
+    <partial name="_ValidationScriptsPartial" />
+}
