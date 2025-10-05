@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scoreboard.Web.Datos;
 
@@ -11,9 +12,11 @@ using Scoreboard.Web.Datos;
 namespace Scoreboard.Web.Migrations
 {
     [DbContext(typeof(ContextoMarcador))]
-    partial class ContextoMarcadorModelSnapshot : ModelSnapshot
+    [Migration("20251005195856_AddPlayerBattingStat")]
+    partial class AddPlayerBattingStat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

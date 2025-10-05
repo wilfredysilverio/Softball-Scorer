@@ -29,3 +29,50 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+/* Tema y cartas */
+:root{
+    --accent: #0d6efd; /* azul primaria */
+    --accent-2: #0ea5a4; /* teal */
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+}
+
+.app-topbar{
+    background: linear-gradient(90deg,#072146 0%, #0d3b66 100%);
+    color: #fff;
+}
+
+.app-topbar .fw-semibold{ color: #fff; }
+
+.card{ background: var(--card-bg); border: none; }
+
+.btn-primary{ background: var(--accent); border-color: var(--accent); }
+
+.text-muted.small{ color: #6b7280 !important; }
+
+/* Header logo pequeño */
+.sidebar .brand a { display:flex; align-items:center; gap:.5rem; }
+.sidebar .brand i{ font-size:1.25rem; }
+
+/* Mejor separación en main */
+.app-content{ padding: 1.75rem; }
+
+/* Dashboard cards */
+.dashboard-card { border-radius: .5rem; }
+.dashboard-card .display-6 { font-size: 2rem; }
+
+/* Jugadores: fila activa y subfila colapsable */
+.fila-jugador { cursor: pointer; }
+.fila-jugador.table-active { box-shadow: 0 2px 8px rgba(2,6,23,0.06); }
+.acciones-jugador { background: #fbfbfc; }
+
+/* Indicador caret en filas expandibles */
+.toggle-caret { display:inline-block; transition: transform .18s ease; margin-right:.5rem; }
+.fila-jugador.table-active .toggle-caret,
+.fila-equipo.table-active .toggle-caret,
+.fila-partido.table-active .toggle-caret { transform: rotate(90deg); }
+
+/* Focus visible para filas accionables */
+.fila-jugador:focus, .fila-equipo:focus, .fila-partido:focus { outline: 3px solid rgba(13,110,253,0.15); outline-offset: 2px; }
+
