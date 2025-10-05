@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Scoreboard.Web.Modelos.Jugador>
+    @using Microsoft.AspNetCore.Mvc.Rendering
+
+    @{
+    ViewData["Title"] = "Jugadores";
+    var equipos = (SelectList)ViewData["Equipos"];
+    var q = ViewData["q"] as string;
+    }
+
+    <h1 class="mb-3">Jugadores</h1>
+
+    <form method="get" class="row g-2 mb-3">
+        <div class="col-sm-4">
+            <input name="q" value="@q" class="form-control" placeholder="Buscar por nombre, apellido o número..." />
+        </div>
+        <div class="col-sm-4">
+            <select name="equipoId" class="form-select" asp-items="equipos">
+                <option value="">-- Todos los equipos --</option>
+            </select>
+        </div>
+        <div class="col-sm-4 d-flex gap-2">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+            <a asp-action="Index" class="btn btn-secondary">Limpiar</a>
+            <a asp-action="Create" class="btn btn-success ms-auto">Nuevo jugador</a>
+        </div>
+    </form>
+
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Jugador</th>
+                <th>Equipo</th>
+                <th class="text-end">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var j in Model)
+    {
+            <tr>
+                <td>@j.NumeroUniforme</td>
+                <td>@j.Nombre @j.Apellido</td>
+                <td>@j.Equipo?.Nombre</td>
+                <td class="text-end">
+                    <a asp-action="Details" asp-route-id="@j.Id" class="btn btn-sm btn-outline-secondary">Detalles</a>
+                    <a asp-action="Edit" asp-route-id="@j.Id" class="btn btn-sm btn-outline-primary">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@j.Id" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                    <a asp-action="Estadisticas" asp-route-id="@j.Id" class="btn btn-sm btn-outline-dark">Estadísticas</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>

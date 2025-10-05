@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Scoreboard.Web.Datos;
-using Scoreboard.Web.Models;
+using Scoreboard.Web.Modelos;
+using Scoreboard.Web.Modelos.ViewModels;
+
 
 namespace Scoreboard.Web.Controllers
 {

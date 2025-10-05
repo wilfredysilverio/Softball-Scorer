@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Scoreboard.Web.Modelos;
+using Scoreboard.Web.Modelos.ViewModels;
+
 
 namespace Scoreboard.Web.Controllers
 {

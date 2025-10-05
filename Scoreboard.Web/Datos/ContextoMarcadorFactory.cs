@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
+
 namespace Scoreboard.Web.Datos;
 
 // Fábrica para que EF Core pueda crear el Contexto en tiempo de diseño (migraciones)

@@ -1,0 +1,16 @@
+@model Scoreboard.Web.Modelos.Jugador
+@{
+    ViewData["Title"] = "Eliminar jugador";
+}
+<h1 class="mb-4 text-danger">Eliminar jugador</h1>
+
+<div class="alert alert-warning">
+    ¿Seguro que deseas eliminar a <strong>@Model.Nombre @Model.Apellido (#@Model.NumeroUniforme)</strong> del equipo <strong>@Model.Equipo?.Nombre</strong>?
+</div>
+
+<form asp-action="Delete" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Scoreboard.Web.Datos;
-using Scoreboard.Web.Models;
+using Scoreboard.Web.Modelos;
+using Scoreboard.Web.Modelos.ViewModels;
 
 namespace Scoreboard.Web.Controllers
 {
@@ -14,77 +15,86 @@ namespace Scoreboard.Web.Controllers
             _db = db;
         }
 
+        // GET: /Equipos
         public async Task<IActionResult> Index()
         {
-            var equipos = await _db.Equipos
-                                   .AsNoTracking()
-                                   .OrderBy(e => e.Nombre)
-                                   .ToListAsync();
-            return View(equipos);
+            var lista = await _db.Equipos
+                                 .OrderBy(e => e.Nombre)
+                                 .ToListAsync();
+            return View(lista);
         }
 
-        public async Task<IActionResult> Details(int? id)
+        // GET: /Equipos/Details/5
+        public async Task<IActionResult> Details(int id)
         {
-            if (id is null) return NotFound();
-
-            var equipo = await _db.Equipos.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
-            if (equipo is null) return NotFound();
-
-            return View(equipo);
-        }
-
-        public IActionResult Create() => View();
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Equipo modelo)
-        {
-            if (!ModelState.IsValid) return View(modelo);
-
-            _db.Equipos.Add(modelo);
-            await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id is null) return NotFound();
-
             var equipo = await _db.Equipos.FindAsync(id);
-            if (equipo is null) return NotFound();
-
+            if (equipo == null) return NotFound();
             return View(equipo);
         }
 
+        // GET: /Equipos/Create
+        public IActionResult Create()
+        {
+            return View(new Equipo());
+        }
+
+        // POST: /Equipos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Equipo modelo)
+        public async Task<IActionResult> Create(Equipo equipo)
         {
-            if (id != modelo.Id) return NotFound();
-            if (!ModelState.IsValid) return View(modelo);
+            if (!ModelState.IsValid) return View(equipo);
 
-            _db.Entry(modelo).State = EntityState.Modified;
+            _db.Add(equipo);
             await _db.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        // GET: /Equipos/Edit/5
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id is null) return NotFound();
-
-            var equipo = await _db.Equipos.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
-            if (equipo is null) return NotFound();
-
+            var equipo = await _db.Equipos.FindAsync(id);
+            if (equipo == null) return NotFound();
             return View(equipo);
         }
 
+        // POST: /Equipos/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Equipo equipo)
+        {
+            if (id != equipo.Id) return BadRequest();
+            if (!ModelState.IsValid) return View(equipo);
+
+            try
+            {
+                _db.Update(equipo);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                var existe = await _db.Equipos.AnyAsync(e => e.Id == id);
+                if (!existe) return NotFound();
+                throw;
+            }
+        }
+
+        // GET: /Equipos/Delete/5
+        public async Task<IActionResult> Delete(int id)
+        {
+            var equipo = await _db.Equipos.FindAsync(id);
+            if (equipo == null) return NotFound();
+            return View(equipo);
+        }
+
+        // POST: /Equipos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var equipo = await _db.Equipos.FindAsync(id);
-            if (equipo is not null)
+            if (equipo != null)
             {
                 _db.Equipos.Remove(equipo);
                 await _db.SaveChangesAsync();
