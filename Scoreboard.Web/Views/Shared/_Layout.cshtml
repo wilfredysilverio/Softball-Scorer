@@ -16,9 +16,18 @@
 
     <style>
         /* ==== Layout lateral ==== */
-        :root { --sb-width: 260px; }
-        html, body { height: 100%; }
-        body { display: flex; min-height: 100vh; }
+        :root {
+            --sb-width: 260px;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+        }
 
         /* Sidebar */
         .sidebar {
@@ -31,31 +40,35 @@
             height: 100vh;
             overflow-y: auto;
         }
-        .sidebar .brand {
-            font-weight: 700;
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid rgba(255,255,255,.08);
-        }
-        .sidebar a.nav-link {
-            color: #e5e7eb;
-            border-radius: .5rem;
-            padding: .6rem .9rem;
-            display: flex;
-            align-items: center;
-            gap: .6rem;
-        }
-        .sidebar a.nav-link:hover,
-        .sidebar a.nav-link.active {
-            background: #1f2937;
-            color: #fff;
-        }
-        .sidebar .section-title {
-            font-size: .75rem;
-            letter-spacing: .08em;
-            color: #9ca3af;
-            padding: .75rem 1.25rem .25rem;
-            text-transform: uppercase;
-        }
+
+            .sidebar .brand {
+                font-weight: 700;
+                padding: 1rem 1.25rem;
+                border-bottom: 1px solid rgba(255,255,255,.08);
+            }
+
+            .sidebar a.nav-link {
+                color: #e5e7eb;
+                border-radius: .5rem;
+                padding: .6rem .9rem;
+                display: flex;
+                align-items: center;
+                gap: .6rem;
+            }
+
+                .sidebar a.nav-link:hover,
+                .sidebar a.nav-link.active {
+                    background: #1f2937;
+                    color: #fff;
+                }
+
+            .sidebar .section-title {
+                font-size: .75rem;
+                letter-spacing: .08em;
+                color: #9ca3af;
+                padding: .75rem 1.25rem .25rem;
+                text-transform: uppercase;
+            }
 
         /* Contenido */
         .app-main {
@@ -65,17 +78,22 @@
             min-width: 0;
             background: #f8fafc;
         }
+
         .app-topbar {
             border-bottom: 1px solid #e5e7eb;
             background: #ffffff;
         }
+
         .app-content {
             padding: 1.25rem;
         }
 
         /* Responsive: en pantallas chicas el sidebar es offcanvas */
         @@media (max-width: 991.98px) {
-            body { display: block; }
+            body {
+                display: block;
+            }
+
             .sidebar {
                 position: fixed;
                 inset: 0 auto 0 0;
@@ -83,7 +101,11 @@
                 transition: transform .25s ease-in-out;
                 z-index: 1045;
             }
-            .sidebar.show { transform: translateX(0); }
+
+                .sidebar.show {
+                    transform: translateX(0);
+                }
+
             .offcanvas-backdrop-custom {
                 position: fixed;
                 inset: 0;
@@ -139,6 +161,11 @@
                         <i class="bi bi-bar-chart"></i> Estadísticas
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-controller="Jugadores" asp-action="Index">Jugadores</a>
+                </li>
+
             </ul>
 
             <div class="section-title">Herramientas</div>
@@ -146,16 +173,6 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Exportaciones" asp-action="Index">
                         <i class="bi bi-file-earmark-arrow-down"></i> Exportar (PDF/Excel)
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Pruebas" asp-action="Index">
-                        <i class="bi bi-clipboard-check"></i> Pruebas de usabilidad
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Documentacion" asp-action="Index">
-                        <i class="bi bi-journal-text"></i> Documentación de diseño
                     </a>
                 </li>
             </ul>

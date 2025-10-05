@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Scoreboard.Web.Modelos.Jugador>
+    @using Microsoft.AspNetCore.Mvc.Rendering
+
+    @{
+    ViewData["Title"] = "Jugadores";
+    var equipos = ViewBag.Equipos as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>();
+    string? q = ViewBag.q as string;
+    }
+
+    <h1 class="mb-3">Jugadores</h1>
+
+    <form method="get" class="row g-2 mb-3">
+        <div class="col-auto">
+            <select name="equipoId" class="form-select">
+                <option value="">Todos los equipos</option>
+                @foreach (var e in equipos)
+            {
+                <option value="@e.Value" selected="@(e.Selected ? "selected" : null)">@e.Text</option>
+            }
+            </select>
+        </div>
+        <div class="col-auto">
+            <input type="text" name="q" value="@q" class="form-control" placeholder="Buscar por nombre, apellido o # uniforme..." />
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary" type="submit">Filtrar</button>
+        </div>
+        <div class="col-auto ms-auto">
+            <a asp-action="Create" class="btn btn-success">Nuevo jugador</a>
+        </div>
+    </form>
+
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Equipo</th>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Posición</th>
+                <th style="width: 260px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var j in Model)
+    {
+            <tr>
+                <td>@j.Equipo?.Nombre</td>
+                <td>@j.NumeroUniforme</td>
+                <td>@j.Nombre</td>
+                <td>@j.Apellido</td>
+                <td>@j.Posicion</td>
+                <td class="text-end">
+                    <a asp-action="Estadisticas" asp-route-id="@j.Id" class="btn btn-outline-info btn-sm">Estadísticas</a>
+                    <a asp-action="Details" asp-route-id="@j.Id" class="btn btn-outline-secondary btn-sm">Detalles</a>
+                    <a asp-action="Edit" asp-route-id="@j.Id" class="btn btn-outline-primary btn-sm">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@j.Id" class="btn btn-outline-danger btn-sm">Borrar</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>

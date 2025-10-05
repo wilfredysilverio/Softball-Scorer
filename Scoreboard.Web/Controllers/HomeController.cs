@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Scoreboard.Web.Models;
+using Scoreboard.Web.Modelos.ViewModels;
+using Scoreboard.Web.Modelos;
+
 
 namespace Scoreboard.Web.Controllers;
 

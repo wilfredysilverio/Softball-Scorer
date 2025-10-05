@@ -1,0 +1,21 @@
+
+
+
+@model Scoreboard.Web.Modelos.ViewModels.EstadisticasJugadorVm
+@{
+    ViewData["Title"] = "Estadísticas del jugador";
+}
+<h1 class="mb-4">Estadísticas: @Model.Jugador.Nombre @Model.Jugador.Apellido</h1>
+
+<div class="row g-3">
+    <div class="col-md-2"><div class="card p-3"><strong>Partidos</strong><div>@Model.PartidosJugados</div></div></div>
+    <div class="col-md-2"><div class="card p-3"><strong>Turnos</strong><div>@Model.Turnos</div></div></div>
+    <div class="col-md-2"><div class="card p-3"><strong>Hits</strong><div>@Model.Hits</div></div></div>
+    <div class="col-md-2"><div class="card p-3"><strong>Carreras</strong><div>@Model.Carreras</div></div></div>
+    <div class="col-md-2"><div class="card p-3"><strong>HR</strong><div>@Model.HomeRuns</div></div></div>
+    <div class="col-md-2"><div class="card p-3"><strong>AVG</strong><div>@Model.Promedio.ToString("0.000")</div></div></div>
+</div>
+
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-secondary">Volver a jugadores</a>
+</div>

@@ -1,22 +1,32 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.EntityFrameworkCore;
+using Scoreboard.Web.Datos;
 
-// Servicios MVC
+var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<ContextoMarcador>(opciones =>
+{
+    var cadena = builder.Configuration.GetConnectionString("PorDefecto");
+    opciones.UseMySql(
+        cadena,
+        ServerVersion.AutoDetect(cadena),
+        my => my.EnableRetryOnFailure()
+    );
+});
+
 
 var app = builder.Build();
 
-// Pipeline HTTP
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Inicio/Error");
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(); // ✅
-
+app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
