@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nowel\\Downloads\\Softball Scorer-20250928T183948Z-1-001\\Softball Scorer\\Softball-Scorer\\Scoreboard.Web\\Scoreboard.Web.csproj": {}
+    "C:\\Users\\nowel\\source\\repos\\Softball-Scorer\\Scoreboard.Web\\Scoreboard.Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nowel\\Downloads\\Softball Scorer-20250928T183948Z-1-001\\Softball Scorer\\Softball-Scorer\\Scoreboard.Web\\Scoreboard.Web.csproj": {
+    "C:\\Users\\nowel\\source\\repos\\Softball-Scorer\\Scoreboard.Web\\Scoreboard.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nowel\\Downloads\\Softball Scorer-20250928T183948Z-1-001\\Softball Scorer\\Softball-Scorer\\Scoreboard.Web\\Scoreboard.Web.csproj",
+        "projectUniqueName": "C:\\Users\\nowel\\source\\repos\\Softball-Scorer\\Scoreboard.Web\\Scoreboard.Web.csproj",
         "projectName": "Scoreboard.Web",
-        "projectPath": "C:\\Users\\nowel\\Downloads\\Softball Scorer-20250928T183948Z-1-001\\Softball Scorer\\Softball-Scorer\\Scoreboard.Web\\Scoreboard.Web.csproj",
+        "projectPath": "C:\\Users\\nowel\\source\\repos\\Softball-Scorer\\Scoreboard.Web\\Scoreboard.Web.csproj",
         "packagesPath": "C:\\Users\\nowel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nowel\\Downloads\\Softball Scorer-20250928T183948Z-1-001\\Softball Scorer\\Softball-Scorer\\Scoreboard.Web\\obj\\",
+        "outputPath": "C:\\Users\\nowel\\source\\repos\\Softball-Scorer\\Scoreboard.Web\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -22,7 +22,7 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net9.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -30,8 +30,8 @@
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {}
           }
         },
@@ -48,22 +48,48 @@
         "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
             "FluentValidation": {
               "target": "Package",
               "version": "[12.0.0, )"
             },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.0.8, )"
+              "version": "[9.0.9, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.8, )"
+              "version": "[9.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.9, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[9.0.0, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",

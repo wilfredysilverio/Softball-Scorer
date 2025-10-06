@@ -1,4 +1,11 @@
-﻿@* Views/Shared/_Layout.cshtml *@
+﻿
+@using Microsoft.AspNetCore.Identity
+@using Scoreboard.Web.Models
+@inject SignInManager<ApplicationUser> SignInManager
+
+
+@* Views/Shared/_Layout.cshtml *@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -277,3 +284,21 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+@using Microsoft.AspNetCore.Identity
+@using Scoreboard.Web.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    
+}
+else
+{
+    <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Login">Iniciar sesión</a></li>
+
+
+
+    <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Register">Registrarse</a></li>
+}
