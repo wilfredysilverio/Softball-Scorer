@@ -5,12 +5,12 @@
 <h1 class="mb-4 text-danger">Eliminar jugador</h1>
 
 <div class="alert alert-warning">
-    ¿Seguro que deseas eliminar a <strong>@Model.Nombre @Model.Apellido (#@Model.NumeroUniforme)</strong> del equipo <strong>@Model.Equipo?.Nombre</strong>?
+    ï¿½Seguro que deseas eliminar a <strong>@Model.Nombre @Model.Apellido (#@Model.NumeroUniforme)</strong> del equipo <strong>@Model.Equipo?.Nombre</strong>?
 </div>
 
-<form asp-action="Delete" method="post">
+<form asp-action="Delete" method="post" id="formDeleteJugador">
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <button type="button" class="btn btn-danger" data-confirm="Â¿Eliminar a @Model.Nombre @Model.Apellido?" data-target-form="#formDeleteJugador">Sï¿½, eliminar</button>
     <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
 </form>

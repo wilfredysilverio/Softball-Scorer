@@ -7,7 +7,7 @@
 
 <h1 class="mb-4">Editar jugador</h1>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" class="needs-validation" novalidate>
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Id" />
 
@@ -40,10 +40,10 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="Posicion" class="form-label">Posición</label>
+        <label asp-for="Posicion" class="form-label">Posiciï¿½n</label>
         <select asp-for="Posicion" class="form-select"
                 asp-items="Html.GetEnumSelectList<Scoreboard.Web.Modelos.Posicion>()">
-            <option value="">-- Selecciona una posición --</option>
+            <option value="">-- Selecciona una posiciï¿½n --</option>
         </select>
         <span asp-validation-for="Posicion" class="text-danger"></span>
     </div>

@@ -3,15 +3,15 @@
     ViewData["Title"] = "Eliminar equipo";
 }
 <h1>Eliminar</h1>
-<p>¿Seguro que deseas eliminar este equipo?</p>
+<p>ï¿½Seguro que deseas eliminar este equipo?</p>
 <dl class="row">
   <dt class="col-sm-2">Id</dt><dd class="col-sm-10">@Model.Id</dd>
   <dt class="col-sm-2">Nombre</dt><dd class="col-sm-10">@Model.Nombre</dd>
   <dt class="col-sm-2">Ciudad</dt><dd class="col-sm-10">@Model.Ciudad</dd>
 </dl>
 
-<form asp-action="Delete" method="post">
+<form asp-action="Delete" method="post" id="formDeleteEquipo">
   <input type="hidden" asp-for="Id" />
-  <button type="submit" class="btn btn-danger">Eliminar</button>
+  <button type="button" class="btn btn-danger" data-confirm="Â¿Eliminar el equipo @Model.Nombre?" data-target-form="#formDeleteEquipo">Eliminar</button>
   <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
 </form>

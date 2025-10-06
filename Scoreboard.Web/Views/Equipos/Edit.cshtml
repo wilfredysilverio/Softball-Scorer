@@ -3,7 +3,7 @@
     ViewData["Title"] = "Editar equipo";
 }
 <h1>Editar equipo</h1>
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" class="needs-validation" novalidate>
     <input type="hidden" asp-for="Id" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 

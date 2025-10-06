@@ -21,14 +21,22 @@
         <tbody>
             @foreach (var e in Model)
     {
-            <tr>
+            <tr class="fila-equipo" data-id="@e.Id" tabindex="0" role="button" aria-controls="acciones-equipo-@e.Id" aria-expanded="false">
                 <td>@e.Id</td>
                 <td>@e.Nombre</td>
                 <td>@e.Ciudad</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@e.Id">Detalles</a> |
-                    <a asp-action="Edit" asp-route-id="@e.Id">Editar</a> |
-                    <a asp-action="Delete" asp-route-id="@e.Id">Eliminar</a>
+                <td class="text-end small text-muted">
+                    <span class="toggle-caret" aria-hidden="true">▸</span>
+                    <span class="visually-hidden">Mostrar acciones</span>
+                </td>
+            </tr>
+            <tr class="collapse acciones-equipo" id="acciones-equipo-@e.Id">
+                <td colspan="4" class="py-3">
+                    <div class="d-flex gap-2 justify-content-end">
+                        <a asp-action="Details" asp-route-id="@e.Id" class="btn btn-outline-secondary btn-sm">Detalles</a>
+                        <a asp-action="Edit" asp-route-id="@e.Id" class="btn btn-outline-primary btn-sm">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@e.Id" class="btn btn-outline-danger btn-sm" data-confirm="¿Eliminar equipo?">Eliminar</a>
+                    </div>
                 </td>
             </tr>
     }

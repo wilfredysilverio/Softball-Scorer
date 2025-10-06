@@ -10,10 +10,12 @@ namespace Scoreboard.Web.Controllers
     public class JugadoresController : Controller
     {
         private readonly ContextoMarcador _db;
+        private readonly Scoreboard.Web.Servicios.IEstadisticasService _estadisticasService;
 
-        public JugadoresController(ContextoMarcador db)
+        public JugadoresController(ContextoMarcador db, Scoreboard.Web.Servicios.IEstadisticasService estadisticasService)
         {
             _db = db;
+            _estadisticasService = estadisticasService;
         }
 
         public async Task<IActionResult> Index(string? q, int? equipoId)
@@ -135,20 +137,19 @@ namespace Scoreboard.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Estadisticas(int id)
         {
-            var jugador = await _db.Jugadores
-                                   .Include(j => j.Equipo)
-                                   .FirstOrDefaultAsync(j => j.Id == id);
-            if (jugador == null) return NotFound();
+            var datos = await _estadisticasService.ObtenerEstadisticasJugadorAsync(id);
+            if (datos == null) return NotFound();
 
+            // Mapear el servicio VM al viewmodel ya existente en Views/Jugadores/Estadisticas.cshtml
             var vm = new EstadisticasJugadorVm
             {
-                Jugador = jugador,
-                PartidosJugados = 0,
-                Turnos = 0,
-                Hits = 0,
-                Carreras = 0,
-                HomeRuns = 0,
-                Promedio = 0m
+                Jugador = datos.Jugador,
+                PartidosJugados = datos.PartidosJugados,
+                Turnos = datos.Turnos,
+                Hits = datos.Hits,
+                Carreras = datos.Carreras,
+                HomeRuns = datos.HomeRuns,
+                Promedio = datos.Promedio
             };
 
             return View(vm);

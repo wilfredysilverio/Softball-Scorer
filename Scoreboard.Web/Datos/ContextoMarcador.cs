@@ -15,6 +15,7 @@ namespace Scoreboard.Web.Datos
         public DbSet<Equipo> Equipos { get; set; } = default!;
         public DbSet<Jugador> Jugadores { get; set; } = default!;
         public DbSet<Partido> Partidos { get; set; } = default!;
+    public DbSet<Scoreboard.Web.Modelos.PlayerBattingStat> PlayerBattingStats { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,6 +39,12 @@ namespace Scoreboard.Web.Datos
                 .HasOne(j => j.Equipo)
                 .WithMany()
                 .HasForeignKey(j => j.EquipoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlayerBattingStat>()
+                .HasOne(p => p.Jugador)
+                .WithMany()
+                .HasForeignKey(p => p.JugadorId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
