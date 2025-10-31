@@ -35,4 +35,12 @@ namespace Scoreboard.Web.Modelos
         BateadorDesignado = 10,
         Utility = 11
     }
+
+    public enum EstadoPartido
+    {
+        NoIniciado = 0,
+        EnCurso = 1,
+        Suspendido = 2,
+        Finalizado = 3
+    }
 }

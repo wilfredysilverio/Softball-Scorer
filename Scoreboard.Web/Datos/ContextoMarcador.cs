@@ -6,17 +6,39 @@ namespace Scoreboard.Web.Datos
     public class ContextoMarcador : DbContext
     {
         public ContextoMarcador(DbContextOptions<ContextoMarcador> opciones)
-            : base(opciones) { }
+            : base(opciones)
+        {
+        }
 
+        // ========== Tablas ==========
         public DbSet<Equipo> Equipos { get; set; } = default!;
         public DbSet<Jugador> Jugadores { get; set; } = default!;
         public DbSet<Partido> Partidos { get; set; } = default!;
-    public DbSet<Scoreboard.Web.Modelos.PlayerBattingStat> PlayerBattingStats { get; set; } = default!;
+        public DbSet<Entrada> Entradas { get; set; } = default!;
+        public DbSet<PlayLog> PlayLogs { get; set; } = default!;
+        public DbSet<PlayerBattingStat> PlayerBattingStats { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            // EQUIPO
+            modelBuilder.Entity<Equipo>()
+                .HasIndex(e => e.Nombre);
+
+            // JUGADOR -> EQUIPO
+            modelBuilder.Entity<Jugador>()
+                .HasOne(j => j.Equipo)
+                .WithMany()                     // Si tienes Equipo.Jugadores, puedes cambiar a .WithMany(e => e.Jugadores)
+                .HasForeignKey(j => j.EquipoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // �ndice �til (no unique por si acaso)
+            modelBuilder.Entity<Jugador>()
+                .HasIndex(j => new { j.EquipoId, j.NumeroUniforme })
+                .IsUnique(false);
+
+            // PARTIDO -> EQUIPOS
             modelBuilder.Entity<Partido>()
                 .HasOne(p => p.EquipoCasa)
                 .WithMany()
@@ -29,16 +51,35 @@ namespace Scoreboard.Web.Datos
                 .HasForeignKey(p => p.EquipoVisitaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Jugador>()
-                .HasOne(j => j.Equipo)
+            // ENTRADA -> PARTIDO (use explicit navigations)
+            modelBuilder.Entity<Entrada>()
+                .HasOne(e => e.Partido)
+                .WithMany(p => p.Entradas)
+                .HasForeignKey(e => e.PartidoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // PLAYLOG -> PARTIDO
+            modelBuilder.Entity<PlayLog>()
+                .Property(p => p.SnapshotJson)
+                .HasColumnType("longtext");     // MySQL/Pomelo: JSON grande
+
+            modelBuilder.Entity<PlayLog>()
+                .HasOne<Partido>()
+                .WithMany()                     // Si tienes Partido.PlayLogs, cambia a .WithMany(p => p.PlayLogs)
+                .HasForeignKey(pl => pl.PartidoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // PlayerBattingStat -> Jugador/Partido (explicit navigations)
+            modelBuilder.Entity<PlayerBattingStat>()
+                .HasOne(s => s.Jugador)
                 .WithMany()
-                .HasForeignKey(j => j.EquipoId)
+                .HasForeignKey(s => s.JugadorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PlayerBattingStat>()
-                .HasOne(p => p.Jugador)
-                .WithMany()
-                .HasForeignKey(p => p.JugadorId)
+                .HasOne(s => s.Partido)
+                .WithMany(p => p.PlayerBattingStats)
+                .HasForeignKey(s => s.PartidoId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

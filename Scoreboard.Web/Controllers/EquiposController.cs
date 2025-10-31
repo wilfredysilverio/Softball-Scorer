@@ -24,6 +24,18 @@ namespace Scoreboard.Web.Controllers
             return View(lista);
         }
 
+        // GET: /Equipos/Estadisticas/5
+        public async Task<IActionResult> Estadisticas(int id)
+        {
+            // Usar el servicio de estadísticas para obtener los datos del equipo
+            var service = HttpContext.RequestServices.GetService(typeof(Scoreboard.Web.Servicios.IEstadisticasService)) as Scoreboard.Web.Servicios.IEstadisticasService;
+            if (service == null) return StatusCode(500, "Servicio de estadísticas no disponible");
+
+            var vm = await service.ObtenerEstadisticasEquipoAsync(id);
+            if (vm == null) return NotFound();
+            return View(vm);
+        }
+
         // GET: /Equipos/Details/5
         public async Task<IActionResult> Details(int id)
         {

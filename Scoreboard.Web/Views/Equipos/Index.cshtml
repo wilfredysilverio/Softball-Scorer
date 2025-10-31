@@ -33,6 +33,7 @@
             <tr class="collapse acciones-equipo" id="acciones-equipo-@e.Id">
                 <td colspan="4" class="py-3">
                     <div class="d-flex gap-2 justify-content-end">
+                        <a asp-action="Estadisticas" asp-route-id="@e.Id" class="btn btn-outline-info btn-sm">Estadísticas</a>
                         <a asp-action="Details" asp-route-id="@e.Id" class="btn btn-outline-secondary btn-sm">Detalles</a>
                         <a asp-action="Edit" asp-route-id="@e.Id" class="btn btn-outline-primary btn-sm">Editar</a>
                         <a asp-action="Delete" asp-route-id="@e.Id" class="btn btn-outline-danger btn-sm" data-confirm="¿Eliminar equipo?">Eliminar</a>

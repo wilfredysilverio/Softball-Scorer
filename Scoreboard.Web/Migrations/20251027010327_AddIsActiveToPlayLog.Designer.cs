@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Scoreboard.Web.Datos;
 
@@ -11,9 +12,11 @@ using Scoreboard.Web.Datos;
 namespace Scoreboard.Web.Migrations
 {
     [DbContext(typeof(ContextoMarcador))]
-    partial class ContextoMarcadorModelSnapshot : ModelSnapshot
+    [Migration("20251027010327_AddIsActiveToPlayLog")]
+    partial class AddIsActiveToPlayLog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,8 +83,6 @@ namespace Scoreboard.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Nombre");
-
                     b.ToTable("Equipos");
                 });
 
@@ -114,7 +115,7 @@ namespace Scoreboard.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EquipoId", "NumeroUniforme");
+                    b.HasIndex("EquipoId");
 
                     b.ToTable("Jugadores");
                 });
@@ -192,32 +193,25 @@ namespace Scoreboard.Web.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreadoUtc")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime(6)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit(1)");
 
-                    b.Property<int?>("JugadorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Kind")
+                    b.Property<int>("JugadorId")
                         .HasColumnType("int");
 
                     b.Property<int>("PartidoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Resultado")
+                    b.Property<int>("Resultado")
                         .HasColumnType("int");
 
                     b.Property<int>("RunsScored")
                         .HasColumnType("int");
 
                     b.Property<string>("SnapshotJson")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -281,8 +275,6 @@ namespace Scoreboard.Web.Migrations
 
                     b.HasIndex("JugadorId");
 
-                    b.HasIndex("PartidoId");
-
                     b.ToTable("PlayerBattingStats");
                 });
 
@@ -329,11 +321,13 @@ namespace Scoreboard.Web.Migrations
 
             modelBuilder.Entity("Scoreboard.Web.Modelos.PlayLog", b =>
                 {
-                    b.HasOne("Scoreboard.Web.Modelos.Partido", null)
+                    b.HasOne("Scoreboard.Web.Modelos.Partido", "Partido")
                         .WithMany()
                         .HasForeignKey("PartidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Partido");
                 });
 
             modelBuilder.Entity("Scoreboard.Web.Modelos.PlayerBattingStat", b =>
@@ -344,22 +338,12 @@ namespace Scoreboard.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Scoreboard.Web.Modelos.Partido", "Partido")
-                        .WithMany("PlayerBattingStats")
-                        .HasForeignKey("PartidoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Jugador");
-
-                    b.Navigation("Partido");
                 });
 
             modelBuilder.Entity("Scoreboard.Web.Modelos.Partido", b =>
                 {
                     b.Navigation("Entradas");
-
-                    b.Navigation("PlayerBattingStats");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Scoreboard.Web.Datos;
+using Scoreboard.Web.Servicios;
+using Scoreboard.Web.Servicios.Marcador;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +18,10 @@ builder.Services.AddDbContext<ContextoMarcador>(opciones =>
     );
 });
 
-// Servicios de la aplicación
+builder.Services.AddScoped<IMarcadorService, MarcadorService>();
 builder.Services.AddScoped<Scoreboard.Web.Servicios.IEstadisticasService, Scoreboard.Web.Servicios.EstadisticasService>();
+builder.Services.AddScoped<Scoreboard.Web.Servicios.Marcador.IMarcadorService, Scoreboard.Web.Servicios.Marcador.MarcadorService>();
+builder.Services.AddSignalR();
 
 
 var app = builder.Build();
@@ -25,6 +30,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Inicio/Error");
     app.UseHsts();
+    // En entornos no-Development forzamos HTTPS
+    app.UseHttpsRedirection();
 }
 
 // Ejecutar seed de datos de ejemplo solo en Development
@@ -41,9 +48,11 @@ if (app.Environment.IsDevelopment())
     }
 }
 
-app.UseHttpsRedirection();
+// No forzamos redirección HTTPS en Development para facilitar pruebas HTTP locales
 app.UseStaticFiles();
 app.UseRouting();
+
+app.MapHub<Scoreboard.Web.Hubs.MarcadorHub>("/hubs/marcador");
 
 app.MapControllerRoute(
     name: "default",
