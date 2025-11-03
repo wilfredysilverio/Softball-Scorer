@@ -1,0 +1,183 @@
+@model Scoreboard.Web.Modelos.Partido
+@using Scoreboard.Web.Modelos
+@{
+    ViewData["Title"] = "Ver partido";
+    var bateadores = ViewBag.Bateadores as IEnumerable<Scoreboard.Web.Modelos.Jugador> ?? Enumerable.Empty<Scoreboard.Web.Modelos.Jugador>();
+}
+
+<div class="container py-3">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="mb-0">@Model.EquipoVisita?.Nombre @Model.CarrerasVisita - @Model.CarrerasCasa @Model.EquipoCasa?.Nombre</h2>
+        <span class="badge bg-secondary">Fecha: @Model.Fecha.ToString("yyyy-MM-dd")</span>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12 col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    Marcador por entradas
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle" id="tabla-entradas">
+                            <thead>
+                                <tr>
+                                    <th>Equipo</th>
+                                    @for (int i = 1; i <= 9; i++)
+                                    {
+                                    <th class="text-center">@i</th>
+                                    }
+                                    <th class="text-center">C</th>
+                                    <th class="text-center">H</th>
+                                    <th class="text-center">E</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="fila-visita">
+                                    <td class="fw-semibold">@Model.EquipoVisita?.Nombre</td>
+                                    @for (int i = 1; i <= 9; i++)
+                                    {
+                                        var entrada = Model.Entradas?.FirstOrDefault(e => e.NumeroInning == i);
+                                    <td class="text-center" data-side="V" data-inning="@i">@((entrada?.CarrerasVisita) ?? 0)</td>
+                                    }
+                                    <td class="text-center" id="totCarrerasVisita">@Model.CarrerasVisita</td>
+                                    <td class="text-center" id="totHitsVisita">@Model.HitsVisita</td>
+                                    <td class="text-center" id="totErroresVisita">@Model.ErroresVisita</td>
+                                </tr>
+                                <tr id="fila-casa">
+                                    <td class="fw-semibold">@Model.EquipoCasa?.Nombre</td>
+                                    @for (int i = 1; i <= 9; i++)
+                                    {
+                                        var entrada = Model.Entradas?.FirstOrDefault(e => e.NumeroInning == i);
+                                    <td class="text-center" data-side="C" data-inning="@i">@((entrada?.CarrerasCasa) ?? 0)</td>
+                                    }
+                                    <td class="text-center" id="totCarrerasCasa">@Model.CarrerasCasa</td>
+                                    <td class="text-center" id="totHitsCasa">@Model.HitsCasa</td>
+                                    <td class="text-center" id="totErroresCasa">@Model.ErroresCasa</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex gap-3 mt-3">
+                        <div>Entrada: <span id="entradaActual">@Model.EntradaActual</span> <span id="mitadActual">(@Model.Mitad)</span></div>
+                        <div>Outs: <span id="outsActuales">@Model.Outs</span></div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span id="base1" class="base"></span>
+                            <span id="base2" class="base"></span>
+                            <span id="base3" class="base"></span>
+                        </div>
+                    </div>
+
+                    <div id="alertaMarcador" class="mt-3 d-none"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <div class="card mb-3">
+                <div class="card-header">Acciones del partido</div>
+                <div class="card-body d-grid gap-2">
+                    <form asp-action="Iniciar" asp-controller="Partidos" method="post" class="d-grid">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-success">Iniciar</button>
+                    </form>
+                    <form asp-action="Suspender" asp-controller="Partidos" method="post" class="d-grid">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-warning">Suspender</button>
+                    </form>
+                    <form asp-action="Reanudar" asp-controller="Partidos" method="post" class="d-grid">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-info">Reanudar</button>
+                    </form>
+                    <form asp-action="Finalizar" asp-controller="Partidos" method="post" class="d-grid">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-danger">Finalizar</button>
+                    </form>
+                    <form asp-action="Deshacer" asp-controller="Partidos" method="post" class="d-grid">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="partidoId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-outline-secondary">Deshacer última jugada</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Registrar turno</div>
+                <div class="card-body">
+                    <form asp-action="RegistrarTurno" asp-controller="Partidos" method="post" class="row g-2">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="partidoId" value="@Model.Id" />
+                        <div class="col-12">
+                            <label class="form-label">Bateador</label>
+                            <select name="jugadorId" class="form-select">
+                                @foreach (var j in bateadores)
+                                {
+                                <option value="@j.Id">@j.Nombre @j.Apellido (@j.NumeroUniforme)</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Resultado</label>
+                            <select name="resultado" class="form-select">
+                                @foreach (ResultadoTurno r in Enum.GetValues(typeof(ResultadoTurno)))
+                                {
+                                <option value="@((int)r)">@r</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-12 d-grid">
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Index" asp-controller="Partidos" class="btn btn-outline-dark">Volver</a>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        .base {
+            width: 14px;
+            height: 14px;
+            display: inline-block;
+            border: 1px solid #333;
+            transform: rotate(45deg);
+        }
+
+            .base.activa {
+                background-color: #28a745;
+            }
+
+        .flash {
+            animation: flash 0.8s linear 1;
+        }
+
+        @@keyframes flash {
+            0% {
+                background: #fff3cd;
+            }
+
+            100% {
+                background: transparent;
+            }
+        }
+    </style>
+    <script>
+        window.marcadorConfig = {
+            partidoId: @Model.Id,
+            marcadorJsonUrl: '@Url.Action("MarcadorJson","Partidos")'
+        };
+    </script>
+    <script src="~/js/marcador.js" asp-append-version="true"></script>
+}
