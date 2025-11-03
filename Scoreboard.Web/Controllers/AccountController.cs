@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Scoreboard.Web.Modelos;          // ✅ ApplicationUser vive aquí
 using Scoreboard.Web.Models;
 using Scoreboard.Web.ViewModels;
 using System.Threading.Tasks;
@@ -22,12 +23,13 @@ namespace Scoreboard.Web.Controllers
         private string CleanReturn(string? returnUrl)
         {
             if (string.IsNullOrWhiteSpace(returnUrl)) return "/";
-            // Aceptamos solo URLs locales y que NO comiencen con /Account
-            if (Url.IsLocalUrl(returnUrl) && !returnUrl.StartsWith("/Account", System.StringComparison.OrdinalIgnoreCase))
+            if (Url.IsLocalUrl(returnUrl) &&
+                !returnUrl.StartsWith("/Account", System.StringComparison.OrdinalIgnoreCase))
                 return returnUrl;
             return "/";
         }
 
+        // ===== REGISTER =====
         [HttpGet, AllowAnonymous]
         public IActionResult Register(string returnUrl = "/")
         {
@@ -42,9 +44,15 @@ namespace Scoreboard.Web.Controllers
             returnUrl = CleanReturn(returnUrl);
             if (!ModelState.IsValid) return View(m);
 
-            var user = new ApplicationUser { UserName = m.Email, Email = m.Email, PhoneNumber = m.Phone, FullName = m.FullName };
-            var result = await _users.CreateAsync(user, m.Password);
+            var user = new ApplicationUser
+            {
+                UserName = m.Email,                // si usas email como username
+                Email = m.Email,
+                PhoneNumber = m.Phone,
+                FullName = m.FullName
+            };
 
+            var result = await _users.CreateAsync(user, m.Password);
             if (result.Succeeded)
             {
                 await _signIn.SignInAsync(user, isPersistent: true);
@@ -52,11 +60,12 @@ namespace Scoreboard.Web.Controllers
             }
 
             foreach (var e in result.Errors)
-                ModelState.AddModelError("", e.Description);
+                ModelState.AddModelError(string.Empty, e.Description);
 
             return View(m);
         }
 
+        // ===== LOGIN =====
         [HttpGet, AllowAnonymous]
         public IActionResult Login(string returnUrl = "/")
         {
@@ -66,41 +75,39 @@ namespace Scoreboard.Web.Controllers
 
         [HttpPost, AllowAnonymous]
         [ValidateAntiForgeryToken]
-
-
-
-
         public async Task<IActionResult> Login(LoginViewModel m, string returnUrl = "/")
         {
+            returnUrl = CleanReturn(returnUrl);
             if (!ModelState.IsValid) return View(m);
 
-            // (Opcional) buscar usuario por correo para diferenciar mensajes
+            // Buscar por email y firmar con el UserName real (por si no coincide con el email)
             var user = await _users.FindByEmailAsync(m.Email);
+            if (user != null)
+            {
+                var result = await _signIn.PasswordSignInAsync(user.UserName, m.Password, m.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                    return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                // fallback: intentar con el email tal cual (si tu UserName es el email)
+                var result = await _signIn.PasswordSignInAsync(m.Email, m.Password, m.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                    return LocalRedirect(returnUrl);
+            }
 
-            var result = await _signIn.PasswordSignInAsync(m.Email, m.Password, m.RememberMe, lockoutOnFailure: false);
-
-            if (result.Succeeded)
-                return LocalRedirect(returnUrl);
-
-            // Mensaje único en rojo
-            ModelState.AddModelError(string.Empty,
-                "Error: correo o contraseña incorrectos. Si no recuerdas tus datos, crea una cuenta nueva.");
-
-          
-
+            ModelState.AddModelError(string.Empty, "Error: correo o contraseña incorrectos.");
             return View(m);
         }
 
-
-
-
+        // ===== LOGOUT =====
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signIn.SignOutAsync();
-            // Tras salir, llévalo al login
-            return RedirectToAction(nameof(Login), "Account");
+            return RedirectToAction(nameof(Login));
         }
     }
 }
