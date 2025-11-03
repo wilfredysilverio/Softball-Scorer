@@ -47,39 +47,9 @@ namespace Scoreboard.Web.Migrations
                 oldClrType: typeof(int),
                 oldType: "int");
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "CreadoUtc",
-                table: "PlayLogs",
-                type: "datetime(6)",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<int>(
-                name: "Kind",
-                table: "PlayLogs",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlayerBattingStats_PartidoId",
-                table: "PlayerBattingStats",
-                column: "PartidoId");
-
-            // IX_Jugadores_EquipoId_NumeroUniforme already exists in the database; skip creating it to avoid duplicate key error.
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Equipos_Nombre",
-                table: "Equipos",
-                column: "Nombre");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_PlayerBattingStats_Partidos_PartidoId",
-                table: "PlayerBattingStats",
-                column: "PartidoId",
-                principalTable: "Partidos",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+            // Some indexes and foreign keys already exist in the target DB. They were intentionally
+            // omitted here to avoid duplicate-key/duplicate-constraint errors when applying this
+            // migration on an existing schema.
         }
 
         /// <inheritdoc />

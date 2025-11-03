@@ -39,7 +39,11 @@ namespace Scoreboard.Web.Controllers
         // GET: /Equipos/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var equipo = await _db.Equipos.FindAsync(id);
+            // Consulta de sólo lectura: usar AsNoTracking para evitar seguimiento del contexto
+            // y reducir la sobrecarga cuando sólo mostramos detalles.
+            var equipo = await _db.Equipos
+                                 .AsNoTracking()
+                                 .FirstOrDefaultAsync(e => e.Id == id);
             if (equipo == null) return NotFound();
             return View(equipo);
         }

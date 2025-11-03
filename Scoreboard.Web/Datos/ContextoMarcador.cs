@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Scoreboard.Web.Modelos;
+using Scoreboard.Web.Modelos.Identity;
 
 namespace Scoreboard.Web.Datos
 {
-    public class ContextoMarcador : DbContext
+    public class ContextoMarcador : IdentityDbContext<Scoreboard.Web.Modelos.Identity.UsuarioAplicacion, Scoreboard.Web.Modelos.Identity.RolAplicacion, string>
     {
         public ContextoMarcador(DbContextOptions<ContextoMarcador> opciones)
             : base(opciones)

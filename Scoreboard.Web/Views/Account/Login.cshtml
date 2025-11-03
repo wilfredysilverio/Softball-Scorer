@@ -1,0 +1,29 @@
+@{
+        ViewData["Title"] = "Iniciar sesión";
+        string? returnUrl = ViewData["ReturnUrl"] as string;
+}
+<div class="container d-flex justify-content-center align-items-center" style="min-height:70vh;">
+    <div class="card p-4 shadow" style="width:360px;">
+        <h5 class="mb-3 text-center">Iniciar sesión</h5>
+        <form asp-action="Login" method="post">
+            <input type="hidden" name="returnUrl" value="@returnUrl" />
+            @Html.AntiForgeryToken()
+            <div class="mb-3">
+                <label class="form-label">Usuario o correo</label>
+                <input name="usuario" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Clave</label>
+                <input name="clave" type="password" class="form-control" />
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="recordar" id="rec">
+                <label class="form-check-label" for="rec">Recordarme</label>
+            </div>
+            <button class="btn btn-primary w-100" type="submit">Entrar</button>
+        </form>
+        <div class="text-center mt-3">
+            <a asp-action="Register" asp-route-returnUrl="@returnUrl">Crear cuenta</a>
+        </div>
+    </div>
+</div>
