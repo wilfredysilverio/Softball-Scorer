@@ -1,64 +1,61 @@
 ﻿@{
     Layout = null;
-    var title = ViewData["Title"] as string ?? "Softball-Scorer";
+    var title = (ViewData["Title"] as string) ?? "Softball-Scorer";
 }
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>@title - Softball-Scorer</title>
+
+    <title>@title · Softball-Scorer</title>
+
+    <!-- Bootstrap (local) -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Tu CSS con cache-busting (requiere TagHelpers habilitados) -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
     <style>
-        /* Fondo temático: imagen + degradado. Si no tienes la imagen, se ve el degradado. */
+        /* Fondo temático: imagen + degradado (si no hay imagen, se ve el degradado). */
         body.auth-bg {
             min-height: 100vh;
-            background: radial-gradient(60% 60% at 50% 40%, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 70%), linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.25)), url('/img/softball-bg.jpg') center/cover no-repeat fixed, linear-gradient(160deg,#0d6efd,#198754);
+            background:
+              radial-gradient(60% 60% at 50% 40%, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 70%),
+              linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.25)),
+              url('@Url.Content("~/img/softball-bg.jpg")') center/cover no-repeat fixed,
+              linear-gradient(160deg, #0d6efd, #198754);
         }
-
         .auth-overlay {
             position: fixed;
             inset: 0;
             background: rgba(0,0,0,.15);
             pointer-events: none;
         }
-
         .auth-card {
-            width: min(480px,92vw);
+            width: min(480px, 92vw);
             background: rgba(255,255,255,.94);
             backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
-
-        .softball-brand {
-            display: flex;
-            align-items: center;
-            gap: .75rem;
-        }
-
-            .softball-brand img {
-                width: 42px;
-                height: 42px;
-            }
-
-        .auth-title {
-            font-weight: 700;
-            letter-spacing: .2px;
-        }
-
-        .auth-sub {
-            color: #6c757d;
-        }
+        .softball-brand { display:flex; align-items:center; gap:.75rem; }
+        .softball-brand img { width:42px; height:42px; }
+        .auth-title { font-weight:700; letter-spacing:.2px; }
+        .auth-sub { color:#6c757d; }
     </style>
 </head>
 <body class="auth-bg">
     <div class="auth-overlay"></div>
+
     <main class="d-flex min-vh-100 align-items-center justify-content-center">
         <div class="auth-card shadow-lg rounded-4 p-4 p-md-5">
             @RenderBody()
         </div>
     </main>
+
+    <!-- Bootstrap bundle (incluye Popper) -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

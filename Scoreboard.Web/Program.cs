@@ -1,12 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
+
 using Scoreboard.Web.Datos;
+
 using Scoreboard.Web.Models;
+using Scoreboard.Web.Servicios;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-// DB MySQL (Pomelo)
+// ===== DB MySQL (Pomelo) =====
 builder.Services.AddDbContext<ContextoMarcador>(opciones =>
 {
     var cadena = builder.Configuration.GetConnectionString("PorDefecto");
@@ -17,7 +22,7 @@ builder.Services.AddDbContext<ContextoMarcador>(opciones =>
     );
 });
 
-// Identity (reglas sencillas en español)
+// ===== Identity =====
 builder.Services.AddDefaultIdentity<ApplicationUser>(o =>
 {
     o.SignIn.RequireConfirmedAccount = false;
@@ -27,7 +32,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(o =>
     o.Password.RequireLowercase = false;
     o.Password.RequireDigit = false;
 })
-.AddEntityFrameworkStores<ContextoMarcador>();
+.AddEntityFrameworkStores<ContextoMarcador>()
+.AddDefaultTokenProviders(); // opcional pero recomendado
 
 // Cookies: a dónde mandar si falta login
 builder.Services.ConfigureApplicationCookie(opt =>
@@ -36,17 +42,18 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.AccessDeniedPath = "/Account/Login";
 });
 
-// Todo el sitio exige estar autenticado
+// Todo el sitio exige estar autenticado (el Login/Registro deben tener [AllowAnonymous])
 builder.Services.AddControllersWithViews(options =>
 {
     var policy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();
-    options.Filters.Add(new AuthorizeFilter(policy)); // <-- aquí estaba el error
+    options.Filters.Add(new AuthorizeFilter(policy));
 });
 
-// Servicio que agregó tu compañero (si existe ese namespace/clases)
-builder.Services.AddScoped<Scoreboard.Web.Servicios.IEstadisticasService, Scoreboard.Web.Servicios.EstadisticasService>();
+// Servicios (si existen en tu solución)
+builder.Services.AddScoped<IEstadisticasService, EstadisticasService>();
+// builder.Services.AddScoped<IMarcadorService, MarcadorService>(); // si lo usas
 
 var app = builder.Build();
 
@@ -56,25 +63,27 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-// Seed de datos solo en Development (si tienes SeedData)
+// Seed solo en dev (si tienes SeedData)
 if (app.Environment.IsDevelopment())
 {
     try
     {
-        Scoreboard.Web.Datos.SeedData.EnsureSeedDataAsync(app.Services).GetAwaiter().GetResult();
+        await Scoreboard.Web.Datos.SeedData.EnsureSeedDataAsync(app.Services);
     }
     catch (Exception ex)
     {
-        var logger = app.Services.GetService<ILoggerFactory>()?.CreateLogger("Program");
-        logger?.LogError(ex, "Error ejecutando seed de datos");
+        app.Services.GetRequiredService<ILoggerFactory>()
+            .CreateLogger("Program")
+            .LogError(ex, "Error ejecutando seed de datos");
     }
 }
 
+// HTTPS + estáticos + auth
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
+app.UseAuthentication();   // ✅ antes de UseAuthorization
 app.UseAuthorization();
 
 app.MapControllerRoute(
