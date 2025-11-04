@@ -200,18 +200,7 @@
                 <span class="fw-semibold">@ViewData["Title"]</span>
             </div>
             <div class="d-none d-lg-flex align-items-center gap-2">
-                @if (User?.Identity?.IsAuthenticated == true)
-                {
-                    <div class="me-3">Hola, @User.Identity.Name</div>
-                    <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
-                        @Html.AntiForgeryToken()
-                        <button type="submit" class="btn btn-outline-secondary btn-sm">Salir</button>
-                    </form>
-                }
-                else
-                {
-                    <a class="btn btn-outline-primary btn-sm" asp-controller="Account" asp-action="Login">Iniciar sesión</a>
-                }
+                @await Html.PartialAsync("_LoginPartial")
             </div>
         </header>
 

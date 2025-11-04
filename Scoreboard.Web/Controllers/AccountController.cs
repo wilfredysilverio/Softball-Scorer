@@ -1,22 +1,21 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Scoreboard.Web.Modelos.Identity;
 
 namespace Scoreboard.Web.Controllers
 {
-    [AllowAnonymous]
     public class AccountController : Controller
     {
-        private readonly SignInManager<UsuarioAplicacion> _signIn;
-        private readonly UserManager<UsuarioAplicacion> _users;
+        private readonly SignInManager<IdentityUser> _signIn;
+        private readonly UserManager<IdentityUser> _users;
 
-        public AccountController(SignInManager<UsuarioAplicacion> signIn, UserManager<UsuarioAplicacion> users)
+        public AccountController(SignInManager<IdentityUser> signIn, UserManager<IdentityUser> users)
         {
             _signIn = signIn;
             _users = users;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login(string? returnUrl = null)
         {
@@ -24,6 +23,7 @@ namespace Scoreboard.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string usuario, string clave, bool recordar = false, string? returnUrl = null)
@@ -40,6 +40,7 @@ namespace Scoreboard.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Register(string? returnUrl = null)
         {
@@ -47,6 +48,7 @@ namespace Scoreboard.Web.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(string usuario, string email, string clave, string? returnUrl = null)
@@ -57,7 +59,7 @@ namespace Scoreboard.Web.Controllers
                 ModelState.AddModelError(string.Empty, "El usuario ya existe");
                 return View();
             }
-            var u = new UsuarioAplicacion { UserName = usuario, Email = email, EmailConfirmed = true };
+            var u = new IdentityUser { UserName = usuario, Email = email, EmailConfirmed = true };
             var r = await _users.CreateAsync(u, clave);
             if (r.Succeeded)
             {

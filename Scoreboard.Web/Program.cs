@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Scoreboard.Web.Datos;
 
@@ -8,12 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 // DbContext
 builder.Services.AddDbContext<ContextoMarcador>(options =>
 {
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("PorDefecto"),
-        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("PorDefecto")));
+    var cs = builder.Configuration.GetConnectionString("PorDefecto");
+    options.UseMySql(cs, ServerVersion.AutoDetect(cs));
 });
 
-// Identity (completo, con roles y tokens)
+// Identity con roles y tokens
 builder.Services
     .AddIdentity<IdentityUser, IdentityRole>(options =>
     {
@@ -27,29 +27,39 @@ builder.Services
     .AddEntityFrameworkStores<ContextoMarcador>()
     .AddDefaultTokenProviders();
 
-// Cookie auth (ruta de login/denegado)
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(o =>
-    {
-        o.LoginPath = "/Account/Login";
-        o.AccessDeniedPath = "/Account/AccessDenied";
-        o.SlidingExpiration = true;
-    });
+// Configurar cookie de Identity (sin registrar un esquema de cookie aparte)
+builder.Services.ConfigureApplicationCookie(o =>
+{
+    o.LoginPath = "/Account/Login";
+    o.AccessDeniedPath = "/Account/AccessDenied";
+    o.SlidingExpiration = true;
+});
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    // Política global: requiere usuario autenticado por defecto
+    var policy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+    options.Filters.Add(new AuthorizeFilter(policy));
+});
+
+// Servicios de tu app
 builder.Services.AddScoped<Scoreboard.Web.Servicios.Marcador.IMarcadorService, Scoreboard.Web.Servicios.Marcador.MarcadorService>();
 builder.Services.AddScoped<Scoreboard.Web.Servicios.IEstadisticasService, Scoreboard.Web.Servicios.EstadisticasService>();
 
-
 var app = builder.Build();
 
-// Solo en dev, evita forzar HTTPS si te da lío con certificados
+// HTTPS opcional en Dev (déjalo activo en Prod)
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
 }
+else
+{
+    // app.UseHttpsRedirection(); // si tus pruebas locales con HTTP simple fallan al redirigir, déjalo comentado
+}
 
-// Orden correcto del pipeline
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
@@ -58,5 +68,12 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Semilla solo en Desarrollo
+if (app.Environment.IsDevelopment())
+{
+    await Scoreboard.Web.Infra.IdentitySeeder.SeedAsync(app.Services);
+}
+
 
 app.Run();
