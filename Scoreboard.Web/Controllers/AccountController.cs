@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Scoreboard.Web.ViewModels;
 
 namespace Scoreboard.Web.Controllers
 {
@@ -20,24 +21,29 @@ namespace Scoreboard.Web.Controllers
         public IActionResult Login(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View(new LoginViewModel());
         }
 
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string usuario, string clave, bool recordar = false, string? returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel vm, string? returnUrl = null)
         {
-            var user = await _users.FindByNameAsync(usuario) ?? await _users.FindByEmailAsync(usuario);
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            var user = await _users.FindByEmailAsync(vm.Email) ?? await _users.FindByNameAsync(vm.Email);
             if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "Usuario no encontrado");
-                return View();
+                return View(vm);
             }
-            var r = await _signIn.PasswordSignInAsync(user, clave, recordar, lockoutOnFailure: false);
+            var r = await _signIn.PasswordSignInAsync(user, vm.Password, vm.RememberMe, lockoutOnFailure: false);
             if (r.Succeeded) return Redirect(returnUrl ?? Url.Action("Index", "Home")!);
             ModelState.AddModelError(string.Empty, "Credenciales inválidas");
-            return View();
+            return View(vm);
         }
 
         [AllowAnonymous]
@@ -45,29 +51,34 @@ namespace Scoreboard.Web.Controllers
         public IActionResult Register(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View(new RegisterViewModel());
         }
 
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(string usuario, string email, string clave, string? returnUrl = null)
+        public async Task<IActionResult> Register(RegisterViewModel vm, string? returnUrl = null)
         {
-            var exists = await _users.FindByNameAsync(usuario);
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            var exists = await _users.FindByEmailAsync(vm.Email);
             if (exists != null)
             {
                 ModelState.AddModelError(string.Empty, "El usuario ya existe");
-                return View();
+                return View(vm);
             }
-            var u = new IdentityUser { UserName = usuario, Email = email, EmailConfirmed = true };
-            var r = await _users.CreateAsync(u, clave);
+            var u = new IdentityUser { UserName = vm.Email, Email = vm.Email, EmailConfirmed = true, PhoneNumber = vm.Phone };
+            var r = await _users.CreateAsync(u, vm.Password);
             if (r.Succeeded)
             {
                 await _signIn.SignInAsync(u, isPersistent: false);
                 return Redirect(returnUrl ?? Url.Action("Index", "Home")!);
             }
             foreach (var e in r.Errors) ModelState.AddModelError(string.Empty, e.Description);
-            return View();
+            return View(vm);
         }
 
         [Authorize]
