@@ -1,29 +1,55 @@
+﻿@model Scoreboard.Web.ViewModels.LoginViewModel
 @{
-        ViewData["Title"] = "Iniciar sesión";
-        string? returnUrl = ViewData["ReturnUrl"] as string;
+    Layout = "_AuthLayout"; ViewData["Title"] = "Entrar"; var returnUrl = (string)(ViewData["ReturnUrl"] ?? "/");
 }
-<div class="container d-flex justify-content-center align-items-center" style="min-height:70vh;">
-    <div class="card p-4 shadow" style="width:360px;">
-        <h5 class="mb-3 text-center">Iniciar sesión</h5>
-        <form asp-action="Login" method="post">
-            <input type="hidden" name="returnUrl" value="@returnUrl" />
-            @Html.AntiForgeryToken()
-            <div class="mb-3">
-                <label class="form-label">Usuario o correo</label>
-                <input name="usuario" class="form-control" />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Clave</label>
-                <input name="clave" type="password" class="form-control" />
-            </div>
-            <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" name="recordar" id="rec">
-                <label class="form-check-label" for="rec">Recordarme</label>
-            </div>
-            <button class="btn btn-primary w-100" type="submit">Entrar</button>
-        </form>
-        <div class="text-center mt-3">
-            <a asp-action="Register" asp-route-returnUrl="@returnUrl">Crear cuenta</a>
-        </div>
-    </div>
+
+<div class="softball-brand mb-3">
+    <img src="~/img/ball.svg" alt="Softball" onerror="this.style.display='none'">
+    <h1 class="auth-title m-0">Softball-Scorer</h1>
 </div>
+<p class="auth-sub mb-4">Inicia sesión para continuar.</p>
+
+<form asp-action="Login" method="post" novalidate>
+    <input type="hidden" name="returnUrl" value="@returnUrl" />
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Correo</label>
+        <input asp-for="Email" class="form-control form-control-lg" placeholder="tu@correo.com" />
+        <span asp-validation-for="Email" class="text-danger small"></span>
+    </div>
+    <div class="mb-2">
+        <label asp-for="Password" class="form-label">Contraseña</label>
+        <input asp-for="Password" class="form-control form-control-lg" placeholder="Tu contraseña" />
+        <span asp-validation-for="Password" class="text-danger small"></span>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="form-check">
+            <input asp-for="RememberMe" class="form-check-input" />
+            <label asp-for="RememberMe" class="form-check-label">Mantenerme conectado</label>
+        </div>
+       
+    </div>
+    <button class="btn btn-primary btn-lg w-100 mb-3" type="submit">Entrar</button>
+</form>
+
+<!-- Mensaje de error ÚNICO en rojo (igual que ya lo tienes) -->
+@if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger mt-3" role="alert">
+        @ViewData.ModelState.Values.SelectMany(v => v.Errors).First().ErrorMessage
+    </div>
+}
+
+
+
+<!-- Bloque SIEMPRE visible para registro (estilo normal, no rojo) -->
+<div class="text-center mt-3">
+    <span class="text-muted">¿Aún no tienes cuenta?</span>
+    <a asp-controller="Account" asp-action="Register" class="ms-1">Crear una cuenta</a>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

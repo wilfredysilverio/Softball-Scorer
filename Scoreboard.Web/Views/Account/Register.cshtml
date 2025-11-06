@@ -1,33 +1,48 @@
+﻿@model Scoreboard.Web.ViewModels.RegisterViewModel
 @{
-    ViewData["Title"] = "Crear cuenta";
-    string? returnUrl = ViewData["ReturnUrl"] as string;
+    Layout = "_AuthLayout"; ViewData["Title"] = "Crear cuenta"; var returnUrl = (string)(ViewData["ReturnUrl"] ?? "/");
 }
-<div class="container d-flex justify-content-center align-items-center" style="min-height:70vh;">
-  <div class="card p-4 shadow" style="width:420px;">
-    <h5 class="mb-3 text-center">Crear cuenta</h5>
-    <form asp-action="Register" method="post">
-      @Html.AntiForgeryToken()
-      <input type="hidden" name="returnUrl" value="@returnUrl" />
-      <div class="mb-3">
-        <label class="form-label">Usuario</label>
-        <input name="usuario" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Correo</label>
-        <input name="email" type="email" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Clave</label>
-        <input name="password" type="password" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Confirmar clave</label>
-        <input name="confirmPassword" type="password" class="form-control" />
-      </div>
-      <button class="btn btn-success w-100" type="submit">Crear cuenta</button>
-    </form>
-    <div class="text-center mt-3">
-      <a asp-action="Login" asp-route-returnUrl="@returnUrl">Ya tengo una cuenta</a>
-    </div>
-  </div>
+
+<div class="softball-brand mb-3">
+    <img src="~/img/ball.svg" alt="Softball" onerror="this.style.display='none'">
+    <h1 class="auth-title m-0">Crear cuenta</h1>
 </div>
+<p class="auth-sub mb-4">Regístrate para usar Softball-Scorer.</p>
+
+<form asp-action="Register" method="post" novalidate>
+    <input type="hidden" name="returnUrl" value="@returnUrl" />
+    <div class="mb-3">
+        <label asp-for="FullName" class="form-label">Nombre completo</label>
+        <input asp-for="FullName" class="form-control form-control-lg" placeholder="Tu nombre y apellido" />
+        <span asp-validation-for="FullName" class="text-danger small"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label">Correo</label>
+        <input asp-for="Email" class="form-control form-control-lg" placeholder="tu@correo.com" />
+        <span asp-validation-for="Email" class="text-danger small"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Phone" class="form-label">Teléfono (opcional)</label>
+        <input asp-for="Phone" class="form-control form-control-lg" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label">Contraseña</label>
+        <input asp-for="Password" class="form-control form-control-lg" placeholder="Mínimo 8 caracteres" />
+        <span asp-validation-for="Password" class="text-danger small"></span>
+    </div>
+    <div class="mb-4">
+        <label asp-for="ConfirmPassword" class="form-label">Confirmar contraseña</label>
+        <input asp-for="ConfirmPassword" class="form-control form-control-lg" placeholder="Repite tu contraseña" />
+        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+    </div>
+    <button class="btn btn-success btn-lg w-100" type="submit">Crear cuenta</button>
+</form>
+
+<div class="text-center mt-3">
+    <span class="text-muted">¿Ya tienes cuenta?</span>
+    <a asp-action="Login" class="ms-1">Inicia sesión</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
