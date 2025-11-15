@@ -1,28 +1,25 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Scoreboard.Web.Modelos;
-using Scoreboard.Web.Models;
 
 namespace Scoreboard.Web.Datos
 {
-    // Ahora heredamos de IdentityDbContext para que EF cree las tablas de usuarios/roles
-    public class ContextoMarcador : IdentityDbContext<ApplicationUser>
+    public class ContextoMarcador : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
-        public ContextoMarcador(DbContextOptions<ContextoMarcador> opciones)
-            : base(opciones) { }
+        public ContextoMarcador(DbContextOptions<ContextoMarcador> opciones) : base(opciones) { }
 
-        // Tus tablas de dominio
         public DbSet<Equipo> Equipos { get; set; } = default!;
         public DbSet<Jugador> Jugadores { get; set; } = default!;
         public DbSet<Partido> Partidos { get; set; } = default!;
-    public DbSet<Scoreboard.Web.Modelos.PlayerBattingStat> PlayerBattingStats { get; set; } = default!;
+        public DbSet<PlayerBattingStat> PlayerBattingStats { get; set; } = default!;
+        public DbSet<Entrada> Entradas { get; set; } = default!;
+        public DbSet<PlayLog> PlayLogs { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // ¡IMPORTANTE! Deja que Identity configure sus tablas/relaciones
             base.OnModelCreating(modelBuilder);
 
-            // Relaciones propias del dominio (las que ya tenías)
             modelBuilder.Entity<Partido>()
                 .HasOne(p => p.EquipoCasa)
                 .WithMany()
@@ -39,12 +36,6 @@ namespace Scoreboard.Web.Datos
                 .HasOne(j => j.Equipo)
                 .WithMany()
                 .HasForeignKey(j => j.EquipoId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<PlayerBattingStat>()
-                .HasOne(p => p.Jugador)
-                .WithMany()
-                .HasForeignKey(p => p.JugadorId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

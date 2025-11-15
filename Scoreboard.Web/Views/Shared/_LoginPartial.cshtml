@@ -1,0 +1,18 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="d-flex align-items-center gap-2">
+        <span class="me-2">Hola, @User.Identity?.Name</span>
+        <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Salir</button>
+        </form>
+    </div>
+}
+else
+{
+    <a class="btn btn-outline-primary btn-sm" asp-controller="Account" asp-action="Login">Iniciar sesión</a>
+}

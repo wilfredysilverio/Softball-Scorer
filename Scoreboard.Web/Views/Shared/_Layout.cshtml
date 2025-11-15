@@ -11,9 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Softball-Scorer</title>
 
-    <!-- Bootstrap (ya lo tenías) -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <!-- Bootstrap Icons (para iconos del menú; opcional) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -123,7 +121,10 @@
 <body>
 
     <!-- ========== Sidebar izquierdo ========== -->
-    <aside id="sb" class="sidebar">
+    @{ var esCuenta = ViewContext.RouteData.Values["controller"]?.ToString() == "Account"; }
+    @if (!esCuenta)
+    {
+        <aside id="sb" class="sidebar">
         <div class="brand d-flex align-items-center justify-content-between">
             <a class="text-decoration-none text-white" asp-controller="Home" asp-action="Index">
                 <i class="bi bi-trophy-fill me-1"></i> Softball-Scorer
@@ -187,7 +188,8 @@
                 </button>
             </div>
         </nav>
-    </aside>
+        </aside>
+    }
 
     <!-- ========== Panel derecho (topbar + contenido) ========== -->
     <div class="app-main">
@@ -199,7 +201,7 @@
                 <span class="fw-semibold">@ViewData["Title"]</span>
             </div>
             <div class="d-none d-lg-flex align-items-center gap-2">
-                <!-- espacio para breadcrumbs, estado, usuario, etc. -->
+                @await Html.PartialAsync("_LoginPartial")
             </div>
         </header>
 
@@ -208,8 +210,7 @@
         </main>
 
         <footer class="border-top bg-white text-muted py-2 px-3 d-flex justify-content-between align-items-center">
-            <div>&copy; 2025 - Softball-Scorer by Wilfredi y Nowel.</div>
-            <div class="text-muted small">Demo funcional · Responsive · Bootstrap</div>
+            <!-- Pie de página: contenido eliminado según petición -->
         </footer>
     </div>
 

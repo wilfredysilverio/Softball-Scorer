@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema; // <— agrega esto
 
 namespace Scoreboard.Web.Modelos
 {
@@ -14,18 +13,19 @@ namespace Scoreboard.Web.Modelos
 
         public int CarrerasCasa { get; set; }
         public int CarrerasVisita { get; set; }
-
-        // Totales adicionales (ignorar por ahora para que no falle EF)
-        [NotMapped] public int HitsCasa { get; set; }
-        [NotMapped] public int HitsVisita { get; set; }
-        [NotMapped] public int ErroresCasa { get; set; }
-        [NotMapped] public int ErroresVisita { get; set; }
+        
+    // Totales adicionales
+    public int HitsCasa { get; set; }
+    public int HitsVisita { get; set; }
+    public int ErroresCasa { get; set; }
+    public int ErroresVisita { get; set; }
 
         public int EntradaActual { get; set; } = 1;
         public MitadEntrada Mitad { get; set; } = MitadEntrada.Alta;
         public int Outs { get; set; } = 0;
 
-        public EstadoPartido Estado { get; set; } = EstadoPartido.NoIniciado;
+    // Estado del partido (No iniciado / En curso / Suspendido / Finalizado)
+    public EstadoPartido Estado { get; set; } = EstadoPartido.NoIniciado;
 
         public bool B1 { get; set; } = false;
         public bool B2 { get; set; } = false;
@@ -33,8 +33,10 @@ namespace Scoreboard.Web.Modelos
 
         public Equipo? EquipoCasa { get; set; }
         public Equipo? EquipoVisita { get; set; }
-
+        
+        // Entradas por inning (lista de 1..9 generalmente)
         public List<Entrada> Entradas { get; set; } = new();
         public List<PlayerBattingStat> PlayerBattingStats { get; set; } = new();
     }
 }
+    

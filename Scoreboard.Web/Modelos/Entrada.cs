@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Scoreboard.Web.Modelos
 {
@@ -9,21 +9,19 @@ namespace Scoreboard.Web.Modelos
         [Required]
         public int PartidoId { get; set; }
 
-        // 1..9 (o más si hay extra innings)
-        [Range(1, 50)]
-        public int NumeroInning { get; set; } = 1;
+        // Numero del inning (1..9+)
+        public int NumeroInning { get; set; }
 
-        // Tablero por entrada
+        // Carreras anotadas por el equipo de casa y visita en esta entrada
         public int CarrerasCasa { get; set; }
         public int CarrerasVisita { get; set; }
 
-        // Totales por entrada (opcional, tus vistas los usan)
-        public int HitsCasa { get; set; }
-        public int HitsVisita { get; set; }
-        public int ErroresCasa { get; set; }
-        public int ErroresVisita { get; set; }
+    // Hits y errores por entrada (opcionales)
+    public int HitsCasa { get; set; }
+    public int HitsVisita { get; set; }
+    public int ErroresCasa { get; set; }
+    public int ErroresVisita { get; set; }
 
-        // Navegación
         public Partido? Partido { get; set; }
     }
 }

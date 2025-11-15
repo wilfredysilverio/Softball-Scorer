@@ -1,36 +1,27 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
 namespace Scoreboard.Web.Migrations
 {
-    /// <inheritdoc />
     public partial class AddEstadoPartido : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "Estado",
-                table: "Partidos",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
                 name: "PlayLogs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    PartidoId = table.Column<int>(type: "int", nullable: false),
-                    JugadorId = table.Column<int>(type: "int", nullable: false),
-                    Resultado = table.Column<int>(type: "int", nullable: false),
-                    RunsScored = table.Column<int>(type: "int", nullable: false),
-                    Fecha = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    SnapshotJson = table.Column<string>(type: "longtext", nullable: true)
+                    PartidoId = table.Column<int>(nullable: false),
+                    JugadorId = table.Column<int>(nullable: true),
+                    Resultado = table.Column<int>(nullable: true),
+                    RunsScored = table.Column<int>(nullable: false),
+                    Fecha = table.Column<DateTime>(nullable: false),
+                    SnapshotJson = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -51,15 +42,10 @@ namespace Scoreboard.Web.Migrations
                 column: "PartidoId");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "PlayLogs");
-
-            migrationBuilder.DropColumn(
-                name: "Estado",
-                table: "Partidos");
         }
     }
 }

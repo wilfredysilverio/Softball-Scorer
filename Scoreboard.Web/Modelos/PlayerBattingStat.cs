@@ -9,6 +9,7 @@ namespace Scoreboard.Web.Modelos
         public int JugadorId { get; set; }
         public Jugador? Jugador { get; set; }
         public int PartidoId { get; set; }
+        public Partido? Partido { get; set; }
         public DateTime Fecha { get; set; }
 
         // Bateo

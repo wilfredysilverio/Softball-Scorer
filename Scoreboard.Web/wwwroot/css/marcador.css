@@ -1,0 +1,12 @@
+/* Styles for live marcador UI */
+#bases-view { display:flex; gap:8px; align-items:center; }
+#bases-view .base { width:28px; height:28px; opacity:0.25; transition:opacity 300ms ease, transform 200ms ease; }
+#bases-view .base-on { opacity:1; transform: scale(1.05); fill:orange; }
+.flash { animation: flashbg 700ms ease; }
+@keyframes flashbg { from { background-color: rgba(255,255,0,0.7); } to { background-color: transparent; } }
+#outs-view { font-weight:700; }
+
+/* Small responsive adjustments */
+@media (max-width: 576px) {
+  #bases-view .base { width:22px; height:22px; }
+}

@@ -2,92 +2,78 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
-
 using Scoreboard.Web.Datos;
-
-using Scoreboard.Web.Models;
-using Scoreboard.Web.Servicios;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ===== DB MySQL (Pomelo) =====
-builder.Services.AddDbContext<ContextoMarcador>(opciones =>
+// DbContext
+builder.Services.AddDbContext<ContextoMarcador>(options =>
 {
-    var cadena = builder.Configuration.GetConnectionString("PorDefecto");
-    opciones.UseMySql(
-        cadena,
-        ServerVersion.AutoDetect(cadena),
-        my => my.EnableRetryOnFailure()
-    );
+    var cs = builder.Configuration.GetConnectionString("PorDefecto");
+    options.UseMySql(cs, ServerVersion.AutoDetect(cs));
 });
 
-// ===== Identity =====
-builder.Services.AddDefaultIdentity<ApplicationUser>(o =>
-{
-    o.SignIn.RequireConfirmedAccount = false;
-    o.Password.RequiredLength = 8;
-    o.Password.RequireNonAlphanumeric = false;
-    o.Password.RequireUppercase = false;
-    o.Password.RequireLowercase = false;
-    o.Password.RequireDigit = false;
-})
-.AddEntityFrameworkStores<ContextoMarcador>()
-.AddDefaultTokenProviders(); // opcional pero recomendado
+// Identity con roles y tokens
+builder.Services
+    .AddIdentity<IdentityUser, IdentityRole>(options =>
+    {
+        options.Password.RequireDigit = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequiredLength = 6;
+        options.User.RequireUniqueEmail = false;
+    })
+    .AddEntityFrameworkStores<ContextoMarcador>()
+    .AddDefaultTokenProviders();
 
-// Cookies: a dónde mandar si falta login
-builder.Services.ConfigureApplicationCookie(opt =>
+// Configurar cookie de Identity (sin registrar un esquema de cookie aparte)
+builder.Services.ConfigureApplicationCookie(o =>
 {
-    opt.LoginPath = "/Account/Login";
-    opt.AccessDeniedPath = "/Account/Login";
+    o.LoginPath = "/Account/Login";
+    o.AccessDeniedPath = "/Account/AccessDenied";
+    o.SlidingExpiration = true;
 });
 
-// Todo el sitio exige estar autenticado (el Login/Registro deben tener [AllowAnonymous])
 builder.Services.AddControllersWithViews(options =>
 {
+    // Política global: requiere usuario autenticado por defecto
     var policy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();
     options.Filters.Add(new AuthorizeFilter(policy));
 });
 
-// Servicios (si existen en tu solución)
-builder.Services.AddScoped<IEstadisticasService, EstadisticasService>();
-// builder.Services.AddScoped<IMarcadorService, MarcadorService>(); // si lo usas
+// Servicios de tu app
+builder.Services.AddScoped<Scoreboard.Web.Servicios.Marcador.IMarcadorService, Scoreboard.Web.Servicios.Marcador.MarcadorService>();
+builder.Services.AddScoped<Scoreboard.Web.Servicios.IEstadisticasService, Scoreboard.Web.Servicios.EstadisticasService>();
 
 var app = builder.Build();
 
+// HTTPS opcional en Dev (déjalo activo en Prod)
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Inicio/Error");
     app.UseHsts();
 }
-
-// Seed solo en dev (si tienes SeedData)
-if (app.Environment.IsDevelopment())
+else
 {
-    try
-    {
-        await Scoreboard.Web.Datos.SeedData.EnsureSeedDataAsync(app.Services);
-    }
-    catch (Exception ex)
-    {
-        app.Services.GetRequiredService<ILoggerFactory>()
-            .CreateLogger("Program")
-            .LogError(ex, "Error ejecutando seed de datos");
-    }
+    // app.UseHttpsRedirection(); // si tus pruebas locales con HTTP simple fallan al redirigir, déjalo comentado
 }
 
-// HTTPS + estáticos + auth
-app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-app.UseAuthentication();   // ✅ antes de UseAuthorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Semilla solo en Desarrollo
+if (app.Environment.IsDevelopment())
+{
+    await Scoreboard.Web.Infra.IdentitySeeder.SeedAsync(app.Services);
+}
+
 
 app.Run();

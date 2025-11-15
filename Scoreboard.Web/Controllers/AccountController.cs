@@ -1,113 +1,95 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Scoreboard.Web.Modelos;          // ✅ ApplicationUser vive aquí
-using Scoreboard.Web.Models;
 using Scoreboard.Web.ViewModels;
-using System.Threading.Tasks;
 
 namespace Scoreboard.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _users;
-        private readonly SignInManager<ApplicationUser> _signIn;
+        private readonly SignInManager<IdentityUser> _signIn;
+        private readonly UserManager<IdentityUser> _users;
 
-        public AccountController(UserManager<ApplicationUser> users, SignInManager<ApplicationUser> signIn)
+        public AccountController(SignInManager<IdentityUser> signIn, UserManager<IdentityUser> users)
         {
-            _users = users;
             _signIn = signIn;
+            _users = users;
         }
 
-        // Evita ReturnUrl hacia /Account/... para no crear loops
-        private string CleanReturn(string? returnUrl)
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Login(string? returnUrl = null)
         {
-            if (string.IsNullOrWhiteSpace(returnUrl)) return "/";
-            if (Url.IsLocalUrl(returnUrl) &&
-                !returnUrl.StartsWith("/Account", System.StringComparison.OrdinalIgnoreCase))
-                return returnUrl;
-            return "/";
-        }
-
-        // ===== REGISTER =====
-        [HttpGet, AllowAnonymous]
-        public IActionResult Register(string returnUrl = "/")
-        {
-            ViewData["ReturnUrl"] = CleanReturn(returnUrl);
-            return View(new RegisterViewModel());
-        }
-
-        [HttpPost, AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel m, string returnUrl = "/")
-        {
-            returnUrl = CleanReturn(returnUrl);
-            if (!ModelState.IsValid) return View(m);
-
-            var user = new ApplicationUser
-            {
-                UserName = m.Email,                // si usas email como username
-                Email = m.Email,
-                PhoneNumber = m.Phone,
-                FullName = m.FullName
-            };
-
-            var result = await _users.CreateAsync(user, m.Password);
-            if (result.Succeeded)
-            {
-                await _signIn.SignInAsync(user, isPersistent: true);
-                return LocalRedirect(returnUrl);
-            }
-
-            foreach (var e in result.Errors)
-                ModelState.AddModelError(string.Empty, e.Description);
-
-            return View(m);
-        }
-
-        // ===== LOGIN =====
-        [HttpGet, AllowAnonymous]
-        public IActionResult Login(string returnUrl = "/")
-        {
-            ViewData["ReturnUrl"] = CleanReturn(returnUrl);
+            ViewData["ReturnUrl"] = returnUrl;
             return View(new LoginViewModel());
         }
 
-        [HttpPost, AllowAnonymous]
+        [AllowAnonymous]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel m, string returnUrl = "/")
+        public async Task<IActionResult> Login(LoginViewModel vm, string? returnUrl = null)
         {
-            returnUrl = CleanReturn(returnUrl);
-            if (!ModelState.IsValid) return View(m);
-
-            // Buscar por email y firmar con el UserName real (por si no coincide con el email)
-            var user = await _users.FindByEmailAsync(m.Email);
-            if (user != null)
+            if (!ModelState.IsValid)
             {
-                var result = await _signIn.PasswordSignInAsync(user.UserName, m.Password, m.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                    return LocalRedirect(returnUrl);
-            }
-            else
-            {
-                // fallback: intentar con el email tal cual (si tu UserName es el email)
-                var result = await _signIn.PasswordSignInAsync(m.Email, m.Password, m.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                    return LocalRedirect(returnUrl);
+                return View(vm);
             }
 
-            ModelState.AddModelError(string.Empty, "Error: correo o contraseña incorrectos.");
-            return View(m);
+            var user = await _users.FindByEmailAsync(vm.Email) ?? await _users.FindByNameAsync(vm.Email);
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Usuario no encontrado");
+                return View(vm);
+            }
+            var r = await _signIn.PasswordSignInAsync(user, vm.Password, vm.RememberMe, lockoutOnFailure: false);
+            if (r.Succeeded) return Redirect(returnUrl ?? Url.Action("Index", "Home")!);
+            ModelState.AddModelError(string.Empty, "Credenciales inválidas");
+            return View(vm);
         }
 
-        // ===== LOGOUT =====
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Register(string? returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View(new RegisterViewModel());
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel vm, string? returnUrl = null)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            var exists = await _users.FindByEmailAsync(vm.Email);
+            if (exists != null)
+            {
+                ModelState.AddModelError(string.Empty, "El usuario ya existe");
+                return View(vm);
+            }
+            var u = new IdentityUser { UserName = vm.Email, Email = vm.Email, EmailConfirmed = true, PhoneNumber = vm.Phone };
+            var r = await _users.CreateAsync(u, vm.Password);
+            if (r.Succeeded)
+            {
+                await _signIn.SignInAsync(u, isPersistent: false);
+                return Redirect(returnUrl ?? Url.Action("Index", "Home")!);
+            }
+            foreach (var e in r.Errors) ModelState.AddModelError(string.Empty, e.Description);
+            return View(vm);
+        }
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signIn.SignOutAsync();
-            return RedirectToAction(nameof(Login));
+            return RedirectToAction("Login");
         }
+
+        public IActionResult AccesoDenegado() => View();
     }
 }

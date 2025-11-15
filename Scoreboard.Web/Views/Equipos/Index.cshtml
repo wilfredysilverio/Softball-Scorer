@@ -1,192 +1,45 @@
 ﻿@model IEnumerable<Scoreboard.Web.Modelos.Equipo>
-
-@{
+    @{
     ViewData["Title"] = "Equipos";
-    var q = (string?)Context.Request.Query["q"] ?? "";
-    var total = Model?.Count() ?? 0;
-}
-
-<div class="container-fluid py-4">
-
-    <!-- Encabezado -->
-    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
-        <div>
-            <h1 class="mb-1">Equipos</h1>
-            <div class="text-muted small">
-                Gestiona los equipos del torneo.
-                <span class="badge rounded-pill text-bg-light border ms-2">@total @(total == 1 ? "equipo" : "equipos")</span>
-            </div>
-        </div>
-
-        <div class="d-flex align-items-center gap-2">
-            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
-                <i class="bi bi-arrow-left"></i> Volver
-            </a>
-            <a asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-1"></i> Añadir equipo
-            </a>
-        </div>
-    </div>
-
-    <!-- Herramientas: búsqueda -->
-    <div class="mb-3">
-        <div class="input-group" style="max-width: 720px;">
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input id="txtBuscar"
-                   type="search"
-                   class="form-control"
-                   placeholder="Buscar por nombre o ciudad…"
-                   autocomplete="off"
-                   value="@q" />
-            <button id="btnLimpiar" class="btn btn-outline-secondary" type="button" title="Limpiar" style="display:@(string.IsNullOrWhiteSpace(q) ? "none" : "block")">
-                <i class="bi bi-x-lg"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- Tabla -->
-    <div class="table-responsive">
-        <table class="table align-middle" id="tablaEquipos">
-            <thead>
-                <tr>
-                    <th style="width:70px">ID</th>
-                    <th>Nombre</th>
-                    <th style="width:280px">Ciudad</th>
-                    <th style="width:140px" class="text-end">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var e in Model)
-                {
-                    <tr class="fila-equipo"
-                        data-id="@e.Id"
-                        data-nombre="@e.Nombre"
-                        data-ciudad="@e.Ciudad">
-                        <td>@e.Id</td>
-                        <td class="fw-semibold">@e.Nombre</td>
-                        <td>
-                            @if (!string.IsNullOrWhiteSpace(e.Ciudad))
-                            {
-                                <span class="badge rounded-pill text-bg-light border">@e.Ciudad</span>
-                            }
-                            else
-                            {
-                                <span class="text-muted">—</span>
-                            }
-                        </td>
-                        <td class="text-end">
-                            <a asp-action="Details" asp-route-id="@e.Id" class="btn btn-sm btn-outline-secondary me-1" title="Ver">
-                                <i class="bi bi-eye"></i>
-                            </a>
-                            <a asp-action="Edit" asp-route-id="@e.Id" class="btn btn-sm btn-outline-primary me-1" title="Editar">
-                                <i class="bi bi-pencil"></i>
-                            </a>
-                            <a asp-action="Delete" asp-route-id="@e.Id" class="btn btn-sm btn-outline-danger" title="Eliminar">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Resumen / sin resultados -->
-    <div class="d-flex align-items-center justify-content-between mt-2">
-        <div class="text-muted small" id="resumenContador">
-            @total @(total == 1 ? "equipo" : "equipos")
-        </div>
-    </div>
-
-    <div id="estadoVacio" class="text-center py-5" style="display:none;">
-        <div class="mb-2 fs-1">🔎</div>
-        <h5 class="mb-1">No encontramos equipos con ese filtro</h5>
-        <p class="text-muted mb-3">Prueba con otro nombre/ciudad o limpia la búsqueda.</p>
-        <div class="d-flex justify-content-center gap-2">
-            <button id="btnVaciar" class="btn btn-outline-secondary"><i class="bi bi-x-lg"></i> Limpiar</button>
-            <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Añadir equipo</a>
-        </div>
-    </div>
-</div>
-
-<style>
-    /* micro-mejora visual de filas clicables */
-    #tablaEquipos tbody tr.fila-equipo {
-        cursor: pointer;
     }
 
-        #tablaEquipos tbody tr.fila-equipo:hover {
-            background: rgba(13,110,253,.05);
-        }
-    /* evita que el click en los botones burbujee al click de la fila */
-    #tablaEquipos a.btn {
-        cursor: default;
+    <h1>Equipos</h1>
+    <p>
+        <a asp-controller="Home" asp-action="Index">← Volver al inicio</a> |
+        <a class="btn btn-primary" asp-action="Create">Crear equipo</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Ciudad</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var e in Model)
+    {
+            <tr class="fila-equipo" data-id="@e.Id" tabindex="0" role="button" aria-controls="acciones-equipo-@e.Id" aria-expanded="false">
+                <td>@e.Id</td>
+                <td>@e.Nombre</td>
+                <td>@e.Ciudad</td>
+                <td class="text-end small text-muted">
+                    <span class="toggle-caret" aria-hidden="true">▸</span>
+                    <span class="visually-hidden">Mostrar acciones</span>
+                </td>
+            </tr>
+            <tr class="collapse acciones-equipo" id="acciones-equipo-@e.Id">
+                <td colspan="4" class="py-3">
+                    <div class="d-flex gap-2 justify-content-end">
+                        <a asp-action="Estadisticas" asp-route-id="@e.Id" class="btn btn-outline-info btn-sm">Estadísticas</a>
+                        <a asp-action="Details" asp-route-id="@e.Id" class="btn btn-outline-secondary btn-sm">Detalles</a>
+                        <a asp-action="Edit" asp-route-id="@e.Id" class="btn btn-outline-primary btn-sm">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@e.Id" class="btn btn-outline-danger btn-sm" data-confirm="¿Eliminar equipo?">Eliminar</a>
+                    </div>
+                </td>
+            </tr>
     }
-</style>
-
-@section Scripts {
-    <script>
-        (function () {
-            const q = document.getElementById('txtBuscar');
-            const btnLimpiar = document.getElementById('btnLimpiar');
-            const filas = Array.from(document.querySelectorAll('#tablaEquipos tbody tr'));
-            const resumen = document.getElementById('resumenContador');
-            const vacio = document.getElementById('estadoVacio');
-
-            function actualizarUI(visibles) {
-                // contador
-                resumen.textContent = visibles + ' ' + (visibles === 1 ? 'equipo' : 'equipos');
-                // estado vacío
-                vacio.style.display = visibles === 0 ? 'block' : 'none';
-                // botón limpiar visible solo si hay término
-                const term = (q.value || '').trim();
-                btnLimpiar.style.display = term ? 'block' : 'none';
-            }
-
-            function filtrar() {
-                const term = (q.value || '').trim().toLowerCase();
-                let visibles = 0;
-
-                filas.forEach(tr => {
-                    const nombre = (tr.dataset.nombre || '').toLowerCase();
-                    const ciudad = (tr.dataset.ciudad || '').toLowerCase();
-                    const show = term === '' || nombre.includes(term) || ciudad.includes(term);
-                    tr.style.display = show ? '' : 'none';
-                    if (show) visibles++;
-                });
-
-                // actualiza URL sin recargar
-                const url = new URL(window.location);
-                if (term) url.searchParams.set('q', term); else url.searchParams.delete('q');
-                window.history.replaceState({}, '', url);
-
-                actualizarUI(visibles);
-            }
-
-            // debounce
-            let t;
-            q.addEventListener('input', () => {
-                clearTimeout(t);
-                t = setTimeout(filtrar, 180);
-            });
-
-            // limpiar
-            function limpiar() { q.value = ''; filtrar(); q.focus(); }
-            btnLimpiar.addEventListener('click', limpiar);
-            document.getElementById('btnVaciar')?.addEventListener('click', limpiar);
-
-            // Click en fila abre Detalles (pero NO si se clickea un botón dentro)
-            document.querySelector('#tablaEquipos tbody')?.addEventListener('click', (ev) => {
-                const target = ev.target;
-                if (target.closest('a.btn')) return; // deja que los botones hagan lo suyo
-                const tr = target.closest('tr.fila-equipo');
-                if (!tr) return;
-                const id = tr.dataset.id;
-                if (id) window.location.href = '@Url.Action("Details", "Equipos")/' + id;
-            });
-
-            // primer filtrado (si veníamos con ?q=)
-            filtrar();
-        })();
-    </script>
-}
+        </tbody>
+    </table>

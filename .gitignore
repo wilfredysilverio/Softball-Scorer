@@ -1,0 +1,9 @@
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.log
+arbol_proyecto.txt
+dotnet_info.txt
+paquetes_web.txt
