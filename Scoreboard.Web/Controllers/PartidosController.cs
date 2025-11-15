@@ -3,21 +3,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Scoreboard.Web.Datos;
 using Scoreboard.Web.Modelos;
-using Scoreboard.Web.Modelos.ViewModels;
-using Scoreboard.Web.Servicios;
-
-
 
 namespace Scoreboard.Web.Controllers
 {
     public class PartidosController : Controller
     {
         private readonly ContextoMarcador _db;
-        private readonly Scoreboard.Web.Servicios.Marcador.IMarcadorService _marcador;
-        public PartidosController(ContextoMarcador db, Scoreboard.Web.Servicios.Marcador.IMarcadorService marcador)
+
+        public PartidosController(ContextoMarcador db)
         {
             _db = db;
-            _marcador = marcador;
         }
 
         // Combos de equipos
@@ -31,14 +26,35 @@ namespace Scoreboard.Web.Controllers
         // LISTADO
         public async Task<IActionResult> Index()
         {
-            var lista = await _db.Partidos
-                .AsNoTracking()
-                .Include(p => p.EquipoCasa)
-                .Include(p => p.EquipoVisita)
-                .OrderByDescending(p => p.Fecha)
-                .ToListAsync();
-            return View(lista);
+            try
+            {
+                // Proyección “ligera”: solo campos seguros que ya existen.
+                var lista = await _db.Partidos
+                    .AsNoTracking()
+                    .OrderByDescending(p => p.Fecha)
+                    .Select(p => new Partido
+                    {
+                        Id = p.Id,
+                        Fecha = p.Fecha,
+                        EquipoCasaId = p.EquipoCasaId,
+                        EquipoVisitaId = p.EquipoVisitaId,
+                        CarrerasCasa = p.CarrerasCasa,
+                        CarrerasVisita = p.CarrerasVisita
+                        // OJO: no tocamos navegaciones para evitar joins que fallen
+                        // EquipoCasa / EquipoVisita quedarán null => la vista usa ?.Nombre
+                    })
+                    .ToListAsync();
+
+                return View(lista);
+            }
+            catch (Exception ex)
+            {
+                // Entrar “sí o sí”
+                TempData["Error"] = $"No se pudo cargar Partidos ({ex.GetType().Name}). Se muestra vacío.";
+                return View(new List<Partido>());
+            }
         }
+
 
         public IActionResult Create()
         {
@@ -149,7 +165,8 @@ namespace Scoreboard.Web.Controllers
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (partido is null) return NotFound();
-            // Cargar lista de jugadores del equipo que estÃ¡ bateando
+
+            // Jugadores del equipo que batea
             int equipoBateaId = partido.Mitad == MitadEntrada.Baja ? partido.EquipoCasaId : partido.EquipoVisitaId;
             var bateadores = await _db.Jugadores
                 .AsNoTracking()
@@ -160,11 +177,10 @@ namespace Scoreboard.Web.Controllers
             return View(partido);
         }
 
-        // POST: /Partidos/UpdateMarcador/5
+        // POST: /Partidos/UpdateMarcador/5  (sin servicio Marcador)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateMarcador(int id, List<Scoreboard.Web.Modelos.Entrada> entradas)
+        public async Task<IActionResult> UpdateMarcador(int id, List<Entrada> entradas)
         {
             var partido = await _db.Partidos
                 .Include(p => p.Entradas)
@@ -172,113 +188,40 @@ namespace Scoreboard.Web.Controllers
 
             if (partido is null) return NotFound();
 
-            // Replace existing entradas with submitted ones
+            // Reemplazar entradas
             var existentes = partido.Entradas.ToList();
             if (existentes.Any())
             {
-                _db.Entradas.RemoveRange(existentes);
+                _db.Set<Entrada>().RemoveRange(existentes);
             }
 
             if (entradas != null && entradas.Any())
             {
-                // Normalize and assign PartidoId
                 foreach (var e in entradas)
                 {
                     e.PartidoId = partido.Id;
-                    // Ensure inning number >=1
                     if (e.NumeroInning < 1) e.NumeroInning = 1;
-                    _db.Entradas.Add(e);
+                    _db.Set<Entrada>().Add(e);
                 }
             }
 
-            // Recalculate totals: carreras, hits y errores
+            // Recalcular totales
             var totCasa = entradas?.Sum(x => x.CarrerasCasa) ?? 0;
             var totVisita = entradas?.Sum(x => x.CarrerasVisita) ?? 0;
             var hitsCasa = entradas?.Sum(x => x.HitsCasa) ?? 0;
-            var hitsVisita = entradas?.Sum(x => x.HitsVisita) ?? 0;
+            var hitsVis = entradas?.Sum(x => x.HitsVisita) ?? 0;
             var errCasa = entradas?.Sum(x => x.ErroresCasa) ?? 0;
-            var errVisita = entradas?.Sum(x => x.ErroresVisita) ?? 0;
+            var errVis = entradas?.Sum(x => x.ErroresVisita) ?? 0;
 
             partido.CarrerasCasa = totCasa;
             partido.CarrerasVisita = totVisita;
             partido.HitsCasa = hitsCasa;
-            partido.HitsVisita = hitsVisita;
+            partido.HitsVisita = hitsVis;
             partido.ErroresCasa = errCasa;
-            partido.ErroresVisita = errVisita;
+            partido.ErroresVisita = errVis;
 
             await _db.SaveChangesAsync();
-
             return RedirectToAction(nameof(VerPartido), new { id = partido.Id });
-        }
-
-        // POST: /Partidos/Iniciar/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Iniciar(int id)
-        {
-            await _marcador.IniciarPartidoAsync(id);
-            return RedirectToAction(nameof(VerPartido), new { id });
-        }
-
-        // POST: /Partidos/Suspender/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Suspender(int id)
-        {
-            await _marcador.SuspenderPartidoAsync(id);
-            return RedirectToAction(nameof(VerPartido), new { id });
-        }
-
-        // POST: /Partidos/Reanudar/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Reanudar(int id)
-        {
-            await _marcador.ReanudarPartidoAsync(id);
-            return RedirectToAction(nameof(VerPartido), new { id });
-        }
-
-        // POST: /Partidos/Finalizar/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Finalizar(int id)
-        {
-            await _marcador.FinalizarPartidoAsync(id);
-            return RedirectToAction(nameof(VerPartido), new { id });
-        }
-
-        // POST: /Partidos/RegistrarTurno
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RegistrarTurno(int partidoId, int jugadorId, Scoreboard.Web.Modelos.ResultadoTurno resultado)
-        {
-            await _marcador.RegistrarTurnoAsync(partidoId, jugadorId, resultado);
-            return RedirectToAction(nameof(VerPartido), new { id = partidoId });
-        }
-
-        // POST: /Partidos/Deshacer
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Deshacer(int partidoId)
-        {
-            await _marcador.DeshacerUltimaJugadaAsync(partidoId);
-            return RedirectToAction(nameof(VerPartido), new { id = partidoId });
-        }
-
-        // POST: /Partidos/Rehacer
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Rehacer(int partidoId)
-        {
-            await _marcador.RehacerUltimaJugadaAsync(partidoId);
-            return RedirectToAction(nameof(VerPartido), new { id = partidoId });
         }
 
         // GET: /Partidos/MarcadorJson/5
@@ -294,7 +237,7 @@ namespace Scoreboard.Web.Controllers
 
             if (partido is null) return NotFound();
 
-            var entradas = partido.Entradas
+            var entradas = (partido.Entradas ?? new List<Entrada>())
                 .OrderBy(e => e.NumeroInning)
                 .Select(e => new
                 {
