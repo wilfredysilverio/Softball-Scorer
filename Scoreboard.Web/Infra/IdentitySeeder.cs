@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Scoreboard.Web.Models;
 
 namespace Scoreboard.Web.Infra
 {
@@ -8,7 +9,7 @@ namespace Scoreboard.Web.Infra
         {
             using var scope = sp.CreateScope();
             var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             var roleName = "Admin";
             if (!await roleMgr.RoleExistsAsync(roleName))
@@ -19,11 +20,12 @@ namespace Scoreboard.Web.Infra
             var user = await userMgr.FindByEmailAsync(email);
             if (user == null)
             {
-                user = new IdentityUser
+                user = new ApplicationUser
                 {
                     UserName = email,
                     Email = email,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    FullName = "Administrador del sistema"
                 };
                 var create = await userMgr.CreateAsync(user, "Softball!2025");
                 if (!create.Succeeded) throw new Exception("No se pudo crear el usuario admin");

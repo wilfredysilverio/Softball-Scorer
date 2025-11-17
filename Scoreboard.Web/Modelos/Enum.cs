@@ -52,11 +52,4 @@ namespace Scoreboard.Web.Modelos
         Utility = 11
     }
 
-    public enum EstadoPartido
-    {
-        NoIniciado = 0,
-        EnCurso = 1,
-        Suspendido = 2,
-        Finalizado = 3
-    }
 }

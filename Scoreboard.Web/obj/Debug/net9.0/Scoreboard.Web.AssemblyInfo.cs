@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Scoreboard.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+47892429e4373487ea3ceed28574919e1acd6331")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c1ee3926b3ef9c63fb0647230ff4b92425f2b641")]
 [assembly: System.Reflection.AssemblyProductAttribute("Scoreboard.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Scoreboard.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

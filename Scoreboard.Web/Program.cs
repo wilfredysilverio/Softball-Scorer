@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Scoreboard.Web.Datos;
+using Scoreboard.Web.Models; // <-- AQUÍ: Models (donde está ApplicationUser)
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,7 @@ builder.Services.AddDbContext<ContextoMarcador>(options =>
 
 // Identity con roles y tokens
 builder.Services
-    .AddIdentity<IdentityUser, IdentityRole>(options =>
+    .AddIdentity<ApplicationUser, IdentityRole>(options =>
     {
         options.Password.RequireDigit = false;
         options.Password.RequireLowercase = false;
@@ -35,9 +36,9 @@ builder.Services.ConfigureApplicationCookie(o =>
     o.SlidingExpiration = true;
 });
 
+// MVC con política global: requiere usuario autenticado por defecto
 builder.Services.AddControllersWithViews(options =>
 {
-    // Política global: requiere usuario autenticado por defecto
     var policy = new AuthorizationPolicyBuilder()
         .RequireAuthenticatedUser()
         .Build();
@@ -45,8 +46,10 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 // Servicios de tu app
-builder.Services.AddScoped<Scoreboard.Web.Servicios.Marcador.IMarcadorService, Scoreboard.Web.Servicios.Marcador.MarcadorService>();
-builder.Services.AddScoped<Scoreboard.Web.Servicios.IEstadisticasService, Scoreboard.Web.Servicios.EstadisticasService>();
+builder.Services.AddScoped<Scoreboard.Web.Servicios.Marcador.IMarcadorService,
+                           Scoreboard.Web.Servicios.Marcador.MarcadorService>();
+builder.Services.AddScoped<Scoreboard.Web.Servicios.IEstadisticasService,
+                           Scoreboard.Web.Servicios.EstadisticasService>();
 
 var app = builder.Build();
 
@@ -57,7 +60,7 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
-    // app.UseHttpsRedirection(); // si tus pruebas locales con HTTP simple fallan al redirigir, déjalo comentado
+    // app.UseHttpsRedirection(); // si te da lío en local, lo dejas comentado
 }
 
 app.UseStaticFiles();
@@ -74,6 +77,5 @@ if (app.Environment.IsDevelopment())
 {
     await Scoreboard.Web.Infra.IdentitySeeder.SeedAsync(app.Services);
 }
-
 
 app.Run();

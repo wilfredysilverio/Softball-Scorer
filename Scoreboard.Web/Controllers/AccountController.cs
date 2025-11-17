@@ -1,16 +1,18 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Scoreboard.Web.Models;       // <-- AQUÍ: donde está ApplicationUser
 using Scoreboard.Web.ViewModels;
 
 namespace Scoreboard.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signIn;
-        private readonly UserManager<IdentityUser> _users;
+        private readonly SignInManager<ApplicationUser> _signIn;
+        private readonly UserManager<ApplicationUser> _users;
 
-        public AccountController(SignInManager<IdentityUser> signIn, UserManager<IdentityUser> users)
+        public AccountController(SignInManager<ApplicationUser> signIn,
+                                 UserManager<ApplicationUser> users)
         {
             _signIn = signIn;
             _users = users;
@@ -34,14 +36,21 @@ namespace Scoreboard.Web.Controllers
                 return View(vm);
             }
 
-            var user = await _users.FindByEmailAsync(vm.Email) ?? await _users.FindByNameAsync(vm.Email);
+            var user = await _users.FindByEmailAsync(vm.Email)
+                       ?? await _users.FindByNameAsync(vm.Email);
+
             if (user == null)
             {
                 ModelState.AddModelError(string.Empty, "Usuario no encontrado");
                 return View(vm);
             }
-            var r = await _signIn.PasswordSignInAsync(user, vm.Password, vm.RememberMe, lockoutOnFailure: false);
-            if (r.Succeeded) return Redirect(returnUrl ?? Url.Action("Index", "Home")!);
+
+            var r = await _signIn.PasswordSignInAsync(
+                user, vm.Password, vm.RememberMe, lockoutOnFailure: false);
+
+            if (r.Succeeded)
+                return Redirect(returnUrl ?? Url.Action("Index", "Home")!);
+
             ModelState.AddModelError(string.Empty, "Credenciales inválidas");
             return View(vm);
         }
@@ -70,14 +79,27 @@ namespace Scoreboard.Web.Controllers
                 ModelState.AddModelError(string.Empty, "El usuario ya existe");
                 return View(vm);
             }
-            var u = new IdentityUser { UserName = vm.Email, Email = vm.Email, EmailConfirmed = true, PhoneNumber = vm.Phone };
+
+            // Usamos ApplicationUser y le damos un FullName (obligatorio en la BD)
+            var u = new ApplicationUser
+            {
+                UserName = vm.Email,
+                Email = vm.Email,
+                EmailConfirmed = true,
+                PhoneNumber = vm.Phone,
+                FullName = vm.Email // si tu VM tiene Nombre/FullName, luego lo cambiamos
+            };
+
             var r = await _users.CreateAsync(u, vm.Password);
             if (r.Succeeded)
             {
                 await _signIn.SignInAsync(u, isPersistent: false);
                 return Redirect(returnUrl ?? Url.Action("Index", "Home")!);
             }
-            foreach (var e in r.Errors) ModelState.AddModelError(string.Empty, e.Description);
+
+            foreach (var e in r.Errors)
+                ModelState.AddModelError(string.Empty, e.Description);
+
             return View(vm);
         }
 
@@ -90,6 +112,13 @@ namespace Scoreboard.Web.Controllers
             return RedirectToAction("Login");
         }
 
-        public IActionResult AccesoDenegado() => View();
+        // Esta acción la hacemos coincidir con la ruta configurada en Program.cs: /Account/AccessDenied
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            // Si ya tienes una vista llamada AccesoDenegado.cshtml puedes usar:
+            // return View("AccesoDenegado");
+            return View();
+        }
     }
 }
