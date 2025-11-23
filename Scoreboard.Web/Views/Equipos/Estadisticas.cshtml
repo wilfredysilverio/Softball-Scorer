@@ -52,6 +52,45 @@
         </div>
     </div>
 
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-2">
+            <div class="card text-center p-3 shadow-sm">
+                <div class="text-muted small">PA</div>
+                <div class="h4 mt-2">@Model.PA</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="card text-center p-3 shadow-sm">
+                <div class="text-muted small">BB</div>
+                <div class="h4 mt-2">@Model.BB</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="card text-center p-3 shadow-sm">
+                <div class="text-muted small">SO</div>
+                <div class="h4 mt-2">@Model.SO</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="card text-center p-3 shadow-sm">
+                <div class="text-muted small">OBP</div>
+                <div class="h4 mt-2">@((Model.PA > 0) ? Model.OBP.ToString("0.000") : "-.---")</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="card text-center p-3 shadow-sm">
+                <div class="text-muted small">SLG</div>
+                <div class="h4 mt-2">@((Model.AB > 0) ? Model.SLG.ToString("0.000") : "-.---")</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-2">
+            <div class="card text-center p-3 shadow-sm">
+                <div class="text-muted small">OPS</div>
+                <div class="h4 mt-2">@((Model.PA > 0) ? Model.OPS.ToString("0.000") : "-.---")</div>
+            </div>
+        </div>
+    </div>
+
     <div class="card">
         <div class="card-body">
             <h5>Tabla de bateo</h5>
@@ -73,9 +112,11 @@
                             <th>RBI</th>
                             <th>BB</th>
                             <th>SO</th>
+                            <th>PA</th>
                             <th>AVG</th>
                             <th>OBP</th>
                             <th>SLG</th>
+                            <th>OPS</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,16 +136,18 @@
                                     <td>@linea.RBI</td>
                                     <td>@linea.BB</td>
                                     <td>@linea.SO</td>
+                                    <td>@linea.PA</td>
                                     <td>@(linea.AVG.ToString("0.000"))</td>
                                     <td>@(linea.OBP.ToString("0.000"))</td>
                                     <td>@(linea.SLG.ToString("0.000"))</td>
+                                    <td>@(linea.OPS.ToString("0.000"))</td>
                                 </tr>
                             }
                         }
                         else
                         {
                             <tr>
-                                <td colspan="14" class="text-center text-muted">No hay datos de bateo para este equipo.</td>
+                                <td colspan="16" class="text-center text-muted">No hay datos de bateo para este equipo.</td>
                             </tr>
                         }
                     </tbody>
@@ -112,6 +155,69 @@
             </div>
         </div>
     </div>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Detalle por jugador</h5>
+                    <small class="text-muted">Ordenado por OPS</small>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-sm align-middle">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Jugador</th>
+                                <th>AB</th>
+                                <th>H</th>
+                                <th>HR</th>
+                                <th>RBI</th>
+                                <th>BB</th>
+                                <th>SO</th>
+                                <th>PA</th>
+                                <th>AVG</th>
+                                <th>OBP</th>
+                                <th>SLG</th>
+                                <th>OPS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.JugadoresDetalle != null && Model.JugadoresDetalle.Any())
+                            {
+                                foreach (var jugador in Model.JugadoresDetalle)
+                                {
+                                    <tr>
+                                        <td>@(jugador.Numero == 0 ? "–" : jugador.Numero.ToString())</td>
+                                        <td>
+                                            <a asp-controller="Jugadores" asp-action="Estadisticas" asp-route-id="@jugador.JugadorId" class="text-decoration-none">
+                                                @jugador.Nombre
+                                            </a>
+                                        </td>
+                                        <td>@jugador.AB</td>
+                                        <td>@jugador.H</td>
+                                        <td>@jugador.HR</td>
+                                        <td>@jugador.RBI</td>
+                                        <td>@jugador.BB</td>
+                                        <td>@jugador.SO</td>
+                                        <td>@jugador.PA</td>
+                                        <td>@jugador.AVG.ToString("0.000")</td>
+                                        <td>@jugador.OBP.ToString("0.000")</td>
+                                        <td>@jugador.SLG.ToString("0.000")</td>
+                                        <td>@jugador.OPS.ToString("0.000")</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="13" class="text-center text-muted">Sin jugadores con estadísticas registradas.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 </div>
 
 @section Scripts {

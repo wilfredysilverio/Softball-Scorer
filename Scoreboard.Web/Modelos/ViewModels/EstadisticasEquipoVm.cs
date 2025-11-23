@@ -16,10 +16,14 @@ namespace Scoreboard.Web.Modelos.ViewModels
         public int SO { get; set; }
         public int HBP { get; set; }
         public int SF { get; set; }
+        public int SH { get; set; }
+        public int PA { get; set; }
         public decimal AVG { get; set; }
         public decimal OBP { get; set; }
         public decimal SLG { get; set; }
+        public decimal OPS { get; set; }
         public List<LineaTemporadaVm> Lineas { get; set; } = new();
+        public List<JugadorLineaResumenVm> JugadoresDetalle { get; set; } = new();
 
         // Compatibilidad con vistas existentes
         public int Turnos { get => AB; set => AB = value; }

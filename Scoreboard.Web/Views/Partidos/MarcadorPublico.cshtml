@@ -1,0 +1,268 @@
+@model Scoreboard.Web.Modelos.ViewModels.MarcadorPublicoVm
+@using System.Globalization
+@{
+    ViewData["Title"] = "Marcador público";
+    var partido = Model.Partido;
+    var entradas = Model.Entradas ?? new List<Scoreboard.Web.Modelos.Entrada>();
+    var maxInnings = Math.Max(9, Math.Max(partido.EntradaActual, entradas.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max()));
+    decimal SafeDiv(int numerator, int denominator) => denominator == 0 ? 0m : Math.Round((decimal)numerator / denominator, 3, MidpointRounding.AwayFromZero);
+}
+<div class="container py-3">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="mb-0">@partido.EquipoVisita?.Nombre @partido.CarrerasVisita - @partido.CarrerasCasa @partido.EquipoCasa?.Nombre</h2>
+        <span class="badge bg-secondary">Fecha: @partido.Fecha.ToString("yyyy-MM-dd")</span>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Marcador por entradas</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm align-middle" id="tabla-entradas">
+                    <thead>
+                        <tr>
+                            <th>Equipo</th>
+                            @for (int i = 1; i <= maxInnings; i++)
+                            {
+                                <th class="text-center" data-inning="@i">@i</th>
+                            }
+                            <th class="text-center">C</th>
+                            <th class="text-center">H</th>
+                            <th class="text-center">E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="fila-visita">
+                            <td class="fw-semibold">@partido.EquipoVisita?.Nombre</td>
+                            @for (int i = 1; i <= maxInnings; i++)
+                            {
+                                var entrada = entradas.FirstOrDefault(e => e.NumeroInning == i);
+                                var r = (entrada?.CarrerasVisita) ?? 0;
+                                <td class="text-center" data-side="V" data-inning="@i">
+                                    <div class="r fw-semibold">@r</div>
+                                </td>
+                            }
+                            <td class="text-center" id="totCarrerasVisita">@partido.CarrerasVisita</td>
+                            <td class="text-center" id="totHitsVisita">@partido.HitsVisita</td>
+                            <td class="text-center" id="totErroresVisita">@partido.ErroresVisita</td>
+                        </tr>
+                        <tr id="fila-casa">
+                            <td class="fw-semibold">@partido.EquipoCasa?.Nombre</td>
+                            @for (int i = 1; i <= maxInnings; i++)
+                            {
+                                var entrada = entradas.FirstOrDefault(e => e.NumeroInning == i);
+                                var r = (entrada?.CarrerasCasa) ?? 0;
+                                <td class="text-center" data-side="C" data-inning="@i">
+                                    <div class="r fw-semibold">@r</div>
+                                </td>
+                            }
+                            <td class="text-center" id="totCarrerasCasa">@partido.CarrerasCasa</td>
+                            <td class="text-center" id="totHitsCasa">@partido.HitsCasa</td>
+                            <td class="text-center" id="totErroresCasa">@partido.ErroresCasa</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex gap-3 mt-3">
+                <div>Entrada: <span id="entradaActual">@partido.EntradaActual</span> <span id="mitadActual">(@partido.Mitad)</span></div>
+                <div>Outs: <span id="outsActuales">@partido.Outs</span></div>
+                <div class="d-flex align-items-center gap-2">
+                    <span id="base1" class="base @(partido.B1 ? "activa" : string.Empty)"></span>
+                    <span id="base2" class="base @(partido.B2 ? "activa" : string.Empty)"></span>
+                    <span id="base3" class="base @(partido.B3 ? "activa" : string.Empty)"></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">Box Score</div>
+        <div class="card-body">
+            @if (!(partido.PlayerBattingStats?.Any() ?? false))
+            {
+                <div class="text-muted">Aún no hay estadísticas registradas.</div>
+            }
+            else
+            {
+                var grupos = partido.PlayerBattingStats
+                    .GroupBy(s => s.JugadorId)
+                    .Select(g => new
+                    {
+                        Jugador = g.First().Jugador,
+                        EquipoId = g.First().EquipoId,
+                        AB = g.Sum(x => x.AB),
+                        H = g.Sum(x => x.H),
+                        R = g.Sum(x => x.R),
+                        RBI = g.Sum(x => x.RBI),
+                        BB = g.Sum(x => x.BB),
+                        SO = g.Sum(x => x.SO),
+                        HBP = g.Sum(x => x.HBP),
+                        SF = g.Sum(x => x.SF),
+                        Doubles = g.Sum(x => x.Doubles),
+                        Triples = g.Sum(x => x.Triples),
+                        HR = g.Sum(x => x.HR)
+                    })
+                    .ToList();
+
+                var equipos = new[]
+                {
+                    new { Titulo = partido.EquipoVisita?.Nombre ?? "Visita", Id = partido.EquipoVisitaId },
+                    new { Titulo = partido.EquipoCasa?.Nombre ?? "Casa", Id = partido.EquipoCasaId }
+                };
+
+                foreach (var equipo in equipos)
+                {
+                    var jugadores = grupos
+                        .Where(g => g.EquipoId == equipo.Id)
+                        .OrderBy(g => g.Jugador?.Nombre)
+                        .ThenBy(g => g.Jugador?.Apellido)
+                        .ToList();
+
+                    if (!jugadores.Any())
+                    {
+                        <div class="text-muted mb-3">No hay datos para @equipo.Titulo.</div>;
+                        continue;
+                    }
+
+                    <div class="table-responsive mb-4">
+                        <h6 class="fw-semibold">@equipo.Titulo</h6>
+                        <table class="table table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Jugador</th>
+                                    <th>Pos</th>
+                                    <th>AB</th>
+                                    <th>H</th>
+                                    <th>R</th>
+                                    <th>RBI</th>
+                                    <th>BB</th>
+                                    <th>SO</th>
+                                    <th>OBP</th>
+                                    <th>SLG</th>
+                                    <th>AVG</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var jugador in jugadores)
+                                {
+                                    var obp = SafeDiv(jugador.H + jugador.BB + jugador.HBP, jugador.AB + jugador.BB + jugador.HBP + jugador.SF);
+                                    var totalBases = (jugador.H - jugador.Doubles - jugador.Triples - jugador.HR) + (2 * jugador.Doubles) + (3 * jugador.Triples) + (4 * jugador.HR);
+                                    var slg = SafeDiv(totalBases, jugador.AB);
+                                    var avg = SafeDiv(jugador.H, jugador.AB);
+                                    <tr>
+                                        <td>@(jugador.Jugador == null ? "" : $"{jugador.Jugador.Nombre} {jugador.Jugador.Apellido}")</td>
+                                        <td>@jugador.Jugador?.Posicion</td>
+                                        <td>@jugador.AB</td>
+                                        <td>@jugador.H</td>
+                                        <td>@jugador.R</td>
+                                        <td>@jugador.RBI</td>
+                                        <td>@jugador.BB</td>
+                                        <td>@jugador.SO</td>
+                                        <td>@obp.ToString("0.000", CultureInfo.InvariantCulture)</td>
+                                        <td>@slg.ToString("0.000", CultureInfo.InvariantCulture)</td>
+                                        <td>@avg.ToString("0.000", CultureInfo.InvariantCulture)</td>
+                                    </tr>
+                                }
+                                @{ 
+                                    var totalAb = jugadores.Sum(g => g.AB);
+                                    var totalH = jugadores.Sum(g => g.H);
+                                    var totalR = jugadores.Sum(g => g.R);
+                                    var totalRbi = jugadores.Sum(g => g.RBI);
+                                    var totalBb = jugadores.Sum(g => g.BB);
+                                    var totalSo = jugadores.Sum(g => g.SO);
+                                    var totalHbp = jugadores.Sum(g => g.HBP);
+                                    var totalSf = jugadores.Sum(g => g.SF);
+                                    var totalDobles = jugadores.Sum(g => g.Doubles);
+                                    var totalTriples = jugadores.Sum(g => g.Triples);
+                                    var totalHr = jugadores.Sum(g => g.HR);
+                                    var totObp = SafeDiv(totalH + totalBb + totalHbp, totalAb + totalBb + totalHbp + totalSf);
+                                    var totBases = (totalH - totalDobles - totalTriples - totalHr) + (2 * totalDobles) + (3 * totalTriples) + (4 * totalHr);
+                                    var totSlg = SafeDiv(totBases, totalAb);
+                                    var totAvg = SafeDiv(totalH, totalAb);
+                                <tr class="fw-semibold">
+                                    <td>Totales</td>
+                                    <td>-</td>
+                                    <td>@totalAb</td>
+                                    <td>@totalH</td>
+                                    <td>@totalR</td>
+                                    <td>@totalRbi</td>
+                                    <td>@totalBb</td>
+                                    <td>@totalSo</td>
+                                    <td>@totObp.ToString("0.000", CultureInfo.InvariantCulture)</td>
+                                    <td>@totSlg.ToString("0.000", CultureInfo.InvariantCulture)</td>
+                                    <td>@totAvg.ToString("0.000", CultureInfo.InvariantCulture)</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-header">Play-by-Play (últimas 5 jugadas)</div>
+        <div class="card-body">
+            @if (!(Model.UltimasJugadas?.Any() ?? false))
+            {
+                <div class="text-muted">Aún no se registran jugadas.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Entrada</th>
+                                <th>Mitad</th>
+                                <th>Bateador</th>
+                                <th>Resultado</th>
+                                <th>Bases</th>
+                                <th>Outs</th>
+                                <th>Carreras</th>
+                                <th>Tiempo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var jugada in Model.UltimasJugadas)
+                            {
+                                <tr>
+                                    <td>@jugada.EntradaContext</td>
+                                    <td>@jugada.MitadContext</td>
+                                    <td>@(jugada.Jugador == null ? string.Empty : $"{jugada.Jugador.Nombre} {jugada.Jugador.Apellido}")</td>
+                                    <td>@jugada.Resultado</td>
+                                    <td>@jugada.BasesAfter</td>
+                                    <td>@jugada.OutsAfter</td>
+                                    <td>@jugada.RunsScored</td>
+                                    <td>@jugada.CreadoUtc.ToString("HH:mm:ss")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-action="Details" asp-route-id="@partido.Id" class="btn btn-outline-dark">Volver</a>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        .base { width:14px; height:14px; display:inline-block; border:1px solid #333; transform: rotate(45deg); }
+        .base.activa { background-color:#28a745; }
+        .flash { animation: flash 0.8s linear 1; }
+        @@keyframes flash { 0% { background:#fff3cd; } 100% { background:transparent; } }
+    </style>
+    <script>
+        window.marcadorConfig = {
+            partidoId: @partido.Id,
+            marcadorJsonUrl: '@Url.Action("MarcadorJson","Partidos")'
+        };
+    </script>
+    <!-- SignalR y marcador.js ya incluidos globalmente en _Layout -->
+}

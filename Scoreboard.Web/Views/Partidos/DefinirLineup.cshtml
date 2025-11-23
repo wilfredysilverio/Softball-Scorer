@@ -1,0 +1,73 @@
+@model Scoreboard.Web.Modelos.Partido
+@{
+    ViewData["Title"] = "Definir lineup";
+    var jugadoresCasa = ViewBag.JugadoresCasa as IEnumerable<Scoreboard.Web.Modelos.Jugador> ?? Enumerable.Empty<Scoreboard.Web.Modelos.Jugador>();
+    var jugadoresVisita = ViewBag.JugadoresVisita as IEnumerable<Scoreboard.Web.Modelos.Jugador> ?? Enumerable.Empty<Scoreboard.Web.Modelos.Jugador>();
+    var lineupCasa = ViewBag.LineupCasa as IEnumerable<Scoreboard.Web.Modelos.LineupItem> ?? Enumerable.Empty<Scoreboard.Web.Modelos.LineupItem>();
+    var lineupVisita = ViewBag.LineupVisita as IEnumerable<Scoreboard.Web.Modelos.LineupItem> ?? Enumerable.Empty<Scoreboard.Web.Modelos.LineupItem>();
+}
+
+<div class="container py-3">
+    <h2>Definir lineup — Partido #@Model.Id</h2>
+    <div class="row g-3">
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-header">@Model.EquipoVisita?.Nombre (Visitante)</div>
+                <div class="card-body">
+                    <form asp-action="GuardarLineupVisitante" asp-controller="Partidos" method="post" class="d-grid gap-2">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        @for (int i = 1; i <= 9; i++)
+                        {
+                            var sel = lineupVisita.FirstOrDefault(l => l.Orden == i)?.JugadorId ?? 0;
+                            <div>
+                                <label class="form-label">@i</label>
+                                <select class="form-select" name="visitaJugadores">
+                                    <option value="0">-- Seleccionar --</option>
+                                    @foreach (var j in jugadoresVisita)
+                                    {
+                                        <option value="@j.Id" selected="@(sel == j.Id)">@j.Nombre @j.Apellido (@j.NumeroUniforme)</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                        <div class="d-grid mt-2">
+                            <button type="submit" class="btn btn-primary">Guardar lineup visitante</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-header">@Model.EquipoCasa?.Nombre (Casa)</div>
+                <div class="card-body">
+                    <form asp-action="GuardarLineupCasa" asp-controller="Partidos" method="post" class="d-grid gap-2">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        @for (int i = 1; i <= 9; i++)
+                        {
+                            var sel = lineupCasa.FirstOrDefault(l => l.Orden == i)?.JugadorId ?? 0;
+                            <div>
+                                <label class="form-label">@i</label>
+                                <select class="form-select" name="casaJugadores">
+                                    <option value="0">-- Seleccionar --</option>
+                                    @foreach (var j in jugadoresCasa)
+                                    {
+                                        <option value="@j.Id" selected="@(sel == j.Id)">@j.Nombre @j.Apellido (@j.NumeroUniforme)</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                        <div class="d-grid mt-2">
+                            <button type="submit" class="btn btn-primary">Guardar lineup casa</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-3">
+        <a asp-action="VerPartido" asp-route-id="@Model.Id" class="btn btn-outline-dark">Volver</a>
+    </div>
+</div>

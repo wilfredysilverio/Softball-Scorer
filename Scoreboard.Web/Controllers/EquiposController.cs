@@ -16,7 +16,8 @@ namespace Scoreboard.Web.Controllers
         }
 
         // GET: /Equipos
-        public async Task<IActionResult> Index()
+    [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+    public async Task<IActionResult> Index()
         {
             var lista = await _db.Equipos
                                  .OrderBy(e => e.Nombre)
@@ -25,7 +26,8 @@ namespace Scoreboard.Web.Controllers
         }
 
         // GET: /Equipos/Estadisticas/5
-        public async Task<IActionResult> Estadisticas(int id)
+    [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+    public async Task<IActionResult> Estadisticas(int id)
         {
             // Usar el servicio de estadísticas para obtener los datos del equipo
             var service = HttpContext.RequestServices.GetService(typeof(Scoreboard.Web.Servicios.IEstadisticasService)) as Scoreboard.Web.Servicios.IEstadisticasService;
@@ -37,7 +39,8 @@ namespace Scoreboard.Web.Controllers
         }
 
         // GET: /Equipos/Details/5
-        public async Task<IActionResult> Details(int id)
+    [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+    public async Task<IActionResult> Details(int id)
         {
             // Consulta de sólo lectura: usar AsNoTracking para evitar seguimiento del contexto
             // y reducir la sobrecarga cuando sólo mostramos detalles.
@@ -49,7 +52,8 @@ namespace Scoreboard.Web.Controllers
         }
 
         // GET: /Equipos/Create
-        public IActionResult Create()
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public IActionResult Create()
         {
             return View(new Equipo());
         }
@@ -57,7 +61,8 @@ namespace Scoreboard.Web.Controllers
         // POST: /Equipos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Equipo equipo)
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Create(Equipo equipo)
         {
             if (!ModelState.IsValid) return View(equipo);
 
@@ -67,7 +72,8 @@ namespace Scoreboard.Web.Controllers
         }
 
         // GET: /Equipos/Edit/5
-        public async Task<IActionResult> Edit(int id)
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Edit(int id)
         {
             var equipo = await _db.Equipos.FindAsync(id);
             if (equipo == null) return NotFound();
@@ -77,7 +83,8 @@ namespace Scoreboard.Web.Controllers
         // POST: /Equipos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Equipo equipo)
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Edit(int id, Equipo equipo)
         {
             if (id != equipo.Id) return BadRequest();
             if (!ModelState.IsValid) return View(equipo);
@@ -97,7 +104,8 @@ namespace Scoreboard.Web.Controllers
         }
 
         // GET: /Equipos/Delete/5
-        public async Task<IActionResult> Delete(int id)
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(int id)
         {
             var equipo = await _db.Equipos.FindAsync(id);
             if (equipo == null) return NotFound();
@@ -107,7 +115,8 @@ namespace Scoreboard.Web.Controllers
         // POST: /Equipos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var equipo = await _db.Equipos.FindAsync(id);
             if (equipo != null)

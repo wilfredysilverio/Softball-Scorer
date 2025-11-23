@@ -37,6 +37,14 @@ namespace Scoreboard.Web.Modelos
         // Entradas por inning (lista de 1..9 generalmente)
         public List<Entrada> Entradas { get; set; } = new();
         public List<PlayerBattingStat> PlayerBattingStats { get; set; } = new();
+
+        // Lineups por lado
+        public List<LineupItem> LineupCasa { get; set; } = new();
+        public List<LineupItem> LineupVisita { get; set; } = new();
+
+        // Índice del próximo bateador por lado (0-based)
+        public int? IndexBateadorCasa { get; set; }
+        public int? IndexBateadorVisita { get; set; }
     }
 }
     

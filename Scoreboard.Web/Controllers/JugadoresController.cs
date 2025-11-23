@@ -57,7 +57,8 @@ namespace Scoreboard.Web.Controllers
             return View(jugador);
         }
 
-        public async Task<IActionResult> Create()
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Create()
         {
             await CargarEquiposAsync();
             return View(new Jugador());
@@ -65,7 +66,8 @@ namespace Scoreboard.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Jugador jugador)
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Create(Jugador jugador)
         {
             if (!ModelState.IsValid)
             {
@@ -78,7 +80,8 @@ namespace Scoreboard.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Edit(int id)
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Edit(int id)
         {
             var jugador = await _db.Jugadores.FindAsync(id);
             if (jugador == null) return NotFound();
@@ -88,7 +91,8 @@ namespace Scoreboard.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Jugador jugador)
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Edit(int id, Jugador jugador)
         {
             if (id != jugador.Id) return BadRequest();
 
@@ -112,7 +116,8 @@ namespace Scoreboard.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> Delete(int id)
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(int id)
         {
             var jugador = await _db.Jugadores
                                    .Include(j => j.Equipo)
@@ -123,7 +128,8 @@ namespace Scoreboard.Web.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmado(int id)
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteConfirmado(int id)
         {
             var jugador = await _db.Jugadores.FindAsync(id);
             if (jugador != null)
@@ -139,20 +145,7 @@ namespace Scoreboard.Web.Controllers
         {
             var datos = await _estadisticasService.ObtenerEstadisticasJugadorAsync(id);
             if (datos == null) return NotFound();
-
-            // Mapear el servicio VM al viewmodel ya existente en Views/Jugadores/Estadisticas.cshtml
-            var vm = new EstadisticasJugadorVm
-            {
-                Jugador = datos.Jugador,
-                PartidosJugados = datos.PartidosJugados,
-                Turnos = datos.Turnos,
-                Hits = datos.Hits,
-                Carreras = datos.Carreras,
-                HomeRuns = datos.HomeRuns,
-                Promedio = datos.Promedio
-            };
-
-            return View(vm);
+            return View(datos);
         }
 
         private async Task CargarEquiposAsync(int? seleccionado = null)

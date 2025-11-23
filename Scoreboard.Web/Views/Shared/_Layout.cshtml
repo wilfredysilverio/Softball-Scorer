@@ -217,6 +217,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- SignalR cliente (debe cargarse antes de marcador.js) -->
+    <script src="~/lib/signalr/signalr.min.js"></script>
+    <!-- Script de marcador (usa connection global si configurado) -->
+    <script src="~/js/marcador.js" asp-append-version="true"></script>
 
     <!-- Modal global de confirmación -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">

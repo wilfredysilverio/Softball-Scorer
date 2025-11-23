@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Scoreboard.Web.Modelos
 {
@@ -16,6 +17,7 @@ namespace Scoreboard.Web.Modelos
         public int PartidoId { get; set; }
 
         [Required]
+        [Column("Fecha")]
         public DateTime CreadoUtc { get; set; } = DateTime.UtcNow;
 
         [Required]
@@ -30,14 +32,32 @@ namespace Scoreboard.Web.Modelos
         public ResultadoTurno? Resultado { get; set; }
         public int RunsScored { get; set; }
 
+        // JSON con los incrementos de estadísticas ofensivas aplicados en la jugada
+        public string? StatDeltaJson { get; set; }
+
+        public Jugador? Jugador { get; set; }
+
         // Soft-delete / active flag for undo/redo
         public bool IsActive { get; set; } = true;
 
         // Backwards-compatible Fecha property used by some services/tests
+        [NotMapped]
         public DateTime Fecha
         {
             get => CreadoUtc;
             set => CreadoUtc = value;
         }
+
+        [NotMapped]
+        public int? EntradaContext { get; set; }
+
+        [NotMapped]
+        public string? MitadContext { get; set; }
+
+        [NotMapped]
+        public int? OutsAfter { get; set; }
+
+        [NotMapped]
+        public string? BasesAfter { get; set; }
     }
 }

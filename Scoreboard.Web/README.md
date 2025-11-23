@@ -41,3 +41,9 @@ Abrir la URL que imprime la consola (ej.: \http://localhost:5118\)
 - CRUD Equipos
 - CRUD Jugadores (asignación a equipo)
 - CRUD Partidos (validación casa ≠ visita, marcador básico)
+
+## Comprobar tiempo real (SignalR)
+- Abre el sitio en el navegador y la consola (F12).
+- Ejecuta:
+  - `await window.__srPing()`
+- Resultado esperado: la promesa se resuelve sin error en menos de 2 segundos. Esto confirma que el hub `/hubs/marcador` está accesible.

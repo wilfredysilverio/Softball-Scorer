@@ -15,6 +15,7 @@ namespace Scoreboard.Web.Datos
         public DbSet<PlayerBattingStat> PlayerBattingStats { get; set; } = default!;
         public DbSet<Entrada> Entradas { get; set; } = default!;
         public DbSet<PlayLog> PlayLogs { get; set; } = default!;
+    public DbSet<LineupItem> Lineups { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +38,49 @@ namespace Scoreboard.Web.Datos
                 .WithMany()
                 .HasForeignKey(j => j.EquipoId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Lineup configuration
+            modelBuilder.Entity<LineupItem>()
+                .HasOne(li => li.Partido)
+                .WithMany() // we ignore the collections on Partido to avoid ambiguous mapping
+                .HasForeignKey(li => li.PartidoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<LineupItem>()
+                .HasOne(li => li.Equipo)
+                .WithMany()
+                .HasForeignKey(li => li.EquipoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<LineupItem>()
+                .HasOne(li => li.Jugador)
+                .WithMany()
+                .HasForeignKey(li => li.JugadorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Map LineupCasa and LineupVisita using filtered include via backing table
+            modelBuilder.Entity<Partido>()
+                .Ignore(p => p.LineupCasa)
+                .Ignore(p => p.LineupVisita);
+
+            // Player batting stats metadata
+            modelBuilder.Entity<PlayerBattingStat>()
+                .HasOne(s => s.Jugador)
+                .WithMany()
+                .HasForeignKey(s => s.JugadorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlayerBattingStat>()
+                .HasOne(s => s.Equipo)
+                .WithMany()
+                .HasForeignKey(s => s.EquipoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlayerBattingStat>()
+                .HasIndex(s => new { s.JugadorId, s.PartidoId, s.Fecha });
+
+            modelBuilder.Entity<PlayerBattingStat>()
+                .HasIndex(s => new { s.JugadorId, s.Temporada });
         }
     }
 }

@@ -1,7 +1,9 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Scoreboard.Web.Datos;
+using Scoreboard.Web.Modelos;
 using Scoreboard.Web.Modelos.ViewModels;
 
 namespace Scoreboard.Web.Servicios
@@ -23,64 +25,42 @@ namespace Scoreboard.Web.Servicios
                 .FirstOrDefaultAsync(j => j.Id == jugadorId);
 
             if (jugador == null) return null;
-            // Obtener estadísticas de bateo por jugador
             var stats = await _db.PlayerBattingStats
                 .AsNoTracking()
                 .Where(s => s.JugadorId == jugadorId)
                 .ToListAsync();
 
-            var partidos = await _db.Partidos
+            var partidosEquipo = await _db.Partidos
                 .AsNoTracking()
                 .Where(p => p.EquipoCasaId == jugador.EquipoId || p.EquipoVisitaId == jugador.EquipoId)
-                .ToListAsync();
+                .CountAsync();
+
+            var totales = BuildTotals(stats);
 
             var vm = new EstadisticasJugadorVm
             {
                 Jugador = jugador,
-                PartidosJugados = partidos.Count,
-                AB = stats.Sum(s => s.AB),
-                H = stats.Sum(s => s.H),
-                R = stats.Sum(s => s.R),
-                Doubles = stats.Sum(s => s.Doubles),
-                Triples = stats.Sum(s => s.Triples),
-                HR = stats.Sum(s => s.HR),
-                RBI = stats.Sum(s => s.RBI),
-                BB = stats.Sum(s => s.BB),
-                SO = stats.Sum(s => s.SO),
-                HBP = stats.Sum(s => s.HBP),
-                SF = stats.Sum(s => s.SF)
+                PartidosJugados = totales.Partidos > 0 ? totales.Partidos : partidosEquipo,
+                AB = totales.AB,
+                H = totales.H,
+                R = totales.R,
+                Doubles = totales.Doubles,
+                Triples = totales.Triples,
+                HR = totales.HR,
+                RBI = totales.RBI,
+                BB = totales.BB,
+                SO = totales.SO,
+                HBP = totales.HBP,
+                SF = totales.SF,
+                SH = totales.SH,
+                PA = totales.PA,
+                AVG = totales.AVG,
+                OBP = totales.OBP,
+                SLG = totales.SLG,
+                OPS = totales.OPS
             };
 
-            // Calculos
-            vm.AVG = (vm.AB > 0) ? (decimal)vm.H / vm.AB : 0m;
-            var obpDen = vm.AB + vm.BB + vm.HBP + vm.SF;
-            vm.OBP = (obpDen > 0) ? (decimal)(vm.H + vm.BB + vm.HBP) / obpDen : 0m;
-            var totalBases = vm.H + vm.Doubles + (2 * vm.Triples) + (3 * vm.HR); // simplificado: 1*H + extra
-            vm.SLG = (vm.AB > 0) ? (decimal)totalBases / vm.AB : 0m;
-
-            // Lineas por temporada (por año de Fecha)
-            vm.Lineas = stats
-                .GroupBy(s => s.Fecha.Year)
-                .OrderByDescending(g => g.Key)
-                .Select(g => new LineaTemporadaVm
-                {
-                    Temporada = g.Key.ToString(),
-                    G = g.Select(s => s.PartidoId).Distinct().Count(),
-                    AB = g.Sum(s => s.AB),
-                    R = g.Sum(s => s.R),
-                    H = g.Sum(s => s.H),
-                    Doubles = g.Sum(s => s.Doubles),
-                    Triples = g.Sum(s => s.Triples),
-                    HR = g.Sum(s => s.HR),
-                    RBI = g.Sum(s => s.RBI),
-                    BB = g.Sum(s => s.BB),
-                    SO = g.Sum(s => s.SO),
-                    AVG = (g.Sum(s => s.AB) > 0) ? (decimal)g.Sum(s => s.H) / g.Sum(s => s.AB) : 0m,
-                    OBP = ((g.Sum(s => s.AB) + g.Sum(s => s.BB) + g.Sum(s => s.HBP) + g.Sum(s => s.SF)) > 0) ?
-                        (decimal)(g.Sum(s => s.H) + g.Sum(s => s.BB) + g.Sum(s => s.HBP)) / (g.Sum(s => s.AB) + g.Sum(s => s.BB) + g.Sum(s => s.HBP) + g.Sum(s => s.SF)) : 0m,
-                    SLG = (g.Sum(s => s.AB) > 0) ? (decimal)(g.Sum(s => s.H) + g.Sum(s => s.Doubles) + (2 * g.Sum(s => s.Triples)) + (3 * g.Sum(s => s.HR))) / g.Sum(s => s.AB) : 0m
-                })
-                .ToList();
+            vm.Lineas = BuildSeasonLines(stats);
 
             return vm;
         }
@@ -92,30 +72,7 @@ namespace Scoreboard.Web.Servicios
                 .Where(s => s.JugadorId == jugadorId)
                 .ToListAsync();
 
-            var lineas = stats
-                .GroupBy(s => s.Fecha.Year)
-                .OrderByDescending(g => g.Key)
-                .Select(g => new Scoreboard.Web.Modelos.ViewModels.LineaTemporadaVm
-                {
-                    Temporada = g.Key.ToString(),
-                    G = g.Select(s => s.PartidoId).Distinct().Count(),
-                    AB = g.Sum(s => s.AB),
-                    R = g.Sum(s => s.R),
-                    H = g.Sum(s => s.H),
-                    Doubles = g.Sum(s => s.Doubles),
-                    Triples = g.Sum(s => s.Triples),
-                    HR = g.Sum(s => s.HR),
-                    RBI = g.Sum(s => s.RBI),
-                    BB = g.Sum(s => s.BB),
-                    SO = g.Sum(s => s.SO),
-                    AVG = (g.Sum(s => s.AB) > 0) ? (decimal)g.Sum(s => s.H) / g.Sum(s => s.AB) : 0m,
-                    OBP = ((g.Sum(s => s.AB) + g.Sum(s => s.BB) + g.Sum(s => s.HBP) + g.Sum(s => s.SF)) > 0) ?
-                        (decimal)(g.Sum(s => s.H) + g.Sum(s => s.BB) + g.Sum(s => s.HBP)) / (g.Sum(s => s.AB) + g.Sum(s => s.BB) + g.Sum(s => s.HBP) + g.Sum(s => s.SF)) : 0m,
-                    SLG = (g.Sum(s => s.AB) > 0) ? (decimal)(g.Sum(s => s.H) + g.Sum(s => s.Doubles) + (2 * g.Sum(s => s.Triples)) + (3 * g.Sum(s => s.HR))) / g.Sum(s => s.AB) : 0m
-                })
-                .ToList();
-
-            return lineas;
+            return BuildSeasonLines(stats);
         }
 
         public async Task<Scoreboard.Web.Modelos.ViewModels.EstadisticasEquipoVm?> ObtenerEstadisticasEquipoAsync(int equipoId)
@@ -140,54 +97,159 @@ namespace Scoreboard.Web.Servicios
                 .Where(p => p.EquipoCasaId == equipoId || p.EquipoVisitaId == equipoId)
                 .ToListAsync();
 
+            var totales = BuildTotals(stats);
+            var jugadoresPorId = jugadores.ToDictionary(j => j.Id);
+            var jugadoresDetalle = stats
+                .GroupBy(s => s.JugadorId)
+                .Select(g =>
+                {
+                    var totalsJugador = BuildTotals(g);
+                    jugadoresPorId.TryGetValue(g.Key, out var jugadorInfo);
+                    return new JugadorLineaResumenVm
+                    {
+                        JugadorId = g.Key,
+                        Nombre = jugadorInfo != null ? $"{jugadorInfo.Nombre} {jugadorInfo.Apellido}" : $"Jugador #{g.Key}",
+                        Numero = jugadorInfo?.NumeroUniforme ?? 0,
+                        AB = totalsJugador.AB,
+                        H = totalsJugador.H,
+                        HR = totalsJugador.HR,
+                        RBI = totalsJugador.RBI,
+                        BB = totalsJugador.BB,
+                        SO = totalsJugador.SO,
+                        PA = totalsJugador.PA,
+                        AVG = totalsJugador.AVG,
+                        OBP = totalsJugador.OBP,
+                        SLG = totalsJugador.SLG,
+                        OPS = totalsJugador.OPS
+                    };
+                })
+                .OrderByDescending(j => j.OPS)
+                .ThenByDescending(j => j.AVG)
+                .ThenBy(j => j.Nombre)
+                .ToList();
+
             var vm = new Scoreboard.Web.Modelos.ViewModels.EstadisticasEquipoVm
             {
                 Equipo = equipo,
-                PartidosJugados = partidos.Count,
+                PartidosJugados = Math.Max(partidos.Count, totales.Partidos),
                 Jugadores = jugadores.Count,
-                AB = stats.Sum(s => s.AB),
-                H = stats.Sum(s => s.H),
-                R = stats.Sum(s => s.R),
-                Doubles = stats.Sum(s => s.Doubles),
-                Triples = stats.Sum(s => s.Triples),
-                HR = stats.Sum(s => s.HR),
-                RBI = stats.Sum(s => s.RBI),
-                BB = stats.Sum(s => s.BB),
-                SO = stats.Sum(s => s.SO),
-                HBP = stats.Sum(s => s.HBP),
-                SF = stats.Sum(s => s.SF)
+                AB = totales.AB,
+                H = totales.H,
+                R = totales.R,
+                Doubles = totales.Doubles,
+                Triples = totales.Triples,
+                HR = totales.HR,
+                RBI = totales.RBI,
+                BB = totales.BB,
+                SO = totales.SO,
+                HBP = totales.HBP,
+                SF = totales.SF,
+                SH = totales.SH,
+                PA = totales.PA,
+                AVG = totales.AVG,
+                OBP = totales.OBP,
+                SLG = totales.SLG,
+                OPS = totales.OPS,
+                Lineas = BuildSeasonLines(stats),
+                JugadoresDetalle = jugadoresDetalle
             };
 
-            vm.AVG = (vm.AB > 0) ? (decimal)vm.H / vm.AB : 0m;
-            var obpDen = vm.AB + vm.BB + vm.HBP + vm.SF;
-            vm.OBP = (obpDen > 0) ? (decimal)(vm.H + vm.BB + vm.HBP) / obpDen : 0m;
-            var totalBases = vm.H + vm.Doubles + (2 * vm.Triples) + (3 * vm.HR);
-            vm.SLG = (vm.AB > 0) ? (decimal)totalBases / vm.AB : 0m;
+            return vm;
+        }
 
-            vm.Lineas = stats
-                .GroupBy(s => s.Fecha.Year)
+        private static BattingTotals BuildTotals(IEnumerable<PlayerBattingStat> source)
+        {
+            var list = source as IList<PlayerBattingStat> ?? source.ToList();
+            var totals = new BattingTotals
+            {
+                Partidos = list.Sum(s => s.PartidosJugados),
+                AB = list.Sum(s => s.AB),
+                H = list.Sum(s => s.H),
+                Doubles = list.Sum(s => s.Doubles),
+                Triples = list.Sum(s => s.Triples),
+                HR = list.Sum(s => s.HR),
+                RBI = list.Sum(s => s.RBI),
+                R = list.Sum(s => s.R),
+                BB = list.Sum(s => s.BB),
+                SO = list.Sum(s => s.SO),
+                HBP = list.Sum(s => s.HBP),
+                SF = list.Sum(s => s.SF),
+                SH = list.Sum(s => s.SH),
+                PA = list.Sum(s => s.PA)
+            };
+            totals.ComputeRates();
+            return totals;
+        }
+
+        private static List<LineaTemporadaVm> BuildSeasonLines(IEnumerable<PlayerBattingStat> stats)
+        {
+            return stats
+                .GroupBy(s => s.Temporada != 0 ? s.Temporada : s.Fecha.Year)
                 .OrderByDescending(g => g.Key)
-                .Select(g => new Scoreboard.Web.Modelos.ViewModels.LineaTemporadaVm
+                .Select(g =>
                 {
-                    Temporada = g.Key.ToString(),
-                    G = g.Select(s => s.PartidoId).Distinct().Count(),
-                    AB = g.Sum(s => s.AB),
-                    R = g.Sum(s => s.R),
-                    H = g.Sum(s => s.H),
-                    Doubles = g.Sum(s => s.Doubles),
-                    Triples = g.Sum(s => s.Triples),
-                    HR = g.Sum(s => s.HR),
-                    RBI = g.Sum(s => s.RBI),
-                    BB = g.Sum(s => s.BB),
-                    SO = g.Sum(s => s.SO),
-                    AVG = (g.Sum(s => s.AB) > 0) ? (decimal)g.Sum(s => s.H) / g.Sum(s => s.AB) : 0m,
-                    OBP = ((g.Sum(s => s.AB) + g.Sum(s => s.BB) + g.Sum(s => s.HBP) + g.Sum(s => s.SF)) > 0) ?
-                        (decimal)(g.Sum(s => s.H) + g.Sum(s => s.BB) + g.Sum(s => s.HBP)) / (g.Sum(s => s.AB) + g.Sum(s => s.BB) + g.Sum(s => s.HBP) + g.Sum(s => s.SF)) : 0m,
-                    SLG = (g.Sum(s => s.AB) > 0) ? (decimal)(g.Sum(s => s.H) + g.Sum(s => s.Doubles) + (2 * g.Sum(s => s.Triples)) + (3 * g.Sum(s => s.HR))) / g.Sum(s => s.AB) : 0m
+                    var totals = BuildTotals(g);
+                    return new LineaTemporadaVm
+                    {
+                        Temporada = g.Key.ToString(),
+                        G = g.Select(s => s.PartidoId).Distinct().Count(),
+                        AB = totals.AB,
+                        R = totals.R,
+                        H = totals.H,
+                        Doubles = totals.Doubles,
+                        Triples = totals.Triples,
+                        HR = totals.HR,
+                        RBI = totals.RBI,
+                        BB = totals.BB,
+                        SO = totals.SO,
+                        HBP = totals.HBP,
+                        SF = totals.SF,
+                        SH = totals.SH,
+                        PA = totals.PA,
+                        AVG = totals.AVG,
+                        OBP = totals.OBP,
+                        SLG = totals.SLG,
+                        OPS = totals.OPS
+                    };
                 })
                 .ToList();
+        }
 
-            return vm;
+        private static decimal SafeDivide(int numerator, int denominator)
+            => denominator > 0 ? Math.Round((decimal)numerator / denominator, 3, MidpointRounding.AwayFromZero) : 0m;
+
+        private sealed class BattingTotals
+        {
+            public int Partidos { get; set; }
+            public int AB { get; set; }
+            public int H { get; set; }
+            public int Doubles { get; set; }
+            public int Triples { get; set; }
+            public int HR { get; set; }
+            public int RBI { get; set; }
+            public int R { get; set; }
+            public int BB { get; set; }
+            public int SO { get; set; }
+            public int HBP { get; set; }
+            public int SF { get; set; }
+            public int SH { get; set; }
+            public int PA { get; set; }
+            public decimal AVG { get; private set; }
+            public decimal OBP { get; private set; }
+            public decimal SLG { get; private set; }
+            public decimal OPS { get; private set; }
+
+            public void ComputeRates()
+            {
+                AVG = SafeDivide(H, AB);
+                var obpDen = AB + BB + HBP + SF;
+                OBP = SafeDivide(H + BB + HBP, obpDen);
+                var singles = H - Doubles - Triples - HR;
+                if (singles < 0) singles = 0;
+                var totalBases = singles + (2 * Doubles) + (3 * Triples) + (4 * HR);
+                SLG = SafeDivide(totalBases, AB);
+                OPS = Math.Round(OBP + SLG, 3, MidpointRounding.AwayFromZero);
+            }
         }
     }
 }

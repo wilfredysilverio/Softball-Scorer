@@ -313,6 +313,37 @@ namespace Scoreboard.Web.Migrations
                     b.ToTable("Jugadores");
                 });
 
+            modelBuilder.Entity("Scoreboard.Web.Modelos.LineupItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EquipoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("JugadorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PartidoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquipoId");
+
+                    b.HasIndex("JugadorId");
+
+                    b.HasIndex("PartidoId");
+
+                    b.ToTable("Lineups");
+                });
+
             modelBuilder.Entity("Scoreboard.Web.Modelos.Partido", b =>
                 {
                     b.Property<int>("Id")
@@ -363,6 +394,12 @@ namespace Scoreboard.Web.Migrations
                     b.Property<int>("HitsVisita")
                         .HasColumnType("int");
 
+                    b.Property<int?>("IndexBateadorCasa")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IndexBateadorVisita")
+                        .HasColumnType("int");
+
                     b.Property<int>("Mitad")
                         .HasColumnType("int");
 
@@ -387,10 +424,8 @@ namespace Scoreboard.Web.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreadoUtc")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("Fecha");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit(1)");
@@ -412,6 +447,9 @@ namespace Scoreboard.Web.Migrations
 
                     b.Property<string>("SnapshotJson")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("StatDeltaJson")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -436,6 +474,9 @@ namespace Scoreboard.Web.Migrations
                     b.Property<int>("Doubles")
                         .HasColumnType("int");
 
+                    b.Property<int>("EquipoId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime(6)");
 
@@ -451,7 +492,13 @@ namespace Scoreboard.Web.Migrations
                     b.Property<int>("JugadorId")
                         .HasColumnType("int");
 
+                    b.Property<int>("PA")
+                        .HasColumnType("int");
+
                     b.Property<int>("PartidoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PartidosJugados")
                         .HasColumnType("int");
 
                     b.Property<int>("R")
@@ -463,7 +510,13 @@ namespace Scoreboard.Web.Migrations
                     b.Property<int>("SF")
                         .HasColumnType("int");
 
+                    b.Property<int>("SH")
+                        .HasColumnType("int");
+
                     b.Property<int>("SO")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Temporada")
                         .HasColumnType("int");
 
                     b.Property<int>("Triples")
@@ -471,9 +524,13 @@ namespace Scoreboard.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JugadorId");
+                    b.HasIndex("EquipoId");
 
                     b.HasIndex("PartidoId");
+
+                    b.HasIndex("JugadorId", "Temporada");
+
+                    b.HasIndex("JugadorId", "PartidoId", "Fecha");
 
                     b.ToTable("PlayerBattingStats");
                 });
@@ -551,6 +608,33 @@ namespace Scoreboard.Web.Migrations
                     b.Navigation("Equipo");
                 });
 
+            modelBuilder.Entity("Scoreboard.Web.Modelos.LineupItem", b =>
+                {
+                    b.HasOne("Scoreboard.Web.Modelos.Equipo", "Equipo")
+                        .WithMany()
+                        .HasForeignKey("EquipoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Scoreboard.Web.Modelos.Jugador", "Jugador")
+                        .WithMany()
+                        .HasForeignKey("JugadorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Scoreboard.Web.Modelos.Partido", "Partido")
+                        .WithMany()
+                        .HasForeignKey("PartidoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equipo");
+
+                    b.Navigation("Jugador");
+
+                    b.Navigation("Partido");
+                });
+
             modelBuilder.Entity("Scoreboard.Web.Modelos.Partido", b =>
                 {
                     b.HasOne("Scoreboard.Web.Modelos.Equipo", "EquipoCasa")
@@ -572,6 +656,12 @@ namespace Scoreboard.Web.Migrations
 
             modelBuilder.Entity("Scoreboard.Web.Modelos.PlayerBattingStat", b =>
                 {
+                    b.HasOne("Scoreboard.Web.Modelos.Equipo", "Equipo")
+                        .WithMany()
+                        .HasForeignKey("EquipoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Scoreboard.Web.Modelos.Jugador", "Jugador")
                         .WithMany()
                         .HasForeignKey("JugadorId")
@@ -583,6 +673,8 @@ namespace Scoreboard.Web.Migrations
                         .HasForeignKey("PartidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Equipo");
 
                     b.Navigation("Jugador");
 

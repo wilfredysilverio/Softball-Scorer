@@ -74,7 +74,8 @@ namespace Scoreboard.Tests
             await ctx.SaveChangesAsync();
 
             var jugador = new Jugador { Nombre = "Juan", Apellido = "Perez", EquipoId = equipoCasa.Id, NumeroUniforme = 1 };
-            ctx.Jugadores.Add(jugador);
+            var bateadorVisita = new Jugador { Nombre = "Pedro", Apellido = "Lopez", EquipoId = equipoVisita.Id, NumeroUniforme = 5 };
+            ctx.Jugadores.AddRange(jugador, bateadorVisita);
             await ctx.SaveChangesAsync();
 
             var partido = new Partido
@@ -86,6 +87,10 @@ namespace Scoreboard.Tests
                 EntradaActual = 1
             };
             ctx.Partidos.Add(partido);
+            await ctx.SaveChangesAsync();
+
+            ctx.Lineups.Add(new LineupItem { PartidoId = partido.Id, EquipoId = equipoCasa.Id, JugadorId = jugador.Id, Orden = 1 });
+            ctx.Lineups.Add(new LineupItem { PartidoId = partido.Id, EquipoId = equipoVisita.Id, JugadorId = bateadorVisita.Id, Orden = 1 });
             await ctx.SaveChangesAsync();
 
             var svc = new MarcadorService(ctx, NullLogger<MarcadorService>.Instance, new FakeHubContext());
@@ -126,6 +131,35 @@ namespace Scoreboard.Tests
         }
 
         [Fact]
+        public async Task RegistrarTurno_PuedeOmitirJugadorConfirmado()
+        {
+            var (ctx, svc, partido, jugador) = await CreateSampleGameAsync();
+            partido.Estado = EstadoPartido.EnCurso;
+            await ctx.SaveChangesAsync();
+
+            await svc.RegistrarTurnoAsync(partido.Id, null, ResultadoTurno.Sencillo);
+
+            var stat = await ctx.PlayerBattingStats.SingleAsync(s => s.PartidoId == partido.Id);
+            Assert.Equal(jugador.Id, stat.JugadorId);
+        }
+
+        [Fact]
+        public async Task RegistrarTurno_RechazaJugadorDistintoAlLineup()
+        {
+            var (ctx, svc, partido, jugador) = await CreateSampleGameAsync();
+            partido.Estado = EstadoPartido.EnCurso;
+            await ctx.SaveChangesAsync();
+
+            var bateadorVisita = await ctx.Jugadores.AsNoTracking()
+                .Where(j => j.EquipoId == partido.EquipoVisitaId)
+                .Select(j => j.Id)
+                .FirstAsync();
+
+            await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                svc.RegistrarTurnoAsync(partido.Id, bateadorVisita, ResultadoTurno.Sencillo));
+        }
+
+        [Fact]
         public async Task RegistrarTurno_BasePorBolas_BasesLlenas_EntraCarrera()
         {
             var (ctx, svc, partido, jugador) = await CreateSampleGameAsync();
@@ -155,7 +189,7 @@ namespace Scoreboard.Tests
             Assert.False(p2.B1 || p2.B2 || p2.B3);
             var stat = await ctx.PlayerBattingStats.Where(s => s.PartidoId == partido.Id).FirstOrDefaultAsync();
             Assert.NotNull(stat);
-            Assert.Equal(4, stat.R);
+            Assert.Equal(1, stat.R);
         }
 
         [Fact]
@@ -178,7 +212,7 @@ namespace Scoreboard.Tests
         }
 
         [Fact]
-        public async Task RegistrarTurno_SacFly_AnotaDesde3B_SiOutsMenorA2()
+        public async Task RegistrarTurno_SacFly_AnotaDesde3B()
         {
             var (ctx, svc, partido, jugador) = await CreateSampleGameAsync();
             partido.Estado = EstadoPartido.EnCurso;
@@ -190,12 +224,12 @@ namespace Scoreboard.Tests
             Assert.Equal(1, p2.CarrerasCasa);
             Assert.False(p2.B3);
 
-            // Now test with 2 outs: no score from sac fly
+            // Con 2 outs también debe sumar carrera y limpiar la base
             p2.B3 = true; p2.Outs = 2; p2.CarrerasCasa = 0;
             await ctx.SaveChangesAsync();
             await svc.RegistrarTurnoAsync(partido.Id, jugador.Id, ResultadoTurno.SacrificioFly);
             var p3 = await ctx.Partidos.FindAsync(partido.Id);
-            Assert.Equal(0, p3.CarrerasCasa);
+            Assert.Equal(1, p3.CarrerasCasa);
         }
 
         [Fact]
@@ -266,6 +300,29 @@ namespace Scoreboard.Tests
             Assert.Equal(0, p2.Outs);
             Assert.Equal(MitadEntrada.Alta, p2.Mitad);
             Assert.Equal(2, p2.EntradaActual);
+        }
+
+        [Fact]
+        public async Task RegistrarTurno_AvanzarLineupAlSiguienteBateador()
+        {
+            var (ctx, svc, partido, jugador) = await CreateSampleGameAsync();
+            var segundo = new Jugador { Nombre = "Luis", Apellido = "Gomez", EquipoId = jugador.EquipoId, NumeroUniforme = 12 };
+            ctx.Jugadores.Add(segundo);
+            await ctx.SaveChangesAsync();
+
+            ctx.Lineups.Add(new LineupItem { PartidoId = partido.Id, EquipoId = jugador.EquipoId, JugadorId = segundo.Id, Orden = 2 });
+            await ctx.SaveChangesAsync();
+
+            partido.Estado = EstadoPartido.EnCurso;
+            partido.IndexBateadorCasa = 0;
+            await ctx.SaveChangesAsync();
+
+            await svc.RegistrarTurnoAsync(partido.Id, jugador.Id, ResultadoTurno.Sencillo);
+            var p2 = await ctx.Partidos.FindAsync(partido.Id);
+            Assert.Equal(1, p2.IndexBateadorCasa);
+
+            await Assert.ThrowsAsync<InvalidOperationException>(() =>
+                svc.RegistrarTurnoAsync(partido.Id, jugador.Id, ResultadoTurno.Sencillo));
         }
     }
 }

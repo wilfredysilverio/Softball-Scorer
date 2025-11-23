@@ -8,9 +8,20 @@ namespace Scoreboard.Web.Modelos
         public int Id { get; set; }
         public int JugadorId { get; set; }
         public Jugador? Jugador { get; set; }
+
+        public int EquipoId { get; set; }
+        public Equipo? Equipo { get; set; }
+
         public int PartidoId { get; set; }
         public Partido? Partido { get; set; }
+
         public DateTime Fecha { get; set; }
+
+        // Permite agrupar por año/temporada sin depender del DateTime
+        public int Temporada { get; set; }
+
+        // 1 cuando es el primer turno del jugador en el partido; 0 en lo demás.
+        public int PartidosJugados { get; set; }
 
         // Bateo
         public int AB { get; set; } // At bats
@@ -24,5 +35,11 @@ namespace Scoreboard.Web.Modelos
         public int SO { get; set; }
         public int HBP { get; set; }
         public int SF { get; set; } // sacrifice flies
+
+        // Sacrifice hits/bunts
+        public int SH { get; set; }
+
+        // Plate appearances para métricas como OBP/PA
+        public int PA { get; set; }
     }
 }

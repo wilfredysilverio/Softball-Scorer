@@ -18,6 +18,7 @@ public class HomeController : Controller
         _db = db;
     }
 
+    [Microsoft.AspNetCore.Authorization.AllowAnonymous]
     public async Task<IActionResult> Index()
     {
         var vm = new HomeDashboardVm();
@@ -51,6 +52,7 @@ public class HomeController : Controller
         return View(vm);
     }
 
+    [Microsoft.AspNetCore.Authorization.AllowAnonymous]
     public IActionResult Privacy()
     {
         return View();

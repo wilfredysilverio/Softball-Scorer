@@ -47,8 +47,11 @@ namespace Scoreboard.Tests
             context.PlayerBattingStats.Add(new PlayerBattingStat
             {
                 JugadorId = jugador.Id,
+                EquipoId = jugador.EquipoId,
                 PartidoId = 10,
                 Fecha = new DateTime(2024, 5, 1),
+                Temporada = 2024,
+                PartidosJugados = 1,
                 AB = 4,
                 H = 2,
                 Doubles = 1,
@@ -59,14 +62,19 @@ namespace Scoreboard.Tests
                 BB = 1,
                 SO = 0,
                 HBP = 0,
-                SF = 0
+                SF = 0,
+                SH = 0,
+                PA = 5
             });
 
             context.PlayerBattingStats.Add(new PlayerBattingStat
             {
                 JugadorId = jugador.Id,
+                EquipoId = jugador.EquipoId,
                 PartidoId = 11,
                 Fecha = new DateTime(2024, 6, 1),
+                Temporada = 2024,
+                PartidosJugados = 1,
                 AB = 3,
                 H = 1,
                 Doubles = 0,
@@ -77,7 +85,9 @@ namespace Scoreboard.Tests
                 BB = 0,
                 SO = 1,
                 HBP = 0,
-                SF = 0
+                SF = 0,
+                SH = 0,
+                PA = 3
             });
 
             // Ensure partidos referenced by stats exist (foreign keys)
@@ -96,7 +106,8 @@ namespace Scoreboard.Tests
             Assert.Equal(7, linea.AB);
             Assert.Equal(3, linea.H);
             // AVG = 3/7
-            Assert.Equal(Math.Round((decimal)3 / 7, 6), Math.Round(linea.AVG, 6));
+            var expectedAvg = Math.Round((decimal)3 / 7, 3, MidpointRounding.AwayFromZero);
+            Assert.Equal(expectedAvg, linea.AVG);
             // SLG = (H + Doubles + 2*Triples + 3*HR)/AB = (3 + 1 + 0 + 3*1)/7 = (7)/7 = 1.0
             Assert.Equal(1.0m, linea.SLG);
         }
@@ -125,8 +136,11 @@ namespace Scoreboard.Tests
             context.PlayerBattingStats.Add(new PlayerBattingStat
             {
                 JugadorId = jugador.Id,
+                EquipoId = jugador.EquipoId,
                 PartidoId = 20,
                 Fecha = new DateTime(2024, 7, 1),
+                Temporada = 2024,
+                PartidosJugados = 1,
                 AB = 0,
                 H = 0,
                 Doubles = 0,
@@ -137,7 +151,9 @@ namespace Scoreboard.Tests
                 BB = 2,
                 SO = 0,
                 HBP = 1,
-                SF = 1
+                SF = 1,
+                SH = 0,
+                PA = 4
             });
 
             // Ensure partido referenced by stat exists
@@ -168,8 +184,11 @@ namespace Scoreboard.Tests
             context.PlayerBattingStats.Add(new PlayerBattingStat
             {
                 JugadorId = jugador.Id,
+                EquipoId = jugador.EquipoId,
                 PartidoId = 30,
                 Fecha = new DateTime(2023, 5, 1),
+                Temporada = 2023,
+                PartidosJugados = 1,
                 AB = 2,
                 H = 1,
                 Doubles = 0,
@@ -178,15 +197,20 @@ namespace Scoreboard.Tests
                 BB = 0,
                 SO = 0,
                 HBP = 0,
-                SF = 0
+                SF = 0,
+                SH = 0,
+                PA = 2
             });
 
             // 2024 stats
             context.PlayerBattingStats.Add(new PlayerBattingStat
             {
                 JugadorId = jugador.Id,
+                EquipoId = jugador.EquipoId,
                 PartidoId = 31,
                 Fecha = new DateTime(2024, 6, 1),
+                Temporada = 2024,
+                PartidosJugados = 1,
                 AB = 3,
                 H = 2,
                 Doubles = 1,
@@ -195,7 +219,9 @@ namespace Scoreboard.Tests
                 BB = 1,
                 SO = 0,
                 HBP = 0,
-                SF = 0
+                SF = 0,
+                SH = 0,
+                PA = 4
             });
 
             // Ensure partidos referenced by stats exist
@@ -239,8 +265,11 @@ namespace Scoreboard.Tests
             context.PlayerBattingStats.Add(new PlayerBattingStat
             {
                 JugadorId = j1.Id,
+                EquipoId = equipo.Id,
                 PartidoId = 100,
                 Fecha = new DateTime(2024, 4, 1),
+                Temporada = 2024,
+                PartidosJugados = 1,
                 AB = 4,
                 H = 2,
                 Doubles = 0,
@@ -249,14 +278,19 @@ namespace Scoreboard.Tests
                 BB = 1,
                 SO = 0,
                 HBP = 0,
-                SF = 0
+                SF = 0,
+                SH = 0,
+                PA = 5
             });
 
             context.PlayerBattingStats.Add(new PlayerBattingStat
             {
                 JugadorId = j2.Id,
+                EquipoId = equipo.Id,
                 PartidoId = 101,
                 Fecha = new DateTime(2024, 5, 1),
+                Temporada = 2024,
+                PartidosJugados = 1,
                 AB = 3,
                 H = 1,
                 Doubles = 0,
@@ -265,7 +299,9 @@ namespace Scoreboard.Tests
                 BB = 0,
                 SO = 1,
                 HBP = 0,
-                SF = 0
+                SF = 0,
+                SH = 0,
+                PA = 3
             });
 
             // Add one partido played by the team
@@ -280,9 +316,131 @@ namespace Scoreboard.Tests
             Assert.Equal(7, vm.AB);
             Assert.Equal(3, vm.H);
             // AVG = 3/7
-            Assert.Equal(Math.Round((decimal)3 / 7, 6), Math.Round(vm.AVG, 6));
+            var expectedTeamAvg = Math.Round((decimal)3 / 7, 3, MidpointRounding.AwayFromZero);
+            Assert.Equal(expectedTeamAvg, vm.AVG);
             // SLG = (H + Doubles + 2*Triples + 3*HR)/AB = (3 + 0 + 0 + 3*1)/7 = 6/7 ≈ 0.85714
-            Assert.Equal(Math.Round(((decimal)6) / 7, 6), Math.Round(vm.SLG, 6));
+            var expectedTeamSlg = Math.Round(((decimal)6) / 7, 3, MidpointRounding.AwayFromZero);
+            Assert.Equal(expectedTeamSlg, vm.SLG);
+        }
+
+        [Fact]
+        public async Task ObtenerEstadisticasJugadorAsync_Computes_PA_y_OPS()
+        {
+            using var context = new ContextoMarcador(_options);
+
+            var equipo = new Equipo { Id = 50, Nombre = "OPS", Ciudad = "Ciudad" };
+            context.Equipos.Add(equipo);
+            var jugador = new Jugador { Nombre = "Slash", Apellido = "Line", EquipoId = equipo.Id };
+            context.Jugadores.Add(jugador);
+            await context.SaveChangesAsync();
+
+            context.Partidos.Add(new Partido { Id = 501, EquipoCasaId = equipo.Id, EquipoVisitaId = equipo.Id, Fecha = new DateTime(2024, 8, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
+
+            context.PlayerBattingStats.Add(new PlayerBattingStat
+            {
+                JugadorId = jugador.Id,
+                EquipoId = equipo.Id,
+                PartidoId = 501,
+                Fecha = new DateTime(2024, 8, 1),
+                Temporada = 2024,
+                PartidosJugados = 1,
+                AB = 4,
+                H = 2,
+                Doubles = 1,
+                Triples = 0,
+                HR = 0,
+                R = 1,
+                RBI = 2,
+                BB = 1,
+                SO = 0,
+                HBP = 1,
+                SF = 1,
+                SH = 1,
+                PA = 8
+            });
+
+            await context.SaveChangesAsync();
+
+            var service = new EstadisticasService(context);
+            var vm = await service.ObtenerEstadisticasJugadorAsync(jugador.Id);
+
+            Assert.NotNull(vm);
+            Assert.Equal(8, vm!.PA);
+            Assert.Equal(1.321m, Math.Round(vm.OPS, 3));
+        }
+
+        [Fact]
+        public async Task ObtenerEstadisticasEquipoAsync_IncluyeJugadoresDetalleOrdenadosPorOPS()
+        {
+            using var context = new ContextoMarcador(_options);
+
+            var equipo = new Equipo { Id = 60, Nombre = "Detalle", Ciudad = "Ciudad" };
+            var oponente = new Equipo { Id = 61, Nombre = "Oponente", Ciudad = "Ciudad" };
+            context.Equipos.AddRange(equipo, oponente);
+            var slugger = new Jugador { Nombre = "Slug", Apellido = "One", EquipoId = equipo.Id, NumeroUniforme = 10 };
+            var walker = new Jugador { Nombre = "Walk", Apellido = "Two", EquipoId = equipo.Id, NumeroUniforme = 5 };
+            context.Jugadores.AddRange(slugger, walker);
+            await context.SaveChangesAsync();
+
+            context.Partidos.Add(new Partido { Id = 610, EquipoCasaId = equipo.Id, EquipoVisitaId = oponente.Id, Fecha = new DateTime(2024, 4, 10), CarrerasCasa = 0, CarrerasVisita = 0 });
+            context.Partidos.Add(new Partido { Id = 611, EquipoCasaId = oponente.Id, EquipoVisitaId = equipo.Id, Fecha = new DateTime(2024, 4, 11), CarrerasCasa = 0, CarrerasVisita = 0 });
+
+            context.PlayerBattingStats.Add(new PlayerBattingStat
+            {
+                JugadorId = slugger.Id,
+                EquipoId = equipo.Id,
+                PartidoId = 610,
+                Fecha = new DateTime(2024, 4, 10),
+                Temporada = 2024,
+                PartidosJugados = 1,
+                AB = 4,
+                H = 3,
+                Doubles = 1,
+                Triples = 0,
+                HR = 1,
+                RBI = 3,
+                R = 3,
+                BB = 0,
+                SO = 0,
+                HBP = 0,
+                SF = 0,
+                SH = 0,
+                PA = 4
+            });
+
+            context.PlayerBattingStats.Add(new PlayerBattingStat
+            {
+                JugadorId = walker.Id,
+                EquipoId = equipo.Id,
+                PartidoId = 611,
+                Fecha = new DateTime(2024, 4, 11),
+                Temporada = 2024,
+                PartidosJugados = 1,
+                AB = 2,
+                H = 1,
+                Doubles = 0,
+                Triples = 0,
+                HR = 0,
+                RBI = 1,
+                R = 1,
+                BB = 2,
+                SO = 0,
+                HBP = 0,
+                SF = 0,
+                SH = 0,
+                PA = 4
+            });
+
+            await context.SaveChangesAsync();
+
+            var service = new EstadisticasService(context);
+            var vm = await service.ObtenerEstadisticasEquipoAsync(equipo.Id);
+
+            Assert.NotNull(vm);
+            Assert.Equal(2, vm!.JugadoresDetalle.Count);
+            Assert.Equal(slugger.Id, vm.JugadoresDetalle.First().JugadorId);
+            Assert.Equal(10, vm.JugadoresDetalle.First().Numero);
+            Assert.True(vm.JugadoresDetalle.First().OPS > vm.JugadoresDetalle.Last().OPS);
         }
     }
 }
