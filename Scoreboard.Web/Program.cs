@@ -52,12 +52,14 @@ builder.Services
 builder.Services
     .AddIdentity<IdentityUser, IdentityRole>(options =>
     {
-        options.Password.RequireDigit = false;
-        options.Password.RequireLowercase = false;
+        // Reglas de contraseña ajustadas (más seguras pero razonables)
+        options.Password.RequiredLength = 8;
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
         options.Password.RequireUppercase = false;
         options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 6;
-        options.User.RequireUniqueEmail = false;
+        // Email único para evitar cuentas duplicadas
+        options.User.RequireUniqueEmail = true;
     })
     .AddEntityFrameworkStores<ContextoMarcador>()
     .AddDefaultTokenProviders();
@@ -101,13 +103,15 @@ await Scoreboard.Web.Infra.IdentitySeeder.SeedAsync(app.Services);
 await Scoreboard.Web.Datos.Seed.InitialSeed.EnsureAsync(app.Services);
 
 // HTTPS opcional en Dev (déjalo activo en Prod)
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseHsts();
+    app.UseDeveloperExceptionPage();
+    // app.UseHttpsRedirection(); // opcional en desarrollo
 }
 else
 {
-    // app.UseHttpsRedirection(); // si tus pruebas locales con HTTP simple fallan al redirigir, déjalo comentado
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
 
 app.UseStaticFiles();
@@ -142,6 +146,27 @@ if (app.Environment.IsDevelopment())
 {
     app.MapPost("/dev/seed-equipos-11", async (ContextoMarcador db) =>
     {
+        // Este endpoint solo debe existir en Development; refuerzo adicional
+        // (si por alguna razón se mueve fuera del bloque IsDevelopment)
+        var env = app.Services.GetRequiredService<IWebHostEnvironment>();
+        if (!env.IsDevelopment()) return Results.NotFound();
+
+        // Autorización: solo Admin (Identity Role) o usuario con email específico si faltan roles
+        var httpContextAccessor = app.Services.GetService<IHttpContextAccessor>();
+        var httpContext = httpContextAccessor?.HttpContext;
+        var autenticado = httpContext?.User?.Identity?.IsAuthenticated == true;
+        if (!autenticado)
+        {
+            return Results.Unauthorized();
+        }
+        // Si no tiene rol Admin pero queremos permitir un correo específico (TODO: quitar cuando roles estén sólidos)
+        var esAdmin = httpContext!.User.IsInRole("Admin");
+        var email = httpContext.User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value;
+        if (!esAdmin && !string.Equals(email, "admin@local", StringComparison.OrdinalIgnoreCase))
+        {
+            return Results.Forbid();
+        }
+
         async Task<(Equipo team, int created)> EnsureTeamWithPlayersAsync(string nombre, string? ciudad)
         {
             var team = await db.Equipos.FirstOrDefaultAsync(e => e.Nombre == nombre);
@@ -187,7 +212,9 @@ if (app.Environment.IsDevelopment())
             Equipo1 = new { t1.Id, t1.Nombre, JugadoresCreados = c1, TotalJugadores = totalT1 },
             Equipo2 = new { t2.Id, t2.Nombre, JugadoresCreados = c2, TotalJugadores = totalT2 }
         });
-    });
+    })
+    .RequireAuthorization(new AuthorizeAttribute { Roles = "Admin" })
+    .WithName("DevSeedEquipos11");
 }
 
 // Razor Pages (Identity UI)

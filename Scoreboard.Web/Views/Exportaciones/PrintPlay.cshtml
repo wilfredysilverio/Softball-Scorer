@@ -1,0 +1,106 @@
+@model Scoreboard.Web.Controllers.PrintPlayVm
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Play-by-Play";
+    var visita = Model.Partido?.EquipoVisita?.Nombre ?? "Visita";
+    var casa = Model.Partido?.EquipoCasa?.Nombre ?? "Casa";
+    var fecha = Model.Partido?.Fecha.ToLocalTime().ToString("yyyy-MM-dd HH:mm") ?? "";
+}
+
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="report-header">
+      <div class="h2 mb-1 fw-bold">Softball-Scorer</div>
+      <div class="h5 mb-0 text-muted">Reporte Play-by-Play</div>
+    </div>
+    <div class="d-print-none">
+      <button class="btn btn-primary me-2" onclick="window.print()">Guardar como PDF / Imprimir</button>
+      <a class="btn btn-outline-secondary" asp-controller="Exportaciones" asp-action="Index">Volver</a>
+    </div>
+  </div>
+
+  <div class="mb-3 small text-muted">
+    <strong>@visita</strong> vs <strong>@casa</strong> &middot; @fecha
+  </div>
+
+  <div class="card mb-3">
+    <div class="card-body p-0">
+      <table class="table table-sm mb-0 table-report">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Entrada</th>
+            <th>Mitad</th>
+            <th>Bateador</th>
+            <th>Resultado</th>
+            <th>Bases</th>
+            <th>Outs</th>
+            <th>Carreras</th>
+            <th>Tiempo</th>
+          </tr>
+        </thead>
+        <tbody>
+          @functions {
+              string FormatBases(Scoreboard.Web.Modelos.SnapshotPartido? snapshot)
+              {
+                  if (snapshot == null) return string.Empty;
+                  var b1 = snapshot.B1 ? "1" : "0";
+                  var b2 = snapshot.B2 ? "1" : "0";
+                  var b3 = snapshot.B3 ? "1" : "0";
+                  return $"B1:{b1}-B2:{b2}-B3:{b3}";
+              }
+          }
+
+          @for (int idx = 0; idx < Model.Logs.Count; idx++)
+          {
+              var log = Model.Logs[idx];
+              var (before, after) = Scoreboard.Web.Helpers.PlayLogSnapshotHelper.ExtractSnapshots(log.SnapshotJson);
+              <tr>
+                <td>@(idx + 1)</td>
+                <td>@(before?.EntradaActual ?? after?.EntradaActual ?? 0)</td>
+                <td>@(before?.Mitad ?? after?.Mitad ?? string.Empty)</td>
+                <td>@(log.Jugador == null ? string.Empty : $"{log.Jugador.Nombre} {log.Jugador.Apellido}".Trim())</td>
+                <td>@(log.Resultado?.ToString() ?? string.Empty)</td>
+                <td>@(FormatBases(after))</td>
+                <td>@(after?.Outs ?? 0)</td>
+                <td>@log.RunsScored</td>
+                <td>@log.CreadoUtc.ToString("yyyy-MM-dd HH:mm:ss")</td>
+              </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  .table-report {
+    border: 1px solid #e5e7eb;
+    border-collapse: collapse;
+  }
+  .table-report thead th {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 600;
+  }
+  .table-report th,
+  .table-report td {
+    border-bottom: 1px solid #f0f2f4;
+    padding: .6rem .75rem;
+    vertical-align: middle;
+    font-size: .95rem;
+  }
+  .table-report tbody tr:nth-child(odd) { background: #fcfcfd; }
+
+  .report-header .h2 { letter-spacing: .3px; }
+
+  @@media print {
+    .btn, .d-print-none { display: none !important; }
+    nav, footer { display: none !important; }
+    body { background: #fff !important; }
+    .table-report { border-color: #dadde1; }
+    .table-report thead th { background: #f3f4f6 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .table-report tbody tr:nth-child(odd) { background: #fafafa !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>

@@ -1,0 +1,5 @@
+-- ESTE ARCHIVO FUE MARCADO PARA ELIMINACIÓN POR PETICIÓN DEL USUARIO
+-- Contenido neutralizado: el script original ha sido eliminado del archivo.
+-- Si deseas borrar el archivo completamente, ejecuta en PowerShell (en la raíz del repo):
+-- Remove-Item .\tools\reconcile_migrations.sql
+-- Nota: no hay código ejecutable en este archivo actualmente.

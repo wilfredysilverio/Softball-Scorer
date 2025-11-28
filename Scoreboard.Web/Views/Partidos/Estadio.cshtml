@@ -1,0 +1,126 @@
+@using Scoreboard.Web.Modelos
+@model Partido
+
+@{
+    ViewData["Title"] = "Estadio";
+}
+
+<div class="container-fluid">
+    <!-- MARCADOR PRINCIPAL -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1 text-muted">Marcador</h5>
+                        <h2 class="mb-0">
+                            @Model.EquipoVisita?.Nombre
+                            <span class="fw-bold">@Model.CarrerasVisita</span>
+                            -
+                            <span class="fw-bold">@Model.CarrerasCasa</span>
+                            @Model.EquipoCasa?.Nombre
+                        </h2>
+                    </div>
+
+                    <div class="text-end">
+                        <div class="mb-1">
+                            Entrada @Model.EntradaActual (@Model.Mitad)
+                        </div>
+                        <div>
+                            Outs:
+                            @for (int i = 0; i < 3; i++)
+                            {
+                                if (i < Model.Outs)
+                                {
+                                    <span class="badge bg-danger me-1">&bull;</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-light text-muted me-1">&bull;</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTROLES RÁPIDOS PARA ANOTAR -->
+    <div class="row g-3">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header">
+                    <strong>Acciones rápidas</strong>
+                </div>
+                <div class="card-body">
+                    <form asp-action="ActualizarMarcador" method="post" class="row g-2">
+                        <input type="hidden" name="PartidoId" value="@Model.Id" />
+
+                        <div class="col-6 col-lg-4 d-grid">
+                            <button type="submit" name="Accion" value="carreraCasa" class="btn btn-success">
+                                + Carrera Casa
+                            </button>
+                        </div>
+                        <div class="col-6 col-lg-4 d-grid">
+                            <button type="submit" name="Accion" value="carreraVisita" class="btn btn-success">
+                                + Carrera Visita
+                            </button>
+                        </div>
+
+                        <div class="col-6 col-lg-4 d-grid">
+                            <button type="submit" name="Accion" value="hitCasa" class="btn btn-outline-primary">
+                                + Hit Casa
+                            </button>
+                        </div>
+                        <div class="col-6 col-lg-4 d-grid">
+                            <button type="submit" name="Accion" value="hitVisita" class="btn btn-outline-primary">
+                                + Hit Visita
+                            </button>
+                        </div>
+
+                        <div class="col-6 col-lg-4 d-grid">
+                            <button type="submit" name="Accion" value="errorCasa" class="btn btn-outline-warning">
+                                + Error Casa
+                            </button>
+                        </div>
+                        <div class="col-6 col-lg-4 d-grid">
+                            <button type="submit" name="Accion" value="errorVisita" class="btn btn-outline-warning">
+                                + Error Visita
+                            </button>
+                        </div>
+
+                        <div class="col-6 col-lg-4 d-grid">
+                            <button type="submit" name="Accion" value="out" class="btn btn-danger">
+                                Out
+                            </button>
+                        </div>
+
+                        <div class="col-6 col-lg-4 d-grid">
+                            <button type="submit" name="Accion" value="siguienteEntrada" class="btn btn-secondary">
+                                Siguiente entrada
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL DERECHO: RESUMEN -->
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-3">
+                <div class="card-header">
+                    <strong>Resumen del juego</strong>
+                </div>
+                <div class="card-body">
+                    <p class="mb-1"><strong>Fecha:</strong> @Model.Fecha.ToString("yyyy-MM-dd HH:mm")</p>
+                    <p class="mb-1"><strong>Estado:</strong> @Model.Estado</p>
+                    <p class="mb-1"><strong>Hits Casa:</strong> @Model.HitsCasa</p>
+                    <p class="mb-1"><strong>Hits Visita:</strong> @Model.HitsVisita</p>
+                    <p class="mb-1"><strong>Errores Casa:</strong> @Model.ErroresCasa</p>
+                    <p class="mb-1"><strong>Errores Visita:</strong> @Model.ErroresVisita</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

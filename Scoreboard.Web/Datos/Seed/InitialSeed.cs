@@ -18,9 +18,9 @@ namespace Scoreboard.Web.Datos.Seed
             var logger = sp.GetService<ILoggerFactory>()?.CreateLogger("InitialSeed");
             var db = sp.GetRequiredService<ContextoMarcador>();
 
-            // Asegurar base creada (no migra, solo asegura para entornos dev/prueba)
-            try { await db.Database.EnsureCreatedAsync(); }
-            catch (Exception ex) { logger?.LogWarning(ex, "EnsureCreated falló (puede no ser necesario en entornos migrados)"); }
+            // Aplicar migraciones pendientes (crea la base si no existe y mantiene esquema actualizado)
+            try { await db.Database.MigrateAsync(); }
+            catch (Exception ex) { logger?.LogWarning(ex, "MigrateAsync falló; revisar cadena de conexión y permisos"); }
 
             // Equipos a crear
             var teamsToEnsure = new[]

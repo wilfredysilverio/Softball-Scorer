@@ -14,19 +14,19 @@ namespace Scoreboard.Web.Controllers
 {
     public class PartidosController : Controller
     {
-        private readonly ContextoMarcador _db;
+        private readonly ContextoMarcador _context;
         private readonly IMarcadorService _marcador;
         private readonly IReportesService _reportes;
-        public PartidosController(ContextoMarcador db, IMarcadorService marcador, IReportesService reportes)
+        public PartidosController(ContextoMarcador context, IMarcadorService marcador, IReportesService reportes)
         {
-            _db = db;
+            _context = context;
             _marcador = marcador;
             _reportes = reportes;
         }
 
         private void CargarCombos(int? casaId = null, int? visitaId = null)
         {
-            var equipos = _db.Equipos.AsNoTracking().OrderBy(e => e.Nombre).ToList();
+            var equipos = _context.Equipos.AsNoTracking().OrderBy(e => e.Nombre).ToList();
             ViewBag.EquiposCasa = new SelectList(equipos, "Id", "Nombre", casaId);
             ViewBag.EquiposVisita = new SelectList(equipos, "Id", "Nombre", visitaId);
         }
@@ -56,7 +56,7 @@ namespace Scoreboard.Web.Controllers
         private async Task<(List<Jugador> Lineup, Jugador? Bateador)> ObtenerContextoBateadorAsync(Partido partido)
         {
             var equipoBateaId = partido.Mitad == MitadEntrada.Baja ? partido.EquipoCasaId : partido.EquipoVisitaId;
-            var lineupItems = await _db.Lineups.AsNoTracking()
+            var lineupItems = await _context.Lineups.AsNoTracking()
                 .Where(l => l.PartidoId == partido.Id && l.EquipoId == equipoBateaId)
                 .OrderBy(l => l.Orden)
                 .Include(l => l.Jugador)
@@ -81,12 +81,13 @@ namespace Scoreboard.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var lista = await _db.Partidos.AsNoTracking()
+            var partidos = await _context.Partidos
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)
                 .OrderByDescending(p => p.Fecha)
                 .ToListAsync();
-            return View(lista);
+
+            return View(partidos);
         }
 
         [Authorize(Roles = "Admin")]
@@ -108,8 +109,8 @@ namespace Scoreboard.Web.Controllers
                 CargarCombos(modelo.EquipoCasaId, modelo.EquipoVisitaId);
                 return View(modelo);
             }
-            _db.Partidos.Add(modelo);
-            await _db.SaveChangesAsync();
+            _context.Partidos.Add(modelo);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -117,7 +118,7 @@ namespace Scoreboard.Web.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             if (id is null) return NotFound();
-            var partido = await _db.Partidos.AsNoTracking()
+            var partido = await _context.Partidos.AsNoTracking()
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -128,7 +129,7 @@ namespace Scoreboard.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> MarcadorPublico(int id)
         {
-            var partido = await _db.Partidos.AsNoTracking()
+            var partido = await _context.Partidos.AsNoTracking()
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)
                 .Include(p => p.Entradas)
@@ -141,7 +142,7 @@ namespace Scoreboard.Web.Controllers
                 .OrderBy(e => e.NumeroInning)
                 .ToList() ?? new List<Entrada>();
 
-            var jugadas = await _db.PlayLogs.AsNoTracking()
+            var jugadas = await _context.PlayLogs.AsNoTracking()
                 .Include(pl => pl.Jugador)
                 .Where(pl => pl.PartidoId == id && pl.IsActive)
                 .OrderByDescending(pl => pl.Id)
@@ -181,7 +182,7 @@ namespace Scoreboard.Web.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id is null) return NotFound();
-            var partido = await _db.Partidos.FindAsync(id);
+            var partido = await _context.Partidos.FindAsync(id);
             if (partido is null) return NotFound();
             CargarCombos(partido.EquipoCasaId, partido.EquipoVisitaId);
             return View(partido);
@@ -200,8 +201,8 @@ namespace Scoreboard.Web.Controllers
                 CargarCombos(modelo.EquipoCasaId, modelo.EquipoVisitaId);
                 return View(modelo);
             }
-            _db.Entry(modelo).State = EntityState.Modified;
-            await _db.SaveChangesAsync();
+            _context.Entry(modelo).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -209,7 +210,7 @@ namespace Scoreboard.Web.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id is null) return NotFound();
-            var partido = await _db.Partidos.AsNoTracking()
+            var partido = await _context.Partidos.AsNoTracking()
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -222,11 +223,11 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmado(int id)
         {
-            var partido = await _db.Partidos.FindAsync(id);
+            var partido = await _context.Partidos.FindAsync(id);
             if (partido is not null)
             {
-                _db.Partidos.Remove(partido);
-                await _db.SaveChangesAsync();
+                _context.Partidos.Remove(partido);
+                await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }
@@ -235,7 +236,7 @@ namespace Scoreboard.Web.Controllers
         public async Task<IActionResult> VerPartido(int? id)
         {
             if (id is null) return NotFound();
-            var partido = await _db.Partidos.AsNoTracking()
+            var partido = await _context.Partidos.AsNoTracking()
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)
                 .Include(p => p.Entradas)
@@ -283,12 +284,12 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin,Anotador")]
         public async Task<IActionResult> DefinirLineup(int id)
         {
-            var partido = await _db.Partidos.Include(p => p.EquipoCasa).Include(p => p.EquipoVisita).FirstOrDefaultAsync(p => p.Id == id);
+            var partido = await _context.Partidos.Include(p => p.EquipoCasa).Include(p => p.EquipoVisita).FirstOrDefaultAsync(p => p.Id == id);
             if (partido == null) return NotFound();
-            var jugadoresCasa = await _db.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoCasaId).OrderBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
-            var jugadoresVisita = await _db.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoVisitaId).OrderBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
-            var lineupCasa = await _db.Lineups.AsNoTracking().Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).OrderBy(l => l.Orden).ToListAsync();
-            var lineupVisita = await _db.Lineups.AsNoTracking().Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).OrderBy(l => l.Orden).ToListAsync();
+            var jugadoresCasa = await _context.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoCasaId).OrderBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
+            var jugadoresVisita = await _context.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoVisitaId).OrderBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
+            var lineupCasa = await _context.Lineups.AsNoTracking().Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).OrderBy(l => l.Orden).ToListAsync();
+            var lineupVisita = await _context.Lineups.AsNoTracking().Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).OrderBy(l => l.Orden).ToListAsync();
             ViewBag.JugadoresCasa = jugadoresCasa;
             ViewBag.JugadoresVisita = jugadoresVisita;
             ViewBag.LineupCasa = lineupCasa;
@@ -301,25 +302,25 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin,Anotador")]
         public async Task<IActionResult> DefinirLineup(int id, [FromForm] int[]? casaJugadores, [FromForm] int[]? visitaJugadores)
         {
-            var partido = await _db.Partidos.FindAsync(id);
+            var partido = await _context.Partidos.FindAsync(id);
             if (partido == null) return NotFound();
             if (casaJugadores is not null)
             {
-                var existentesCasa = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).ToListAsync();
-                if (existentesCasa.Any()) _db.Lineups.RemoveRange(existentesCasa);
+                var existentesCasa = await _context.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).ToListAsync();
+                if (existentesCasa.Any()) _context.Lineups.RemoveRange(existentesCasa);
                 int orden = 1;
                 foreach (var j in casaJugadores.Where(x => x > 0))
-                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = orden++ });
+                    _context.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = orden++ });
             }
             if (visitaJugadores is not null)
             {
-                var existentesVisita = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).ToListAsync();
-                if (existentesVisita.Any()) _db.Lineups.RemoveRange(existentesVisita);
+                var existentesVisita = await _context.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).ToListAsync();
+                if (existentesVisita.Any()) _context.Lineups.RemoveRange(existentesVisita);
                 int orden = 1;
                 foreach (var j in visitaJugadores.Where(x => x > 0))
-                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = orden++ });
+                    _context.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = orden++ });
             }
-            await _db.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             TempData["Ok"] = "Lineup actualizado.";
             return RedirectToAction(nameof(DefinirLineup), new { id });
         }
@@ -329,17 +330,17 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin,Anotador")]
         public async Task<IActionResult> GuardarLineupVisitante(int id, [FromForm] int[] visitaJugadores)
         {
-            var partido = await _db.Partidos.FindAsync(id);
+            var partido = await _context.Partidos.FindAsync(id);
             if (partido == null) return NotFound();
-            var existentes = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).ToListAsync();
-            if (existentes.Any()) _db.Lineups.RemoveRange(existentes);
+            var existentes = await _context.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).ToListAsync();
+            if (existentes.Any()) _context.Lineups.RemoveRange(existentes);
             int orden = 1;
             if (visitaJugadores != null)
             {
                 foreach (var j in visitaJugadores.Where(x => x > 0))
-                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = orden++ });
+                    _context.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = orden++ });
             }
-            await _db.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             TempData["Ok"] = "Lineup visitante guardado.";
             return RedirectToAction(nameof(DefinirLineup), new { id });
         }
@@ -349,17 +350,17 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin,Anotador")]
         public async Task<IActionResult> GuardarLineupCasa(int id, [FromForm] int[] casaJugadores)
         {
-            var partido = await _db.Partidos.FindAsync(id);
+            var partido = await _context.Partidos.FindAsync(id);
             if (partido == null) return NotFound();
-            var existentes = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).ToListAsync();
-            if (existentes.Any()) _db.Lineups.RemoveRange(existentes);
+            var existentes = await _context.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).ToListAsync();
+            if (existentes.Any()) _context.Lineups.RemoveRange(existentes);
             int orden = 1;
             if (casaJugadores != null)
             {
                 foreach (var j in casaJugadores.Where(x => x > 0))
-                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = orden++ });
+                    _context.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = orden++ });
             }
-            await _db.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             TempData["Ok"] = "Lineup casa guardado.";
             return RedirectToAction(nameof(DefinirLineup), new { id });
         }
@@ -369,17 +370,17 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin,Anotador")]
         public async Task<IActionResult> UpdateMarcador(int id, List<Entrada> entradas)
         {
-            var partido = await _db.Partidos.Include(p => p.Entradas).FirstOrDefaultAsync(p => p.Id == id);
+            var partido = await _context.Partidos.Include(p => p.Entradas).FirstOrDefaultAsync(p => p.Id == id);
             if (partido is null) return NotFound();
             var existentes = partido.Entradas.ToList();
-            if (existentes.Any()) _db.Entradas.RemoveRange(existentes);
+            if (existentes.Any()) _context.Entradas.RemoveRange(existentes);
             if (entradas != null && entradas.Any())
             {
                 foreach (var e in entradas)
                 {
                     e.PartidoId = partido.Id;
                     if (e.NumeroInning < 1) e.NumeroInning = 1;
-                    _db.Entradas.Add(e);
+                    _context.Entradas.Add(e);
                 }
             }
             partido.CarrerasCasa = entradas?.Sum(x => x.CarrerasCasa) ?? 0;
@@ -388,7 +389,7 @@ namespace Scoreboard.Web.Controllers
             partido.HitsVisita = entradas?.Sum(x => x.HitsVisita) ?? 0;
             partido.ErroresCasa = entradas?.Sum(x => x.ErroresCasa) ?? 0;
             partido.ErroresVisita = entradas?.Sum(x => x.ErroresVisita) ?? 0;
-            await _db.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(VerPartido), new { id = partido.Id });
         }
 
@@ -471,7 +472,7 @@ namespace Scoreboard.Web.Controllers
                 return ErrorRegistro("Debe seleccionar un bateador y un resultado válidos.", esAjax, turno.PartidoId);
             }
 
-            var partido = await _db.Partidos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == turno.PartidoId);
+            var partido = await _context.Partidos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == turno.PartidoId);
             if (partido == null)
             {
                 return ErrorRegistro("Partido no encontrado.", esAjax, turno.PartidoId);
@@ -575,7 +576,7 @@ namespace Scoreboard.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ExportarBoxScore(int id)
         {
-            var partido = await _db.Partidos.AsNoTracking()
+            var partido = await _context.Partidos.AsNoTracking()
                 .Include(p => p.Entradas)
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)

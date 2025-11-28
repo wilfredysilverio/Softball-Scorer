@@ -1,0 +1,28 @@
+@model IEnumerable<Scoreboard.Web.Modelos.Partido>
+
+@{
+    ViewData["Title"] = "Exportar";
+}
+
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Exportar datos</h2>
+    <small class="text-muted">Elige un partido y descarga Play-by-play o BoxScore.</small>
+  </div>
+
+  <div class="list-group">
+    @foreach (var p in Model)
+    {
+      <div class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>@(p.EquipoVisita?.Nombre ?? "Visita")</strong> vs <strong>@(p.EquipoCasa?.Nombre ?? "Casa")</strong>
+          <div class="text-muted small">@p.Fecha.ToString("yyyy-MM-dd HH:mm")</div>
+        </div>
+        <div class="d-flex gap-2">
+          <a class="btn btn-success btn-sm" asp-controller="Exportaciones" asp-action="ExportPlayXlsx" asp-route-id="@p.Id">Excel (XLSX)</a>
+          <a class="btn btn-secondary btn-sm" asp-controller="Exportaciones" asp-action="PrintPlay" asp-route-id="@p.Id" target="_blank">Ver / Imprimir (PDF)</a>
+        </div>
+      </div>
+    }
+  </div>
+</div>

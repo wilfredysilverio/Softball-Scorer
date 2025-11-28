@@ -18,38 +18,63 @@ public class HomeController : Controller
         _db = db;
     }
 
-    [Microsoft.AspNetCore.Authorization.AllowAnonymous]
     public async Task<IActionResult> Index()
     {
-        var vm = new HomeDashboardVm();
+        // Redirigir a Login si el usuario no está autenticado
+        if (!User.Identity?.IsAuthenticated ?? true)
+        {
+            return RedirectToAction("Login", "Account");
+        }
 
-        vm.TotalEquipos = await _db.Equipos.CountAsync();
-        vm.TotalJugadores = await _db.Jugadores.CountAsync();
-        vm.TotalPartidos = await _db.Partidos.CountAsync();
+        // Totales
+        ViewBag.TotalEquipos = await _db.Equipos.CountAsync();
+        ViewBag.TotalJugadores = await _db.Jugadores.CountAsync();
+        ViewBag.TotalPartidos = await _db.Partidos.CountAsync();
 
-        vm.ProximoJuego = await _db.Partidos
+        // Próximo juego
+        var proximoJuego = await _db.Partidos
             .Where(p => p.Fecha > DateTime.UtcNow)
             .OrderBy(p => p.Fecha)
             .Select(p => (DateTime?)p.Fecha)
             .FirstOrDefaultAsync();
 
-        // Últimos 5 jugadores (creados/actualizados) — si no hay campos de fecha específicos, usar Id como proxy
-        vm.JugadoresRecientes = await _db.Jugadores
+        ViewBag.ProximoJuego = proximoJuego.HasValue 
+            ? proximoJuego.Value.ToString("dd/MM/yyyy HH:mm") 
+            : null;
+
+        // Últimos 5 jugadores
+        var jugadoresRecientes = await _db.Jugadores
             .AsNoTracking()
+            .Include(j => j.Equipo)
             .OrderByDescending(j => j.Id)
             .Take(5)
-            .Select(j => new JugadorRecienteVm { Id = j.Id, NombreCompleto = j.Nombre + " " + j.Apellido, Fecha = DateTime.UtcNow })
             .ToListAsync();
 
-        // Últimos 5 partidos (por fecha más reciente)
-        vm.PartidosRecientes = await _db.Partidos
+        ViewBag.UltimosJugadores = jugadoresRecientes.Select(j => new
+        {
+            j.Id,
+            j.Nombre,
+            j.Apellido,
+            FechaTexto = "Reciente"
+        }).ToList();
+
+        // Últimos 5 partidos
+        var partidosRecientes = await _db.Partidos
             .AsNoTracking()
+            .Include(p => p.EquipoCasa)
+            .Include(p => p.EquipoVisita)
             .OrderByDescending(p => p.Fecha)
             .Take(5)
-            .Select(p => new PartidoRecienteVm { Id = p.Id, Fecha = p.Fecha, Descripcion = (p.EquipoCasaId + " vs " + p.EquipoVisitaId) })
             .ToListAsync();
 
-        return View(vm);
+        ViewBag.UltimosPartidos = partidosRecientes.Select(p => new
+        {
+            p.Id,
+            Titulo = $"{p.EquipoCasa?.Nombre ?? "Casa"} vs {p.EquipoVisita?.Nombre ?? "Visita"}",
+            FechaTexto = p.Fecha.ToString("dd/MM/yyyy HH:mm")
+        }).ToList();
+
+        return View();
     }
 
     [Microsoft.AspNetCore.Authorization.AllowAnonymous]

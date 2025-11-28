@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio - Softball-Scorer</title>
+
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+
+    <link rel="stylesheet" href="/css/site.css?v=nsUW4_VEh5MUTtK15IHf-0IiqlAOnNN6qIFRpw_Beew" />
+    <link rel="stylesheet" href="/Scoreboard.Web.styles.css?v=ZmVW4RndOKK9br6vWzPsa2uRmKEGXORuzSkbyK15wTI" />
+
+    <style>
+        /* ==== Layout lateral ==== */
+        :root {
+            --sb-width: 260px;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sb-width);
+            flex: 0 0 var(--sb-width);
+            background: #111827; /* gris oscuro */
+            color: #e5e7eb;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+            .sidebar .brand {
+                font-weight: 700;
+                padding: 1rem 1.25rem;
+                border-bottom: 1px solid rgba(255,255,255,.08);
+            }
+
+            .sidebar a.nav-link {
+                color: #e5e7eb;
+                border-radius: .5rem;
+                padding: .6rem .9rem;
+                display: flex;
+                align-items: center;
+                gap: .6rem;
+            }
+
+                .sidebar a.nav-link:hover,
+                .sidebar a.nav-link.active {
+                    background: #1f2937;
+                    color: #fff;
+                }
+
+            .sidebar .section-title {
+                font-size: .75rem;
+                letter-spacing: .08em;
+                color: #9ca3af;
+                padding: .75rem 1.25rem .25rem;
+                text-transform: uppercase;
+            }
+
+        /* Contenido */
+        .app-main {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            background: #f8fafc;
+        }
+
+        .app-topbar {
+            border-bottom: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+
+        .app-content {
+            padding: 1.25rem;
+        }
+
+        /* Responsive: en pantallas chicas el sidebar es offcanvas */
+        @media (max-width: 991.98px) {
+            body {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                inset: 0 auto 0 0;
+                transform: translateX(-100%);
+                transition: transform .25s ease-in-out;
+                z-index: 1045;
+            }
+
+                .sidebar.show {
+                    transform: translateX(0);
+                }
+
+            .offcanvas-backdrop-custom {
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,.35);
+                z-index: 1040;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== Sidebar izquierdo ========== -->
+        <aside b-p0i8xikty4 id="sb" class="sidebar">
+            <div b-p0i8xikty4 class="brand d-flex align-items-center justify-content-between">
+                <a class="text-decoration-none text-white" href="/">
+                    <i b-p0i8xikty4 class="bi bi-trophy-fill me-1"></i> Softball-Scorer
+                </a>
+                <button b-p0i8xikty4 class="btn btn-sm btn-outline-light d-lg-none" id="btnCloseSidebar" title="Cerrar menú">
+                    <i b-p0i8xikty4 class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <nav b-p0i8xikty4 class="p-3">
+                <div b-p0i8xikty4 class="section-title">Navegación</div>
+                <ul b-p0i8xikty4 class="nav flex-column gap-1">
+                    <li b-p0i8xikty4 class="nav-item">
+                        <a class="nav-link " href="/">
+                            <i b-p0i8xikty4 class="bi bi-house-door"></i> Inicio
+                        </a>
+                    </li>
+                    <li b-p0i8xikty4 class="nav-item">
+                        <a class="nav-link " href="/Jugadores">
+                            <i b-p0i8xikty4 class="bi bi-people"></i> Jugadores
+                        </a>
+                    </li>
+                    <li b-p0i8xikty4 class="nav-item">
+                        <a class="nav-link " href="/Equipos">
+                            <i b-p0i8xikty4 class="bi bi-shield"></i> Equipos
+                        </a>
+                    </li>
+                    <li b-p0i8xikty4 class="nav-item">
+                        <a class="nav-link " href="/Partidos">
+                            <i b-p0i8xikty4 class="bi bi-flag"></i> Partidos
+                        </a>
+                    </li>
+                    <li b-p0i8xikty4 class="nav-item">
+                        <a class="nav-link " href="/Estadisticas">
+                            <i b-p0i8xikty4 class="bi bi-bar-chart"></i> Estadísticas
+                        </a>
+                    </li>
+                </ul>
+
+                <div b-p0i8xikty4 class="section-title">Herramientas</div>
+                <ul b-p0i8xikty4 class="nav flex-column gap-1">
+                    <li b-p0i8xikty4 class="nav-item">
+                        <a class="nav-link" href="/Exportaciones">
+                            <i b-p0i8xikty4 class="bi bi-file-earmark-arrow-down"></i> Exportar (PDF/Excel)
+                        </a>
+                    </li>
+                </ul>
+
+                <hr b-p0i8xikty4 class="border-secondary-subtle my-3" />
+
+                <div b-p0i8xikty4 class="d-grid gap-2">
+                    <!-- Botón Salir / Cerrar sesión -->
+                    <button b-p0i8xikty4 id="btnSalir" class="btn btn-outline-light">
+                        <i b-p0i8xikty4 class="bi bi-box-arrow-right"></i> Salir / Cerrar sesión
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+    <!-- ========== Panel derecho (topbar + contenido) ========== -->
+    <div b-p0i8xikty4 class="app-main">
+        <header b-p0i8xikty4 class="app-topbar py-2 px-3 d-flex align-items-center justify-content-between">
+            <div b-p0i8xikty4 class="d-flex align-items-center gap-2">
+                <button b-p0i8xikty4 class="btn btn-outline-secondary d-lg-none" id="btnOpenSidebar" title="Abrir menú">
+                    <i b-p0i8xikty4 class="bi bi-list"></i>
+                </button>
+                <span b-p0i8xikty4 class="fw-semibold">Inicio</span>
+            </div>
+            <div b-p0i8xikty4 class="d-none d-lg-flex align-items-center gap-2">
+                
+<ul class="navbar-nav flex-row align-items-center gap-2">
+        <li class="nav-item">
+            <a class="btn btn-sm btn-outline-primary" href="/Account/Login">
+                Iniciar sesión
+            </a>
+        </li>
+</ul>
+
+            </div>
+        </header>
+
+        <main b-p0i8xikty4 class="app-content">
+            
+<div class="container-fluid py-4">
+    <!-- Encabezado -->
+    <div class="d-flex align-items-center mb-4">
+        <h1 class="me-auto">Inicio</h1>  <!-- ← Título visible en la página -->
+        <div>
+            <a class="btn btn-outline-primary me-2" href="/Equipos/Create">Crear Equipo</a>
+            <a class="btn btn-outline-success me-2" href="/Jugadores/Create">Crear Jugador</a>
+            <a class="btn btn-outline-warning" href="/Partidos/Create">Crear Partido</a>
+
+                <!-- Repoblar datos (eliminado) -->
+        </div>
+    </div>
+
+    <!-- Tarjetas KPI -->
+    <div class="row g-3">
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm p-3 h-100">
+                <div class="d-flex align-items-center">
+                    <div class="me-3 display-6 text-primary"><i class="bi bi-people-fill"></i></div>
+                    <div>
+                        <div class="text-muted small">Equipos</div>
+                        <div class="h4">4</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm p-3 h-100">
+                <div class="d-flex align-items-center">
+                    <div class="me-3 display-6 text-success"><i class="bi bi-person-lines-fill"></i></div>
+                    <div>
+                        <div class="text-muted small">Jugadores</div>
+                        <div class="h4">36</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm p-3 h-100">
+                <div class="d-flex align-items-center">
+                    <div class="me-3 display-6 text-warning"><i class="bi bi-trophy-fill"></i></div>
+                    <div>
+                        <div class="text-muted small">Partidos</div>
+                        <div class="h4">3</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-3">
+            <div class="card shadow-sm p-3 h-100">
+                <div class="d-flex align-items-center">
+                    <div class="me-3 display-6 text-info"><i class="bi bi-calendar-event-fill"></i></div>
+                    <div>
+                        <div class="text-muted small">Próximo juego</div>
+                        <div class="h6">
+                            &#x2014;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Listas de actividad -->
+    <div class="row mt-4 g-3">
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm p-3 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0">Actividad reciente: Jugadores</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a href="/Jugadores/Details/37">
+                                        Oscar Jimenez
+                                    </a>
+                                    <div class="text-muted small">27/11/2025 5:28 a.&#xA0;m.</div>
+                                </div>
+                                <a class="btn btn-sm btn-outline-primary" href="/Jugadores/Edit/37">Editar</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a href="/Jugadores/Details/36">
+                                        Nicolas Cabrera
+                                    </a>
+                                    <div class="text-muted small">27/11/2025 5:28 a.&#xA0;m.</div>
+                                </div>
+                                <a class="btn btn-sm btn-outline-primary" href="/Jugadores/Edit/36">Editar</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a href="/Jugadores/Details/35">
+                                        Marcos Herrera
+                                    </a>
+                                    <div class="text-muted small">27/11/2025 5:28 a.&#xA0;m.</div>
+                                </div>
+                                <a class="btn btn-sm btn-outline-primary" href="/Jugadores/Edit/35">Editar</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a href="/Jugadores/Details/34">
+                                        Leonardo Fernandez
+                                    </a>
+                                    <div class="text-muted small">27/11/2025 5:28 a.&#xA0;m.</div>
+                                </div>
+                                <a class="btn btn-sm btn-outline-primary" href="/Jugadores/Edit/34">Editar</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a href="/Jugadores/Details/33">
+                                        Kevin Lara
+                                    </a>
+                                    <div class="text-muted small">27/11/2025 5:28 a.&#xA0;m.</div>
+                                </div>
+                                <a class="btn btn-sm btn-outline-primary" href="/Jugadores/Edit/33">Editar</a>
+                            </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm p-3 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0">Actividad reciente: Partidos</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a href="/Partidos/Details/19">
+                                        Tigres de Villa Duarte vs Los Industriales de Santo Domingo
+                                    </a>
+                                    <div class="text-muted small">16/11/2025 3:49 p.&#xA0;m.</div>
+                                </div>
+                                <a class="btn btn-sm btn-outline-primary" href="/Partidos/Edit/19">Editar</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a href="/Partidos/Details/18">
+                                        Los Industriales de Santo Domingo vs Tigres de Villa Duarte
+                                    </a>
+                                    <div class="text-muted small">16/11/2025 3:02 p.&#xA0;m.</div>
+                                </div>
+                                <a class="btn btn-sm btn-outline-primary" href="/Partidos/Edit/18">Editar</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <a href="/Partidos/Details/17">
+                                        Los Industriales de Santo Domingo vs Tigres de Villa Duarte
+                                    </a>
+                                    <div class="text-muted small">16/11/2025 2:56 p.&#xA0;m.</div>
+                                </div>
+                                <a class="btn btn-sm btn-outline-primary" href="/Partidos/Edit/17">Editar</a>
+                            </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+        </main>
+
+        <footer b-p0i8xikty4 class="border-top bg-white text-muted py-2 px-3 d-flex justify-content-between align-items-center">
+            <!-- Pie de página vacío a petición -->
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/site.js?v=rT8hgll-Gb92SJ9JZX_b075Ydjegs6aGC0hSVz1XYbc"></script>
+    <!-- SignalR cliente (debe cargarse antes de marcador.js) -->
+    <script src="/lib/signalr/signalr.min.js"></script>
+    <!-- Script de marcador (usa connection global si configurado) -->
+    <script src="/js/marcador.js?v=C5bBcZ2meQmoC-6roOU8U-0aUfh4dx8-IwxvinQ7hyw"></script>
+
+    <!-- Modal global de confirmación -->
+    <div b-p0i8xikty4 class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+        <div b-p0i8xikty4 class="modal-dialog modal-sm modal-dialog-centered">
+            <div b-p0i8xikty4 class="modal-content">
+                <div b-p0i8xikty4 class="modal-header">
+                    <h5 b-p0i8xikty4 class="modal-title">Confirmar acción</h5>
+                    <button b-p0i8xikty4 type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div b-p0i8xikty4 class="modal-body">
+                    <p b-p0i8xikty4 id="confirmModalMessage">¿Seguro que deseas continuar?</p>
+                </div>
+                <div b-p0i8xikty4 class="modal-footer">
+                    <button b-p0i8xikty4 type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button b-p0i8xikty4 type="button" id="confirmModalOk" class="btn btn-danger">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====== Sidebar en móviles (mostrar/ocultar con backdrop) ======
+        (function () {
+            const sb = document.getElementById('sb');
+            const openBtn = document.getElementById('btnOpenSidebar');
+            const closeBtn = document.getElementById('btnCloseSidebar');
+            let backdrop;
+
+            function open() {
+                if (!sb) return;
+                sb.classList.add('show');
+                backdrop = document.createElement('div');
+                backdrop.className = 'offcanvas-backdrop-custom';
+                backdrop.addEventListener('click', close);
+                document.body.appendChild(backdrop);
+            }
+            function close() {
+                if (!sb) return;
+                sb.classList.remove('show');
+                if (backdrop) { backdrop.remove(); backdrop = null; }
+            }
+
+            openBtn?.addEventListener('click', open);
+            closeBtn?.addEventListener('click', close);
+        })();
+
+        // ====== Botón Salir / Cerrar sesión ======
+        (function () {
+            const btn = document.getElementById('btnSalir');
+            if (!btn) return;
+
+            btn.addEventListener('click', async () => {
+                const logoutUrl = '/Account/Logout';
+
+                try {
+                    const r = await fetch(logoutUrl, {
+                        method: 'POST',
+                        headers: {
+                            'RequestVerificationToken': getAntiforgery()
+                        }
+                    });
+
+                    if (r.ok || r.status === 302) {
+                        location.href = '/';
+                        return;
+                    }
+                } catch (e) {
+                    console.warn('Error al cerrar sesión', e);
+                }
+
+                // Fallback
+                location.href = '/';
+            });
+
+            function getAntiforgery() {
+                const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
+                return tokenInput ? tokenInput.value : '';
+            }
+        })();
+    </script>
+
+    
+</body>
+</html>

@@ -133,59 +133,41 @@
             <div class="section-title">Navegación</div>
             <ul class="nav flex-column gap-1">
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
-                       asp-controller="Home" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")" asp-controller="Home" asp-action="Index">
                         <i class="bi bi-house-door"></i> Inicio
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Jugadores" ? "active" : "")"
-                       asp-controller="Jugadores" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Jugadores" ? "active" : "")" asp-controller="Jugadores" asp-action="Index">
                         <i class="bi bi-people"></i> Jugadores
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Equipos" ? "active" : "")"
-                       asp-controller="Equipos" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Equipos" ? "active" : "")" asp-controller="Equipos" asp-action="Index">
                         <i class="bi bi-shield"></i> Equipos
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Partidos" ? "active" : "")"
-                       asp-controller="Partidos" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Partidos" ? "active" : "")" asp-controller="Partidos" asp-action="Index">
                         <i class="bi bi-flag"></i> Partidos
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Estadisticas" ? "active" : "")"
-                       asp-controller="Estadisticas" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Estadisticas" ? "active" : "")" asp-controller="Estadisticas" asp-action="Index">
                         <i class="bi bi-bar-chart"></i> Estadísticas
                     </a>
                 </li>
-
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Jugadores" asp-action="Index">Jugadores</a>
-                </li>
-
-            </ul>
-
-            <div class="section-title">Herramientas</div>
-            <ul class="nav flex-column gap-1">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Exportaciones" asp-action="Index">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Exportaciones" ? "active" : "")" asp-controller="Exportaciones" asp-action="Index">
                         <i class="bi bi-file-earmark-arrow-down"></i> Exportar (PDF/Excel)
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-danger fw-semibold" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <i class="bi bi-box-arrow-right"></i> Salir / Cerrar sesión
+                    </a>
+                </li>
             </ul>
-
-            <hr class="border-secondary-subtle my-3" />
-
-            <div class="d-grid gap-2">
-                <!-- Botón Salir / Cerrar sesión -->
-                <button id="btnSalir" class="btn btn-outline-light">
-                    <i class="bi bi-box-arrow-right"></i> Salir / Cerrar sesión
-                </button>
-            </div>
         </nav>
         </aside>
     }
@@ -205,6 +187,15 @@
         </header>
 
         <main class="app-content">
+                @* Mensajes globales de error/sistema *@
+                @if (TempData["Error"] != null)
+                {
+                    <div class="container mt-2">
+                        <div class="alert alert-danger shadow-sm" role="alert">
+                            @TempData["Error"]
+                        </div>
+                    </div>
+                }
             @RenderBody()
         </main>
 
@@ -297,7 +288,47 @@
                 return tokenInput ? tokenInput.value : '';
             }
         })();
+
+        // ====== Confirmación con data-confirm ======
+        document.addEventListener("click", function (e) {
+            const target = e.target.closest("[data-confirm]");
+            if (!target) return;
+
+            const message = target.getAttribute("data-confirm") || "¿Estás seguro?";
+            if (!confirm(message)) {
+                e.preventDefault();
+            }
+        }, true);
     </script>
+
+    <!-- Modal de confirmación para cerrar sesión -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="logoutModalLabel">¿Cerrar sesión?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body text-center">
+                    <p class="mb-0">
+                        ¿Estás seguro de que deseas cerrar tu sesión en el sistema?
+                    </p>
+                </div>
+
+                <div class="modal-footer border-0 d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                        <button type="submit" class="btn btn-danger">
+                            Sí, cerrar sesión
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
