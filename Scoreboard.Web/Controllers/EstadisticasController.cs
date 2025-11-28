@@ -1,7 +1,10 @@
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Scoreboard.Web.Datos;
-using Scoreboard.Web.Modelos.ViewModels;
 
 namespace Scoreboard.Web.Controllers
 {
@@ -10,14 +13,15 @@ namespace Scoreboard.Web.Controllers
         private readonly ContextoMarcador _db;
         public EstadisticasController(ContextoMarcador db) => _db = db;
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            // Agregados generales basados en partidos y jugadores existentes
+            ViewData["Title"] = "Estadísticas";
+
+            // Totales generales
             var totalPartidos = await _db.Partidos.CountAsync();
             var totalEquipos = await _db.Equipos.CountAsync();
             var totalJugadores = await _db.Jugadores.CountAsync();
-
-            // Carreras totales en todos los partidos
             var totalCarreras = await _db.Partidos.SumAsync(p => p.CarrerasCasa + p.CarrerasVisita);
 
             ViewData["TotalPartidos"] = totalPartidos;
@@ -25,13 +29,17 @@ namespace Scoreboard.Web.Controllers
             ViewData["TotalJugadores"] = totalJugadores;
             ViewData["TotalCarreras"] = totalCarreras;
 
-            // Equipo con más carreras (agregado por equipo)
-            // EF Core cannot translate array initializers inside SelectMany in some providers.
-            // Instead build two queries (casa/visita) and concat them.
-            var casaList = await _db.Partidos.Select(p => new { TeamId = p.EquipoCasaId, Carreras = p.CarrerasCasa }).ToListAsync();
-            var visitaList = await _db.Partidos.Select(p => new { TeamId = p.EquipoVisitaId, Carreras = p.CarrerasVisita }).ToListAsync();
+            // Carreras por equipo (casa y visita)
+            var casaList = await _db.Partidos
+                .Select(p => new { TeamId = p.EquipoCasaId, Carreras = p.CarrerasCasa })
+                .ToListAsync();
 
-            var equiposCarreras = casaList.Concat(visitaList)
+            var visitaList = await _db.Partidos
+                .Select(p => new { TeamId = p.EquipoVisitaId, Carreras = p.CarrerasVisita })
+                .ToListAsync();
+
+            var equiposCarreras = casaList
+                .Concat(visitaList)
                 .GroupBy(x => x.TeamId)
                 .Select(g => new { TeamId = g.Key, Total = g.Sum(x => x.Carreras) })
                 .OrderByDescending(x => x.Total)
@@ -47,16 +55,16 @@ namespace Scoreboard.Web.Controllers
                 teamData.Add(e.Total);
             }
 
-            // Promedio general = carreras totales / partidos (si hay partidos)
+            // Promedio general de carreras por partido
             decimal promedioGeneral = 0m;
             if (totalPartidos > 0)
-                promedioGeneral = Math.Round((decimal)totalCarreras / totalPartidos, 2);
+                promedioGeneral = System.Math.Round((decimal)totalCarreras / totalPartidos, 2);
 
-            ViewData["TeamLabels"] = System.Text.Json.JsonSerializer.Serialize(teamLabels);
-            ViewData["TeamData"] = System.Text.Json.JsonSerializer.Serialize(teamData);
+            ViewData["TeamLabels"] = JsonSerializer.Serialize(teamLabels);
+            ViewData["TeamData"] = JsonSerializer.Serialize(teamData);
             ViewData["PromedioGeneral"] = promedioGeneral;
 
-            // Equipo con más carreras (message rápido)
+            // Equipo con más carreras (texto rápido)
             var top = equiposCarreras.FirstOrDefault();
             if (top != null)
             {
