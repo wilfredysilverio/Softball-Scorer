@@ -3,6 +3,8 @@
 (function () {
     'use strict';
 
+    const EVENT_HELP_DEFAULT = 'Usa esta opción para registrar robos o avances por passed ball / wild pitch antes de la jugada.';
+
     function valueFrom(obj, ...aliases) {
         if (!obj) return undefined;
         for (const aliasRaw of aliases) {
@@ -18,8 +20,8 @@
     }
 
     // Helpers
-    async function postForm(form) {
-        const fd = new FormData(form);
+    async function postForm(form, formData) {
+        const fd = formData || new FormData(form);
         const body = new URLSearchParams();
         for (const pair of fd.entries()) {
             const key = pair[0];
@@ -85,6 +87,49 @@
         const alertDiv = document.getElementById('live-alert'); if (alertDiv) alertDiv.innerHTML = '';
     }
 
+    function updateRunnerEventOptions(b1, b2, b3) {
+        const baseSelect = document.getElementById('baseEvento');
+        const eventSelect = document.getElementById('eventoCorredor');
+        const helper = document.getElementById('eventoCorredorHelp');
+        const actionBtn = document.getElementById('btn-evento-corredor');
+        const hasRunners = !!(b1 || b2 || b3);
+
+        if (baseSelect) {
+            const availability = {
+                1: !!b1,
+                2: !!b2,
+                3: !!b3
+            };
+            const options = baseSelect.querySelectorAll('option[data-base]');
+            options.forEach(option => {
+                const base = Number(option.dataset.base);
+                if (!base) return;
+                option.disabled = !availability[base];
+            });
+            baseSelect.disabled = !hasRunners;
+            if (!hasRunners) {
+                baseSelect.value = '';
+            }
+        }
+
+        if (eventSelect) {
+            eventSelect.disabled = !hasRunners;
+            if (!hasRunners) {
+                eventSelect.value = '';
+            }
+        }
+
+        if (helper) {
+            helper.textContent = hasRunners
+                ? EVENT_HELP_DEFAULT
+                : 'Necesitas corredores en base para habilitar un evento antes del turno.';
+        }
+
+        if (actionBtn) {
+            actionBtn.disabled = !hasRunners;
+        }
+    }
+
     function insertBeforeTotals(row, cell) {
         if (!row) return;
         const marker = row.querySelector('[data-total="true"]');
@@ -130,30 +175,88 @@
         if (r) r.textContent = value ?? 0;
     }
 
+    function renderMarcadorPayload(payload) {
+        if (!payload) return false;
+        try {
+            updateUI(payload);
+            animateChanges();
+            return true;
+        } catch (err) {
+            console.error('Error renderizando marcador', err);
+            return false;
+        }
+    }
+
     async function refrescarMarcador() {
         try {
             const id = (window.marcadorConfig && window.marcadorConfig.partidoId) ? window.marcadorConfig.partidoId : null;
             if (!id) return;
             const json = await fetchMarcador(id);
-            updateUI(json);
-            animateChanges();
+            renderMarcadorPayload(json);
         } catch (e) { console.error('Error refrescando marcador', e); }
+    }
+
+    function updateOutIndicators(count, prefix = '') {
+        const outsNumber = Number(count) || 0;
+        let updated = false;
+        for (let i = 1; i <= 3; i++) {
+            const dot = document.getElementById(`${prefix}out${i}`);
+            if (!dot) continue;
+            updated = true;
+            if (outsNumber >= i) {
+                dot.classList.add('filled');
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('filled');
+                dot.classList.remove('active');
+            }
+        }
+
+        if (updated) return;
+
+        const indicatorIds = prefix
+            ? [`${prefix}outs-indicator`, `${prefix}outs-indicadores`]
+            : ['outs-indicator', 'outs-indicadores'];
+        const indicator = indicatorIds
+            .map(id => document.getElementById(id))
+            .find(el => !!el);
+        if (!indicator) return;
+        const dots = indicator.querySelectorAll('[data-out-index]');
+        dots.forEach(dot => {
+            const idx = Number(dot.dataset.outIndex || dot.getAttribute('data-out-index') || 0);
+            if (!idx) return;
+            if (outsNumber >= idx) {
+                dot.classList.add('filled');
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('filled');
+                dot.classList.remove('active');
+            }
+        });
     }
 
     function updateUI(json) {
         const pick = (camel, pascal) => valueFrom(json, camel, pascal);
         const setText = (id, value) => { const el = document.getElementById(id); if (el && value !== undefined && value !== null) el.textContent = value; };
-        setText('totCarrerasCasa', pick('carrerasCasa', 'CarrerasCasa') ?? 0);
+        const carrerasCasa = pick('carrerasCasa', 'CarrerasCasa') ?? 0;
+        const carrerasVisita = pick('carrerasVisita', 'CarrerasVisita') ?? 0;
+        setText('totCarrerasCasa', carrerasCasa);
         setText('totHitsCasa', pick('hitsCasa', 'HitsCasa') ?? 0);
         setText('totErroresCasa', pick('erroresCasa', 'ErroresCasa') ?? 0);
-        setText('totCarrerasVisita', pick('carrerasVisita', 'CarrerasVisita') ?? 0);
+        setText('totCarrerasVisita', carrerasVisita);
         setText('totHitsVisita', pick('hitsVisita', 'HitsVisita') ?? 0);
         setText('totErroresVisita', pick('erroresVisita', 'ErroresVisita') ?? 0);
+        setText('score-casa', carrerasCasa);
+        setText('score-visita', carrerasVisita);
+        setText('score-casa-publico', carrerasCasa);
+        setText('score-visita-publico', carrerasVisita);
         setText('entradaActual', pick('entradaActual', 'EntradaActual') ?? 0);
         const mitadEl = document.getElementById('mitadActual'); if (mitadEl) mitadEl.textContent = `(${pick('mitad', 'Mitad') ?? 'Alta'})`;
         // Outs: soporta ids alternos
-        const outsEl = document.getElementById('outs-count') || document.getElementById('outsActuales');
-        if (outsEl) outsEl.textContent = pick('outs', 'Outs') ?? 0;
+        const outsValue = pick('outs', 'Outs') ?? 0;
+        ['outs-count', 'outsActuales', 'outs-count-publico', 'outs-valor'].forEach(id => setText(id, outsValue));
+        updateOutIndicators(outsValue);
+        updateOutIndicators(outsValue, 'publico-');
         // Bases: soporta ids alternos y clases distintas
         const setClass = (id, on) => {
             const el = document.getElementById(id);
@@ -168,6 +271,7 @@
         setClass('base-1', b1); setClass('base1', b1);
         setClass('base-2', b2); setClass('base2', b2);
         setClass('base-3', b3); setClass('base3', b3);
+        updateRunnerEventOptions(b1, b2, b3);
 
         const entradas = pick('entradas', 'Entradas') || [];
         const visitaPorInning = pick('carrerasVisitaPorInning', 'CarrerasVisitaPorInning') || [];
@@ -256,7 +360,9 @@
                 try {
                     const payloadId = valueFrom(payload, 'PartidoId', 'partidoId');
                     if (payloadId !== undefined && partidoId && payloadId !== partidoId) return;
-                    await refrescarMarcador();
+                    if (!renderMarcadorPayload(payload)) {
+                        await refrescarMarcador();
+                    }
                     clearAlert();
                 } catch (e) { console.error('Error manejando ActualizarMarcador', e); }
             });
@@ -389,7 +495,7 @@
 
     // Intercept only the Registrar Turno form to update marcador without full reload
     function bindLiveForms() {
-        const forms = document.querySelectorAll('form[data-live="registrar"]');
+        const forms = document.querySelectorAll('form[data-live]');
         if (!forms || forms.length === 0) return;
         forms.forEach(function (form) {
             const fieldset = form.querySelector('fieldset');
@@ -398,17 +504,29 @@
                 ev.preventDefault();
                 if (form.dataset.submitting === '1') return;
                 clearAlert();
+                const fd = new FormData(form);
                 form.dataset.submitting = '1';
                 setFormBusy(form, true);
                 try {
-                    const payload = await postForm(form);
+                    const payload = await postForm(form, fd);
                     if (!payload || payload.ok === false) {
                         const msg = payload?.message || 'Acción rechazada.';
                         showAlert(msg, 'danger');
                     } else {
                         await refrescarMarcador();
-                        applyTurnoState(payload);
-                        showAlert(payload.message || 'Turno registrado correctamente.', 'success');
+                        const kind = form.dataset.live;
+                        if (kind === 'registrar') {
+                            applyTurnoState(payload);
+                        } else if (kind === 'evento') {
+                            const eventSelect = document.getElementById('eventoCorredor');
+                            const baseSelect = document.getElementById('baseEvento');
+                            if (eventSelect) eventSelect.value = '';
+                            if (baseSelect) baseSelect.value = '';
+                        }
+                        const defaultMsg = kind === 'evento'
+                            ? 'Evento registrado correctamente.'
+                            : 'Turno registrado correctamente.';
+                        showAlert(payload.message || defaultMsg, 'success');
                     }
                 } catch (err) {
                     console.error(err);

@@ -163,28 +163,17 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-controller="Jugadores" asp-action="Index">Jugadores</a>
-                </li>
-
-            </ul>
-
-            <div class="section-title">Herramientas</div>
-            <ul class="nav flex-column gap-1">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Exportaciones" asp-action="Index">
-                        <i class="bi bi-file-earmark-arrow-down"></i> Exportar (PDF/Excel)
-                    </a>
-                </li>
             </ul>
 
             <hr class="border-secondary-subtle my-3" />
 
             <div class="d-grid gap-2">
-                <!-- Botón Salir / Cerrar sesión -->
-                <button id="btnSalir" class="btn btn-outline-light">
-                    <i class="bi bi-box-arrow-right"></i> Salir / Cerrar sesión
-                </button>
+                <form asp-controller="Account" asp-action="Logout" method="post" class="d-grid">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-outline-light">
+                        <i class="bi bi-box-arrow-right"></i> Salir / Cerrar sesión
+                    </button>
+                </form>
             </div>
         </nav>
         </aside>
@@ -192,19 +181,10 @@
 
     <!-- ========== Panel derecho (topbar + contenido) ========== -->
     <div class="app-main">
-        <header class="app-topbar py-2 px-3 d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center gap-2">
-                <button class="btn btn-outline-secondary d-lg-none" id="btnOpenSidebar" title="Abrir menú">
-                    <i class="bi bi-list"></i>
-                </button>
-                <span class="fw-semibold">@ViewData["Title"]</span>
-            </div>
-            <div class="d-none d-lg-flex align-items-center gap-2">
-                @await Html.PartialAsync("_LoginPartial")
-            </div>
-        </header>
-
         <main class="app-content">
+            <button class="btn btn-outline-secondary d-lg-none mb-3" id="btnOpenSidebar" type="button" title="Abrir menú">
+                <i class="bi bi-list"></i> Menú
+            </button>
             @RenderBody()
         </main>
 
@@ -265,38 +245,6 @@
             closeBtn?.addEventListener('click', close);
         })();
 
-        // ====== Botón Salir / Cerrar sesión ======
-        (function () {
-            const btn = document.getElementById('btnSalir');
-            if (!btn) return;
-
-            btn.addEventListener('click', async () => {
-                // Intenta cierre de sesión por POST (ajusta la URL a tu proyecto)
-                const logoutUrls = [
-                    '/Account/Logout',          // Identity por defecto
-                    '/Cuenta/Salir',            // posible controlador propio
-                    '/Auth/Logout'              // alternativa
-                ];
-
-                for (const url of logoutUrls) {
-                    try {
-                        const r = await fetch(url, { method: 'POST', headers: { 'RequestVerificationToken': getAntiforgery() } });
-                        if (r.ok || r.status === 302) { location.href = '/'; return; }
-                    } catch (_) { /* sigue intentando */ }
-                }
-
-                // Plan B: cerrar pestaña (solo si el navegador lo permite)
-                window.close();
-                // Plan C: redirigir al inicio
-                location.href = '/';
-            });
-
-            // Si usas antiforgery en tus formularios (AddAntiforgery), intenta leerlo
-            function getAntiforgery() {
-                const tokenInput = document.querySelector('input[name="__RequestVerificationToken"]');
-                return tokenInput ? tokenInput.value : '';
-            }
-        })();
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

@@ -18,7 +18,23 @@ namespace Scoreboard.Web.Modelos
         OutEnJuego,
         SacrificioFly,
         SacrificioToque,
-        LlegaPorError
+        LlegaPorError,
+        DoblePlay
+    }
+
+    public enum EventoCorredor
+    {
+        Ninguno = 0,
+        RoboBase = 1,
+        PassedBall = 2,
+        WildPitch = 3
+    }
+
+    public enum BaseCorredor
+    {
+        Primera = 1,
+        Segunda = 2,
+        Tercera = 3
     }
 
     public enum Posicion

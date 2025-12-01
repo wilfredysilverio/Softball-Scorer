@@ -1,21 +1,15 @@
 ﻿@model Scoreboard.Web.Modelos.ViewModels.HomeDashboardVm
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Inicio";
 }
 
 <div class="container-fluid py-4">
     <div class="d-flex align-items-center mb-4">
-        <h1 class="me-auto">Dashboard</h1>
+        <h1 class="me-auto">Inicio</h1>
         <div>
             <a asp-controller="Equipos" asp-action="Create" class="btn btn-outline-primary me-2">Crear Equipo</a>
             <a asp-controller="Jugadores" asp-action="Create" class="btn btn-outline-success me-2">Crear Jugador</a>
             <a asp-controller="Partidos" asp-action="Create" class="btn btn-outline-warning">Crear Partido</a>
-            @if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
-            {
-                <form method="post" asp-action="SeedDevData" class="d-inline ms-2">
-                    <button type="submit" class="btn btn-outline-secondary" data-confirm="Repoblar datos de ejemplo (Development only)">Repoblar datos</button>
-                </form>
-            }
         </div>
     </div>
 
@@ -111,12 +105,4 @@
             </div>
         </div>
     </div>
-</div>
-@{
-    ViewData["Title"] = "Inicio";
-}
-
-<div class="p-3">
-    <h2 class="mb-3">Welcome</h2>
-    <p>Aprende más en el enlace de ASP.NET Core o usa el menú lateral.</p>
 </div>

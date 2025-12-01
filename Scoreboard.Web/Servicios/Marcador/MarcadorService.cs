@@ -4,6 +4,7 @@ using Scoreboard.Web.Dtos;
 using Scoreboard.Web.Hubs;
 using Microsoft.EntityFrameworkCore;
 using Scoreboard.Web.Datos;
+using Scoreboard.Web.Helpers;
 using Scoreboard.Web.Modelos;
 using System.Text.Json.Serialization;
 
@@ -51,8 +52,7 @@ namespace Scoreboard.Web.Servicios.Marcador
             await _db.SaveChangesAsync();
 
             // Broadcast: notificar para que los clientes refresquen su marcador
-            if (_hub != null)
-                await _hub.Clients.Group($"partido-{partidoId}").SendAsync("ActualizarMarcador", new { PartidoId = partidoId });
+            await NotifyCambioMarcadorAsync(partidoId);
         }
 
         public async Task SuspenderPartidoAsync(int partidoId)
@@ -63,8 +63,7 @@ namespace Scoreboard.Web.Servicios.Marcador
                 throw new InvalidOperationException("Solo se puede suspender un partido en progreso.");
             partido.Estado = EstadoPartido.Suspendido;
             await _db.SaveChangesAsync();
-            if (_hub != null)
-                await _hub.Clients.Group($"partido-{partidoId}").SendAsync("ActualizarMarcador", new { PartidoId = partidoId });
+            await NotifyCambioMarcadorAsync(partidoId);
         }
 
         public async Task ReanudarPartidoAsync(int partidoId)
@@ -75,8 +74,7 @@ namespace Scoreboard.Web.Servicios.Marcador
                 throw new InvalidOperationException("Solo se puede reanudar un partido suspendido.");
             partido.Estado = EstadoPartido.EnCurso;
             await _db.SaveChangesAsync();
-            if (_hub != null)
-                await _hub.Clients.Group($"partido-{partidoId}").SendAsync("ActualizarMarcador", new { PartidoId = partidoId });
+            await NotifyCambioMarcadorAsync(partidoId);
         }
 
         public async Task FinalizarPartidoAsync(int partidoId)
@@ -87,11 +85,10 @@ namespace Scoreboard.Web.Servicios.Marcador
                 throw new InvalidOperationException("El partido ya está finalizado.");
             partido.Estado = EstadoPartido.Finalizado;
             await _db.SaveChangesAsync();
-            if (_hub != null)
-                await _hub.Clients.Group($"partido-{partidoId}").SendAsync("ActualizarMarcador", new { PartidoId = partidoId });
+            await NotifyCambioMarcadorAsync(partidoId);
         }
 
-        public async Task<Partido> RegistrarTurnoAsync(int partidoId, int? jugadorConfirmadoId, ResultadoTurno resultado)
+        public async Task<Partido> RegistrarTurnoAsync(int partidoId, int? jugadorConfirmadoId, ResultadoTurno resultado, EventoCorredor eventoCorredor = EventoCorredor.Ninguno, BaseCorredor baseEvento = BaseCorredor.Primera)
         {
             // Transacción para registrar la jugada, actualizar partido y crear PlayLog + PlayerBattingStat
             using var tx = await _db.Database.BeginTransactionAsync();
@@ -101,6 +98,11 @@ namespace Scoreboard.Web.Servicios.Marcador
 
             // Obtener o crear la entrada (inning) actual para llevar control por entrada
             var numeroInning = partido.EntradaActual;
+            if (numeroInning < 1)
+            {
+                numeroInning = 1;
+                partido.EntradaActual = 1;
+            }
             var entrada = partido.Entradas.FirstOrDefault(e => e.NumeroInning == numeroInning);
             if (entrada == null)
             {
@@ -158,245 +160,20 @@ namespace Scoreboard.Web.Servicios.Marcador
 
             var esPrimerTurno = !await _db.PlayerBattingStats.AsNoTracking()
                 .AnyAsync(s => s.PartidoId == partidoId && s.JugadorId == jugadorId);
-
-            int runs = 0;
-            int ab = 0;
-            int h = 0;
-            int hr = 0;
-            int bb = 0;
-            int so = 0;
-            int sf = 0;
-            int sh = 0;
-            int rbi = 0;
-            int hbp = 0;
-            int doubles = 0;
-            int triples = 0;
-            int pa = 1;
-            int runsBateador = 0;
-            int partidosJugados = esPrimerTurno ? 1 : 0;
-
-            // Helper to add runs to correct team
-            void AddRuns(int n)
+            var partidosJugados = esPrimerTurno ? 1 : 0;
+            var outcome = AplicarResultadoTurno(partido, entrada, casaBatea, resultado, eventoCorredor, baseEvento);
+            var delta = outcome.Stats with
             {
-                runs += n;
-                if (casaBatea)
-                {
-                    partido.CarrerasCasa += n;
-                    entrada.CarrerasCasa += n; // actualizar por entrada
-                }
-                else
-                {
-                    partido.CarrerasVisita += n;
-                    entrada.CarrerasVisita += n;
-                }
-            }
-
-            int ForceAdvanceOneBase()
-            {
-                var occupancy = new int[3];
-                if (partido.B1) occupancy[0]++;
-                if (partido.B2) occupancy[1]++;
-                if (partido.B3) occupancy[2]++;
-                occupancy[0]++; // bateador toma primera
-                var forcedRuns = 0;
-                for (var idxBase = 0; idxBase < 3; idxBase++)
-                {
-                    while (occupancy[idxBase] > 1)
-                    {
-                        occupancy[idxBase]--;
-                        if (idxBase == 2)
-                        {
-                            forcedRuns++;
-                        }
-                        else
-                        {
-                            occupancy[idxBase + 1]++;
-                        }
-                    }
-                }
-                partido.B1 = occupancy[0] > 0;
-                partido.B2 = occupancy[1] > 0;
-                partido.B3 = occupancy[2] > 0;
-                return forcedRuns;
-            }
-
-            static void AdvanceExistingRunnersOneBase(ref bool runner1, ref bool runner2, ref bool runner3)
-            {
-                if (!runner3 && runner2)
-                {
-                    runner3 = true;
-                    runner2 = false;
-                }
-
-                if (!runner2 && runner1)
-                {
-                    runner2 = true;
-                    runner1 = false;
-                }
-            }
-
-            void CambiarMitadSiEsNecesaria()
-            {
-                if (partido.Estado == EstadoPartido.Finalizado || partido.Outs < 3)
-                {
-                    return;
-                }
-
-                partido.Outs = 0;
-                partido.B1 = partido.B2 = partido.B3 = false;
-                partido.Mitad = partido.Mitad == MitadEntrada.Alta ? MitadEntrada.Baja : MitadEntrada.Alta;
-                if (partido.Mitad == MitadEntrada.Alta)
-                {
-                    partido.EntradaActual++;
-                }
-
-                if (partido.Mitad == MitadEntrada.Baja)
-                {
-                    partido.IndexBateadorCasa ??= 0;
-                }
-                else
-                {
-                    partido.IndexBateadorVisita ??= 0;
-                }
-            }
-
-            // Apply simplified baseball rules y actualizar totales por equipo
-            switch (resultado)
-            {
-                case ResultadoTurno.Sencillo:
-                    ab = 1; h = 1;
-                    // Sumar hit al equipo al bate (totales y por entrada)
-                    if (casaBatea) { partido.HitsCasa++; entrada.HitsCasa++; } else { partido.HitsVisita++; entrada.HitsVisita++; }
-                    // advance: runner on 3 scores
-                    if (partido.B3) AddRuns(1);
-                    partido.B3 = partido.B2; // runner from 2 -> 3
-                    partido.B2 = partido.B1; // 1 -> 2
-                    partido.B1 = true; // batter to 1st
-                    rbi = runs;
-                    break;
-                case ResultadoTurno.Doble:
-                    ab = 1; h = 1; doubles = 1;
-                    if (casaBatea) { partido.HitsCasa++; entrada.HitsCasa++; } else { partido.HitsVisita++; entrada.HitsVisita++; }
-                    if (partido.B3) AddRuns(1);
-                    if (partido.B2) AddRuns(1);
-                    partido.B3 = partido.B1; // runner from 1 -> 3
-                    partido.B2 = true; // batter to 2nd
-                    partido.B1 = false;
-                    rbi = runs;
-                    break;
-                case ResultadoTurno.Triple:
-                    ab = 1; h = 1; triples = 1;
-                    if (casaBatea) { partido.HitsCasa++; entrada.HitsCasa++; } else { partido.HitsVisita++; entrada.HitsVisita++; }
-                    // all existing score
-                    int scored = 0;
-                    if (partido.B1) scored++;
-                    if (partido.B2) scored++;
-                    if (partido.B3) scored++;
-                    AddRuns(scored);
-                    partido.B3 = true;
-                    partido.B2 = partido.B1 = false;
-                    rbi = runs;
-                    break;
-                case ResultadoTurno.Jonron:
-                    ab = 1; h = 1; hr = 1; runsBateador = 1;
-                    if (casaBatea) { partido.HitsCasa++; entrada.HitsCasa++; } else { partido.HitsVisita++; entrada.HitsVisita++; }
-                    int scoredHr = 1 + (partido.B1 ? 1 : 0) + (partido.B2 ? 1 : 0) + (partido.B3 ? 1 : 0);
-                    AddRuns(scoredHr);
-                    partido.B1 = partido.B2 = partido.B3 = false;
-                    rbi = scoredHr;
-                    break;
-                case ResultadoTurno.BasePorBolas:
-                case ResultadoTurno.Golpe:
-                    if (resultado == ResultadoTurno.Golpe)
-                    {
-                        hbp = 1;
-                    }
-                    else
-                    {
-                        bb = 1;
-                    }
-                    ab = 0;
-                    var forcedBolas = ForceAdvanceOneBase();
-                    if (forcedBolas > 0)
-                    {
-                        AddRuns(forcedBolas);
-                        rbi = forcedBolas;
-                    }
-                    break;
-                case ResultadoTurno.Ponche:
-                    ab = 1; so = 1;
-                    partido.Outs++;
-                    break;
-                case ResultadoTurno.OutEnJuego:
-                    ab = 1;
-                    partido.Outs++;
-                    break;
-                case ResultadoTurno.SacrificioFly:
-                    sf = 1;
-                    var sfRunner1 = partido.B1;
-                    var sfRunner2 = partido.B2;
-                    var sfRunner3 = partido.B3;
-                    if (sfRunner3)
-                    {
-                        AddRuns(1);
-                        sfRunner3 = false;
-                        rbi = 1;
-                    }
-                    AdvanceExistingRunnersOneBase(ref sfRunner1, ref sfRunner2, ref sfRunner3);
-                    partido.Outs++;
-                    partido.B1 = sfRunner1;
-                    partido.B2 = sfRunner2;
-                    partido.B3 = sfRunner3;
-                    break;
-                case ResultadoTurno.SacrificioToque:
-                    sh = 1;
-                    var shRunner1 = partido.B1;
-                    var shRunner2 = partido.B2;
-                    var shRunner3 = partido.B3;
-                    if (shRunner3)
-                    {
-                        AddRuns(1);
-                        shRunner3 = false;
-                        rbi = 1;
-                    }
-                    AdvanceExistingRunnersOneBase(ref shRunner1, ref shRunner2, ref shRunner3);
-                    partido.Outs++;
-                    partido.B1 = shRunner1;
-                    partido.B2 = shRunner2;
-                    partido.B3 = shRunner3;
-                    break;
-                case ResultadoTurno.LlegaPorError:
-                    ab = 1;
-                    // Error: batter to first, no hit. Increment defensive team's error count.
-                    if (casaBatea)
-                    {
-                        // casa at bat => visita committed error
-                        partido.ErroresVisita++;
-                        entrada.ErroresVisita++;
-                    }
-                    else
-                    {
-                        partido.ErroresCasa++;
-                        entrada.ErroresCasa++;
-                    }
-                    var forcedError = ForceAdvanceOneBase();
-                    if (forcedError > 0)
-                    {
-                        AddRuns(forcedError);
-                        rbi = forcedError;
-                    }
-                    break;
-                default:
-                    break;
-            }
+                Partidos = partidosJugados,
+                PA = 1
+            };
+            var runs = outcome.RunsScored;
 
             // Walk-off: si en la baja de la 9na (o más) el equipo de casa pasa arriba con esta jugada, termina el partido
             if (partido.Mitad == MitadEntrada.Baja && partido.EntradaActual >= 9 && partido.CarrerasCasa > partido.CarrerasVisita)
             {
                 partido.Estado = EstadoPartido.Finalizado;
             }
-
-            CambiarMitadSiEsNecesaria();
 
             if (casaBatea)
             {
@@ -406,25 +183,6 @@ namespace Scoreboard.Web.Servicios.Marcador
             {
                 partido.IndexBateadorVisita = siguienteIdx;
             }
-
-            // Persist PlayerBattingStat
-            var delta = new BattingStatDelta
-            {
-                Partidos = partidosJugados,
-                AB = ab,
-                PA = pa,
-                H = h,
-                Doubles = doubles,
-                Triples = triples,
-                HR = hr,
-                RBI = rbi,
-                R = runsBateador,
-                BB = bb,
-                SO = so,
-                HBP = hbp,
-                SF = sf,
-                SH = sh
-            };
 
             var stat = new PlayerBattingStat
             {
@@ -468,16 +226,97 @@ namespace Scoreboard.Web.Servicios.Marcador
             await tx.CommitAsync();
 
             // Broadcast marcador actualizado
-            try
+            await NotifyCambioMarcadorAsync(partidoId);
+
+            return partido;
+        }
+
+        public async Task<Partido> RegistrarEventoCorredorAsync(int partidoId, EventoCorredor eventoCorredor, BaseCorredor baseCorredor)
+        {
+            if (eventoCorredor == EventoCorredor.Ninguno)
             {
-                if (_hub != null)
-                    await _hub.Clients.Group($"partido-{partidoId}").SendAsync("ActualizarMarcador", new { PartidoId = partidoId });
-            }
-            catch (Exception ex)
-            {
-                _logger?.LogError(ex, "Error broadcasting marcador");
+                throw new InvalidOperationException("Selecciona un evento válido de corredores.");
             }
 
+            using var tx = await _db.Database.BeginTransactionAsync();
+            var partido = await _db.Partidos.Include(p => p.Entradas).FirstOrDefaultAsync(p => p.Id == partidoId);
+            if (partido == null) throw new KeyNotFoundException("Partido no encontrado");
+            if (partido.Estado != EstadoPartido.EnCurso) throw new InvalidOperationException("El partido no está en curso");
+
+            var numeroInning = partido.EntradaActual;
+            if (numeroInning < 1)
+            {
+                numeroInning = 1;
+                partido.EntradaActual = 1;
+            }
+
+            var entrada = partido.Entradas.FirstOrDefault(e => e.NumeroInning == numeroInning);
+            if (entrada == null)
+            {
+                entrada = new Entrada
+                {
+                    PartidoId = partido.Id,
+                    NumeroInning = numeroInning,
+                    CarrerasCasa = 0,
+                    CarrerasVisita = 0,
+                    HitsCasa = 0,
+                    HitsVisita = 0,
+                    ErroresCasa = 0,
+                    ErroresVisita = 0
+                };
+                _db.Entradas.Add(entrada);
+                partido.Entradas.Add(entrada);
+            }
+
+            bool corredorDisponible = baseCorredor switch
+            {
+                BaseCorredor.Primera => partido.B1,
+                BaseCorredor.Segunda => partido.B2,
+                BaseCorredor.Tercera => partido.B3,
+                _ => false
+            };
+            if (!corredorDisponible)
+            {
+                throw new InvalidOperationException("No hay corredor en la base seleccionada.");
+            }
+
+            var before = BuildSnapshot(partido);
+            var baseIndex = (int)baseCorredor - 1;
+            var runs = AvanzarCorredorDesdeBase(partido, baseIndex);
+            if (runs > 0)
+            {
+                if (partido.Mitad == MitadEntrada.Baja)
+                {
+                    partido.CarrerasCasa += runs;
+                    entrada.CarrerasCasa += runs;
+                }
+                else
+                {
+                    partido.CarrerasVisita += runs;
+                    entrada.CarrerasVisita += runs;
+                }
+            }
+
+            if (partido.Mitad == MitadEntrada.Baja && partido.EntradaActual >= 9 && partido.CarrerasCasa > partido.CarrerasVisita)
+            {
+                partido.Estado = EstadoPartido.Finalizado;
+            }
+
+            var after = BuildSnapshot(partido);
+            var wrapper = new PlaySnapshotWrapper { Before = before, After = after };
+            var log = new PlayLog
+            {
+                PartidoId = partidoId,
+                Resultado = null,
+                RunsScored = runs,
+                SnapshotJson = JsonSerializer.Serialize(wrapper),
+                StatDeltaJson = null
+            };
+            _db.PlayLogs.Add(log);
+
+            await _db.SaveChangesAsync();
+            await tx.CommitAsync();
+            await NotifyCambioMarcadorAsync(partidoId);
             return partido;
         }
 
@@ -528,15 +367,7 @@ namespace Scoreboard.Web.Servicios.Marcador
             await _db.SaveChangesAsync();
             await tx.CommitAsync();
 
-            try
-            {
-                if (_hub != null)
-                    await _hub.Clients.Group($"partido-{partidoId}").SendAsync("ActualizarMarcador", new { PartidoId = partidoId });
-            }
-            catch (Exception ex)
-            {
-                _logger?.LogError(ex, "Error broadcasting marcador after undo");
-            }
+            await NotifyCambioMarcadorAsync(partidoId);
 
             return partido;
         }
@@ -562,15 +393,7 @@ namespace Scoreboard.Web.Servicios.Marcador
                         _db.PlayLogs.Update(undone);
                         await _db.SaveChangesAsync();
 
-                        try
-                        {
-                            if (_hub != null)
-                                await _hub.Clients.Group($"partido-{partidoId}").SendAsync("ActualizarMarcador", new { PartidoId = partidoId });
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger?.LogError(ex, "Error broadcasting marcador after redo");
-                        }
+                        await NotifyCambioMarcadorAsync(partidoId);
                         return partido;
                     }
                 }
@@ -580,7 +403,7 @@ namespace Scoreboard.Web.Servicios.Marcador
             if (!undone.JugadorId.HasValue || !undone.Resultado.HasValue)
                 throw new InvalidOperationException("La jugada deshecha no contiene datos para rehacer (Jugador/Resultado faltante)");
 
-            return await RegistrarTurnoAsync(partidoId, undone.JugadorId.Value, undone.Resultado.Value);
+            return await RegistrarTurnoAsync(partidoId, undone.JugadorId.Value, undone.Resultado.Value, EventoCorredor.Ninguno, BaseCorredor.Primera);
         }
 
         public async Task<MarcadorDto> ObtenerMarcadorAsync(int partidoId)
@@ -594,18 +417,17 @@ namespace Scoreboard.Web.Servicios.Marcador
 
             if (partido == null) throw new KeyNotFoundException("Partido no encontrado");
 
-            var maxInn = Math.Max(9, Math.Max(partido.EntradaActual, partido.Entradas?.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max() ?? 0));
+            var entradasNormalizadas = EntradaHelper.NormalizarEntradas(partido.Entradas);
+            var entradaActualSegura = partido.EntradaActual < 1 ? 1 : partido.EntradaActual;
+            var maxInn = Math.Max(9, Math.Max(entradaActualSegura, entradasNormalizadas.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max()));
             var casa = new int[maxInn];
             var vis = new int[maxInn];
 
-            if (partido.Entradas != null)
+            foreach (var e in entradasNormalizadas)
             {
-                foreach (var e in partido.Entradas)
-                {
-                    var idx = Math.Clamp(e.NumeroInning - 1, 0, maxInn - 1);
-                    casa[idx] = e.CarrerasCasa;
-                    vis[idx] = e.CarrerasVisita;
-                }
+                var idx = Math.Clamp(e.NumeroInning - 1, 0, maxInn - 1);
+                casa[idx] = e.CarrerasCasa;
+                vis[idx] = e.CarrerasVisita;
             }
 
             var (bateador, puedeRegistrar, motivoBloqueo) = await ObtenerContextoTurnoAsync(partido);
@@ -630,8 +452,7 @@ namespace Scoreboard.Web.Servicios.Marcador
                 B2 = partido.B2,
                 B3 = partido.B3,
                 Estado = partido.Estado.ToString(),
-                Entradas = (partido.Entradas ?? new List<Entrada>())
-                    .OrderBy(e => e.NumeroInning)
+                Entradas = entradasNormalizadas
                     .Select(e => new MarcadorEntradaDto
                     {
                         NumeroInning = e.NumeroInning,
@@ -685,7 +506,7 @@ namespace Scoreboard.Web.Servicios.Marcador
 
         private async Task ApplySnapshotAsync(Partido p, SnapshotPartido s)
         {
-            p.EntradaActual = s.EntradaActual;
+            p.EntradaActual = Math.Max(1, s.EntradaActual);
             p.Mitad = Enum.Parse<MitadEntrada>(s.Mitad ?? "Alta");
             p.Outs = s.Outs;
             p.B1 = s.B1; p.B2 = s.B2; p.B3 = s.B3;
@@ -709,7 +530,7 @@ namespace Scoreboard.Web.Servicios.Marcador
                     _db.Entradas.Add(new Entrada
                     {
                         PartidoId = p.Id,
-                        NumeroInning = se.NumeroInning,
+                        NumeroInning = Math.Max(1, se.NumeroInning),
                         CarrerasCasa = se.CarrerasCasa,
                         CarrerasVisita = se.CarrerasVisita,
                         HitsCasa = se.HitsCasa,
@@ -775,6 +596,389 @@ namespace Scoreboard.Web.Servicios.Marcador
 
             return (dto, true, null);
         }
+
+        private void IncrementarOut(Partido partido, int outs = 1)
+        {
+            if (outs <= 0 || partido.Estado == EstadoPartido.Finalizado) return;
+            partido.Outs += outs;
+            CambiarMitadSiEsNecesaria(partido);
+        }
+
+        private void CambiarMitadSiEsNecesaria(Partido partido)
+        {
+            if (partido.Estado == EstadoPartido.Finalizado)
+            {
+                return;
+            }
+
+            while (partido.Outs >= 3)
+            {
+                partido.Outs -= 3;
+                var estabaAlta = partido.Mitad == MitadEntrada.Alta;
+
+                partido.B1 = partido.B2 = partido.B3 = false;
+                partido.Mitad = estabaAlta ? MitadEntrada.Baja : MitadEntrada.Alta;
+                if (!estabaAlta)
+                {
+                    partido.EntradaActual++;
+                    if (partido.EntradaActual >= 9 && partido.CarrerasCasa != partido.CarrerasVisita)
+                    {
+                        partido.Estado = EstadoPartido.Finalizado;
+                        partido.Outs = 0;
+                        break;
+                    }
+                }
+
+                if (partido.Mitad == MitadEntrada.Baja)
+                {
+                    partido.IndexBateadorCasa ??= 0;
+                }
+                else
+                {
+                    partido.IndexBateadorVisita ??= 0;
+                }
+            }
+        }
+
+        private PlayProcessingResult AplicarResultadoTurno(Partido partido, Entrada entrada, bool casaBatea, ResultadoTurno resultado, EventoCorredor eventoCorredor, BaseCorredor baseEvento)
+        {
+            int runs = 0;
+            int ab = 0;
+            int h = 0;
+            int hr = 0;
+            int bb = 0;
+            int so = 0;
+            int sf = 0;
+            int sh = 0;
+            int rbi = 0;
+            int hbp = 0;
+            int doubles = 0;
+            int triples = 0;
+            int runsBateador = 0;
+
+            void AddRuns(int value, bool cuentaRbi = true)
+            {
+                if (value <= 0) return;
+                runs += value;
+                if (casaBatea)
+                {
+                    partido.CarrerasCasa += value;
+                    entrada.CarrerasCasa += value;
+                }
+                else
+                {
+                    partido.CarrerasVisita += value;
+                    entrada.CarrerasVisita += value;
+                }
+                if (cuentaRbi)
+                {
+                    rbi += value;
+                }
+            }
+
+            void RegistrarHit()
+            {
+                if (casaBatea)
+                {
+                    partido.HitsCasa++;
+                    entrada.HitsCasa++;
+                }
+                else
+                {
+                    partido.HitsVisita++;
+                    entrada.HitsVisita++;
+                }
+            }
+
+            if (eventoCorredor != EventoCorredor.Ninguno)
+            {
+                var baseIdx = (int)baseEvento - 1;
+                if (baseIdx < 0 || baseIdx > 2)
+                {
+                    throw new InvalidOperationException("Seleccione una base válida para el evento del corredor.");
+                }
+                var runsPorEvento = AvanzarCorredorDesdeBase(partido, baseIdx);
+                if (runsPorEvento > 0)
+                {
+                    AddRuns(runsPorEvento, cuentaRbi: false);
+                }
+            }
+
+            switch (resultado)
+            {
+                case ResultadoTurno.Sencillo:
+                    ab = 1;
+                    h = 1;
+                    RegistrarHit();
+                    if (partido.B3) AddRuns(1);
+                    partido.B3 = partido.B2;
+                    partido.B2 = partido.B1;
+                    partido.B1 = true;
+                    break;
+                case ResultadoTurno.Doble:
+                    ab = 1;
+                    h = 1;
+                    doubles = 1;
+                    RegistrarHit();
+                    if (partido.B3) AddRuns(1);
+                    if (partido.B2) AddRuns(1);
+                    partido.B3 = partido.B1;
+                    partido.B2 = true;
+                    partido.B1 = false;
+                    break;
+                case ResultadoTurno.Triple:
+                    ab = 1;
+                    h = 1;
+                    triples = 1;
+                    RegistrarHit();
+                    int scored = 0;
+                    if (partido.B1) scored++;
+                    if (partido.B2) scored++;
+                    if (partido.B3) scored++;
+                    AddRuns(scored);
+                    partido.B3 = true;
+                    partido.B2 = false;
+                    partido.B1 = false;
+                    break;
+                case ResultadoTurno.Jonron:
+                    ab = 1;
+                    h = 1;
+                    hr = 1;
+                    runsBateador = 1;
+                    RegistrarHit();
+                    int scoredHr = 1 + (partido.B1 ? 1 : 0) + (partido.B2 ? 1 : 0) + (partido.B3 ? 1 : 0);
+                    AddRuns(scoredHr);
+                    partido.B1 = false;
+                    partido.B2 = false;
+                    partido.B3 = false;
+                    break;
+                case ResultadoTurno.BasePorBolas:
+                case ResultadoTurno.Golpe:
+                    if (resultado == ResultadoTurno.Golpe)
+                    {
+                        hbp = 1;
+                    }
+                    else
+                    {
+                        bb = 1;
+                    }
+                    var forcedBolas = ForceAdvanceOneBase(partido);
+                    if (forcedBolas > 0)
+                    {
+                        AddRuns(forcedBolas);
+                    }
+                    break;
+                case ResultadoTurno.Ponche:
+                    ab = 1;
+                    so = 1;
+                    IncrementarOut(partido);
+                    break;
+                case ResultadoTurno.OutEnJuego:
+                    ab = 1;
+                    IncrementarOut(partido);
+                    break;
+                case ResultadoTurno.DoblePlay:
+                    ab = 1;
+                    IncrementarOut(partido, 2);
+                    // Sin información granular del corrido, asumimos que cae el corredor forzado más cercano al bateador
+                    if (partido.B1)
+                    {
+                        partido.B1 = false;
+                    }
+                    else if (partido.B2)
+                    {
+                        partido.B2 = false;
+                    }
+                    else if (partido.B3)
+                    {
+                        partido.B3 = false;
+                    }
+                    break;
+                case ResultadoTurno.SacrificioFly:
+                    sf = 1;
+                    var sfRunner1 = partido.B1;
+                    var sfRunner2 = partido.B2;
+                    var sfRunner3 = partido.B3;
+                    if (sfRunner3)
+                    {
+                        AddRuns(1);
+                        sfRunner3 = false;
+                    }
+                    (sfRunner1, sfRunner2, sfRunner3) = AdvanceExistingRunnersOneBase(sfRunner1, sfRunner2, sfRunner3);
+                    partido.B1 = sfRunner1;
+                    partido.B2 = sfRunner2;
+                    partido.B3 = sfRunner3;
+                    IncrementarOut(partido);
+                    break;
+                case ResultadoTurno.SacrificioToque:
+                    sh = 1;
+                    var shRunner1 = partido.B1;
+                    var shRunner2 = partido.B2;
+                    var shRunner3 = partido.B3;
+                    if (shRunner3)
+                    {
+                        AddRuns(1);
+                        shRunner3 = false;
+                    }
+                    (shRunner1, shRunner2, shRunner3) = AdvanceExistingRunnersOneBase(shRunner1, shRunner2, shRunner3);
+                    partido.B1 = shRunner1;
+                    partido.B2 = shRunner2;
+                    partido.B3 = shRunner3;
+                    IncrementarOut(partido);
+                    break;
+                case ResultadoTurno.LlegaPorError:
+                    ab = 1;
+                    if (casaBatea)
+                    {
+                        partido.ErroresVisita++;
+                        entrada.ErroresVisita++;
+                    }
+                    else
+                    {
+                        partido.ErroresCasa++;
+                        entrada.ErroresCasa++;
+                    }
+                    var forcedError = ForceAdvanceOneBase(partido);
+                    if (forcedError > 0)
+                    {
+                        AddRuns(forcedError);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            var delta = new BattingStatDelta
+            {
+                AB = ab,
+                H = h,
+                Doubles = doubles,
+                Triples = triples,
+                HR = hr,
+                RBI = rbi,
+                R = runsBateador,
+                BB = bb,
+                SO = so,
+                HBP = hbp,
+                SF = sf,
+                SH = sh
+            };
+
+            return new PlayProcessingResult(delta, runs);
+        }
+
+        private int AvanzarCorredorDesdeBase(Partido partido, int baseIndex)
+        {
+            if (baseIndex < 0 || baseIndex > 2)
+            {
+                throw new ArgumentOutOfRangeException(nameof(baseIndex));
+            }
+
+            var occupancy = new int[3];
+            if (partido.B1) occupancy[0]++;
+            if (partido.B2) occupancy[1]++;
+            if (partido.B3) occupancy[2]++;
+
+            if (occupancy[baseIndex] == 0)
+            {
+                throw new InvalidOperationException("No hay corredor en la base seleccionada para el evento.");
+            }
+
+            occupancy[baseIndex]--;
+            var runs = baseIndex == 2 ? 1 : 0;
+            if (baseIndex < 2)
+            {
+                occupancy[baseIndex + 1]++;
+            }
+
+            for (var idx = 0; idx < 3; idx++)
+            {
+                while (occupancy[idx] > 1)
+                {
+                    occupancy[idx]--;
+                    if (idx == 2)
+                    {
+                        runs++;
+                    }
+                    else
+                    {
+                        occupancy[idx + 1]++;
+                    }
+                }
+            }
+
+            partido.B1 = occupancy[0] > 0;
+            partido.B2 = occupancy[1] > 0;
+            partido.B3 = occupancy[2] > 0;
+
+            return runs;
+        }
+
+        private int ForceAdvanceOneBase(Partido partido)
+        {
+            var occupancy = new int[3];
+            if (partido.B1) occupancy[0]++;
+            if (partido.B2) occupancy[1]++;
+            if (partido.B3) occupancy[2]++;
+            occupancy[0]++;
+            var forcedRuns = 0;
+            for (var idxBase = 0; idxBase < 3; idxBase++)
+            {
+                while (occupancy[idxBase] > 1)
+                {
+                    occupancy[idxBase]--;
+                    if (idxBase == 2)
+                    {
+                        forcedRuns++;
+                    }
+                    else
+                    {
+                        occupancy[idxBase + 1]++;
+                    }
+                }
+            }
+            partido.B1 = occupancy[0] > 0;
+            partido.B2 = occupancy[1] > 0;
+            partido.B3 = occupancy[2] > 0;
+            return forcedRuns;
+        }
+
+        private static (bool B1, bool B2, bool B3) AdvanceExistingRunnersOneBase(bool b1, bool b2, bool b3)
+        {
+            var runner1 = b1;
+            var runner2 = b2;
+            var runner3 = b3;
+
+            if (!runner3 && runner2)
+            {
+                runner3 = true;
+                runner2 = false;
+            }
+
+            if (!runner2 && runner1)
+            {
+                runner2 = true;
+                runner1 = false;
+            }
+
+            return (runner1, runner2, runner3);
+        }
+
+        private async Task NotifyCambioMarcadorAsync(int partidoId)
+        {
+            if (_hub == null) return;
+            try
+            {
+                var dto = await ObtenerMarcadorAsync(partidoId);
+                await _hub.Clients.Group($"partido-{partidoId}").SendAsync("ActualizarMarcador", dto);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Error broadcasting marcador");
+            }
+        }
+
+        private sealed record PlayProcessingResult(BattingStatDelta Stats, int RunsScored);
 
         private sealed record BattingStatDelta
         {

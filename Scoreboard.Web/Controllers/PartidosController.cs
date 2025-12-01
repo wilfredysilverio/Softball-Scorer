@@ -137,9 +137,8 @@ namespace Scoreboard.Web.Controllers
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (partido == null) return NotFound();
 
-            var entradas = partido.Entradas?
-                .OrderBy(e => e.NumeroInning)
-                .ToList() ?? new List<Entrada>();
+            var entradas = EntradaHelper.NormalizarEntradas(partido.Entradas);
+            partido.Entradas = entradas;
 
             var jugadas = await _db.PlayLogs.AsNoTracking()
                 .Include(pl => pl.Jugador)
@@ -171,7 +170,8 @@ namespace Scoreboard.Web.Controllers
             {
                 Partido = partido,
                 Entradas = entradas,
-                UltimasJugadas = jugadas
+                UltimasJugadas = jugadas,
+                Outs = partido.Outs
             };
 
             return View(vm);
@@ -241,10 +241,9 @@ namespace Scoreboard.Web.Controllers
                 .Include(p => p.Entradas)
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (partido is null) return NotFound();
-            partido.Entradas = partido.Entradas?
-                .OrderBy(e => e.NumeroInning)
-                .ToList() ?? new List<Entrada>();
-            var maxInnings = Math.Max(9, Math.Max(partido.EntradaActual, partido.Entradas.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max()));
+            var entradasOrdenadas = EntradaHelper.NormalizarEntradas(partido.Entradas);
+            partido.Entradas = entradasOrdenadas;
+            var maxInnings = Math.Max(9, Math.Max(partido.EntradaActual, entradasOrdenadas.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max()));
             var (lineupJugadores, bateadorEsperado) = await ObtenerContextoBateadorAsync(partido);
             string? motivoBloqueo = null;
             if (!lineupJugadores.Any())
@@ -273,8 +272,15 @@ namespace Scoreboard.Web.Controllers
                 Lineup = lineupJugadores,
                 BateadorEsperado = bateadorEsperado,
                 Turno = turnoVm,
+                Evento = new RegistrarEventoCorredorVm
+                {
+                    PartidoId = partido.Id,
+                    Evento = EventoCorredor.Ninguno,
+                    Base = BaseCorredor.Primera
+                },
                 MaxInnings = maxInnings,
-                MotivoBloqueoTurno = motivoBloqueo
+                MotivoBloqueoTurno = motivoBloqueo,
+                Outs = partido.Outs
             };
 
             return View(vm);
@@ -495,9 +501,40 @@ namespace Scoreboard.Web.Controllers
                 return ErrorRegistro("El formulario está desactualizado. Refresca la página antes de registrar el turno.", esAjax, turno.PartidoId);
             }
 
+            var eventoCorredorSeleccionado = turno.EventoCorredor ?? EventoCorredor.Ninguno;
+            var baseEventoSeleccionada = turno.BaseEvento;
+            if (eventoCorredorSeleccionado != EventoCorredor.Ninguno && !baseEventoSeleccionada.HasValue)
+            {
+                return ErrorRegistro("Selecciona el corredor que avanzó con el evento.", esAjax, turno.PartidoId);
+            }
+            if (eventoCorredorSeleccionado != EventoCorredor.Ninguno && !(partido.B1 || partido.B2 || partido.B3))
+            {
+                return ErrorRegistro("No hay corredores en base para aplicar el evento seleccionado.", esAjax, turno.PartidoId);
+            }
+            if (eventoCorredorSeleccionado != EventoCorredor.Ninguno && baseEventoSeleccionada.HasValue)
+            {
+                var baseDisponible = baseEventoSeleccionada.Value switch
+                {
+                    BaseCorredor.Primera => partido.B1,
+                    BaseCorredor.Segunda => partido.B2,
+                    BaseCorredor.Tercera => partido.B3,
+                    _ => false
+                };
+                if (!baseDisponible)
+                {
+                    return ErrorRegistro("La base seleccionada no tiene corredor actualmente. Refresca el marcador e intenta nuevamente.", esAjax, turno.PartidoId);
+                }
+            }
+
             try
             {
-                var partidoActualizado = await _marcador.RegistrarTurnoAsync(turno.PartidoId, turno.JugadorId, turno.Resultado);
+                var baseEvento = baseEventoSeleccionada ?? BaseCorredor.Primera;
+                var partidoActualizado = await _marcador.RegistrarTurnoAsync(
+                    turno.PartidoId,
+                    turno.JugadorId,
+                    turno.Resultado,
+                    eventoCorredorSeleccionado,
+                    baseEvento);
                 var marcador = await _marcador.ObtenerMarcadorAsync(partidoActualizado.Id);
                 var proximoBateador = marcador.BateadorEsperado;
                 var puedeRegistrar = marcador.PuedeRegistrar;
@@ -534,6 +571,55 @@ namespace Scoreboard.Web.Controllers
             catch (Exception ex)
             {
                 return ErrorRegistro(ex.Message, esAjax, turno.PartidoId);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Anotador")]
+        public async Task<IActionResult> RegistrarEventoCorredor([FromForm] RegistrarEventoCorredorVm request)
+        {
+            var esAjax = EsAjaxRequest();
+            if (!ModelState.IsValid || request.Evento == EventoCorredor.Ninguno)
+            {
+                return ErrorRegistro("Selecciona un evento válido de corredores.", esAjax, request.PartidoId);
+            }
+
+            var partido = await _db.Partidos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == request.PartidoId);
+            if (partido == null)
+            {
+                return ErrorRegistro("Partido no encontrado.", esAjax, request.PartidoId);
+            }
+            if (partido.Estado != EstadoPartido.EnCurso)
+            {
+                return ErrorRegistro("Solo puedes registrar eventos con el partido en curso.", esAjax, request.PartidoId);
+            }
+
+            bool baseDisponible = request.Base switch
+            {
+                BaseCorredor.Primera => partido.B1,
+                BaseCorredor.Segunda => partido.B2,
+                BaseCorredor.Tercera => partido.B3,
+                _ => false
+            };
+            if (!baseDisponible)
+            {
+                return ErrorRegistro("No hay corredor en la base seleccionada.", esAjax, request.PartidoId);
+            }
+
+            try
+            {
+                await _marcador.RegistrarEventoCorredorAsync(request.PartidoId, request.Evento, request.Base);
+                if (esAjax)
+                {
+                    return Json(new { ok = true, message = "Evento registrado correctamente." });
+                }
+                TempData["Ok"] = "Evento registrado correctamente.";
+                return RedirectToAction(nameof(VerPartido), new { id = request.PartidoId });
+            }
+            catch (Exception ex)
+            {
+                return ErrorRegistro(ex.Message, esAjax, request.PartidoId);
             }
         }
 
@@ -581,7 +667,8 @@ namespace Scoreboard.Web.Controllers
                 .Include(p => p.EquipoVisita)
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (partido == null) return NotFound();
-            var maxInnings = Math.Max(9, partido.Entradas?.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max() ?? 9);
+            var entradas = EntradaHelper.NormalizarEntradas(partido.Entradas);
+            var maxInnings = Math.Max(9, entradas.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max());
             var sb = new StringBuilder();
             sb.Append("Equipo");
             for (int i = 1; i <= maxInnings; i++) sb.Append($";{i}");
@@ -589,7 +676,7 @@ namespace Scoreboard.Web.Controllers
             sb.Append(partido.EquipoVisita?.Nombre ?? "Visita");
             for (int i = 1; i <= maxInnings; i++)
             {
-                var e = partido.Entradas?.FirstOrDefault(x => x.NumeroInning == i);
+                var e = entradas.FirstOrDefault(x => x.NumeroInning == i);
                 var r = e?.CarrerasVisita ?? 0;
                 sb.Append($";{r}");
             }
@@ -597,7 +684,7 @@ namespace Scoreboard.Web.Controllers
             sb.Append(partido.EquipoCasa?.Nombre ?? "Casa");
             for (int i = 1; i <= maxInnings; i++)
             {
-                var e = partido.Entradas?.FirstOrDefault(x => x.NumeroInning == i);
+                var e = entradas.FirstOrDefault(x => x.NumeroInning == i);
                 var r = e?.CarrerasCasa ?? 0;
                 sb.Append($";{r}");
             }

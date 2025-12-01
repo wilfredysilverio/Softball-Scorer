@@ -18,7 +18,7 @@ namespace Scoreboard.Web.Controllers
             _estadisticasService = estadisticasService;
         }
 
-        public async Task<IActionResult> Index(string? q, int? equipoId)
+        public async Task<IActionResult> Index(string? q, int? equipoId, int page = 1, int pageSize = 15)
         {
             var consulta = _db.Jugadores
                               .Include(j => j.Equipo)
@@ -36,16 +36,31 @@ namespace Scoreboard.Web.Controllers
             if (equipoId.HasValue)
                 consulta = consulta.Where(j => j.EquipoId == equipoId.Value);
 
+            page = page <= 0 ? 1 : page;
+            pageSize = 15;
+
+            var totalRegistros = await consulta.CountAsync();
+
             ViewData["Equipos"] = new SelectList(
                 await _db.Equipos.OrderBy(e => e.Nombre).ToListAsync(), "Id", "Nombre", equipoId);
             ViewData["q"] = q;
 
-            var lista = await consulta
+            var jugadores = await consulta
                 .OrderBy(j => j.Equipo!.Nombre)
                 .ThenBy(j => j.NumeroUniforme)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
                 .ToListAsync();
 
-            return View(lista);
+            var totalPaginas = (int)Math.Ceiling(totalRegistros / (double)pageSize);
+
+            ViewBag.PaginaActual = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalRegistros = totalRegistros;
+            ViewBag.TotalPaginas = totalPaginas <= 0 ? 1 : totalPaginas;
+
+            return View(jugadores);
         }
 
         public async Task<IActionResult> Details(int id)

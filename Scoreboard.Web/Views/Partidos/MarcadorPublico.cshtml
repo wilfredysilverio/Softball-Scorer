@@ -9,7 +9,13 @@
 }
 <div class="container py-3">
     <div class="d-flex align-items-center justify-content-between mb-3">
-        <h2 class="mb-0">@partido.EquipoVisita?.Nombre @partido.CarrerasVisita - @partido.CarrerasCasa @partido.EquipoCasa?.Nombre</h2>
+        <h2 class="mb-0">
+            @partido.EquipoVisita?.Nombre
+            <span id="score-visita-publico" class="mx-1">@partido.CarrerasVisita</span>
+            -
+            <span id="score-casa-publico" class="mx-1">@partido.CarrerasCasa</span>
+            @partido.EquipoCasa?.Nombre
+        </h2>
         <span class="badge bg-secondary">Fecha: @partido.Fecha.ToString("yyyy-MM-dd")</span>
     </div>
 
@@ -63,9 +69,19 @@
                 </table>
             </div>
 
-            <div class="d-flex gap-3 mt-3">
+            <div class="d-flex gap-3 mt-3 flex-wrap align-items-center">
                 <div>Entrada: <span id="entradaActual">@partido.EntradaActual</span> <span id="mitadActual">(@partido.Mitad)</span></div>
-                <div>Outs: <span id="outsActuales">@partido.Outs</span></div>
+                <div class="outs-tracker d-flex align-items-center gap-2" aria-live="polite">
+                    <span class="outs-label">Outs:</span>
+                    <span class="outs-value" id="outs-count-publico">@Model.Outs</span>
+                    <div class="outs-indicator" id="publico-outs-indicator" aria-hidden="true">
+                        @for (var i = 1; i <= 3; i++)
+                        {
+                            var activeClass = Model.Outs >= i ? " active filled" : string.Empty;
+                            <span class="out-dot@activeClass" data-out-index="@i" id="publico-out@i"></span>
+                        }
+                    </div>
+                </div>
                 <div class="d-flex align-items-center gap-2">
                     <span id="base1" class="base @(partido.B1 ? "activa" : string.Empty)"></span>
                     <span id="base2" class="base @(partido.B2 ? "activa" : string.Empty)"></span>
@@ -255,6 +271,9 @@
     <style>
         .base { width:14px; height:14px; display:inline-block; border:1px solid #333; transform: rotate(45deg); }
         .base.activa { background-color:#28a745; }
+        .outs-indicator { display:inline-flex; gap:4px; }
+        .out-dot { width:12px; height:12px; border-radius:50%; border:1px solid #333; background-color:#e0e0e0; transition:background-color .2s ease; }
+        .out-dot.active, .out-dot.filled { background-color:#ff4d4d; }
         .flash { animation: flash 0.8s linear 1; }
         @@keyframes flash { 0% { background:#fff3cd; } 100% { background:transparent; } }
     </style>
