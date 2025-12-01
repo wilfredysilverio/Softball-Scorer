@@ -1,3 +1,771 @@
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\appsettings.Development.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\appsettings.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.staticwebassets.runtime.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.staticwebassets.endpoints.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.exe
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.deps.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.runtimeconfig.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.pdb
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\FluentValidation.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Humanizer.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Razor.Language.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Build.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Build.Framework.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Build.Locator.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.Features.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Elfie.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Features.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Razor.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Scripting.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.DiaSymReader.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.DotNet.Scaffolding.Shared.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Logging.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.NET.StringTools.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\dotnet-aspnet-codegenerator-design.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Mono.TextTemplating.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\MySqlConnector.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Common.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Configuration.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.DependencyResolver.Core.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Frameworks.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.LibraryModel.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Packaging.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.ProjectModel.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Protocol.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Versioning.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.CodeDom.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Composition.AttributedModel.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Composition.Convention.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Composition.Hosting.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Composition.Runtime.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Composition.TypedParts.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Configuration.ConfigurationManager.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Reflection.MetadataLoadContext.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\af\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ar\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\az\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\bg\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\bn-BD\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\da\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\el\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fa\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fi-FI\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr-BE\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\he\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\hr\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\hu\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\hy\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\id\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\is\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko-KR\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ku\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\lv\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ms-MY\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\mt\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\nb\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\nb-NO\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\nl\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ro\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\sk\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\sl\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\sr\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\sr-Latn\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\sv\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\th-TH\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\uk\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\uz-Cyrl-UZ\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\uz-Latn-UZ\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\vi\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-CN\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.csproj.AssemblyReference.cache
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.AssemblyInfoInputs.cache
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.AssemblyInfo.cs
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.RazorAssemblyInfo.cache
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.RazorAssemblyInfo.cs
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.sourcelink.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\rjimswa.dswa.cache.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\scopedcss\bundle\Scoreboard.Web.styles.css
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\scopedcss\projectbundle\Scoreboard.Web.bundle.scp.css
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ofa40bqe71-o84wqeh1og.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\j9swiz3yzq-90yqlj465b.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vltxs1u3vm-xtxxf3hu2r.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\14ipv7q33s-agp80tu62r.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rh65p086id-st1cbwfwo5.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\eb27mqwgz2-unj9p35syc.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9glsckmvxo-5vj65cig9w.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hh8ihyobdx-q2ku51ktnl.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\bww8ud00yd-2q4vfeazbq.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\edcrak57d7-n1oizzvkh6.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\sf8kf2lula-o371a8zbv2.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\3tzsqhslk9-7na4sro3qu.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\oxk5o6czdw-jeal3x0ldm.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\k8b25g0zwc-f8imaxxbri.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8axix7wldr-okkk44j0xs.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\d5z9sfpxbi-0wve5yxp74.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\u8428c4e9i-cwzlr5n8x4.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\tg53r17ghy-npxfuf8dg6.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\nlrl0f3xs3-wmug9u23qg.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\1fc4q00scq-tey0rigmnh.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8xykfy6qmd-j75batdsum.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vsrbd71spn-16095smhkz.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cynp17w084-vy0bq9ydhf.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\7o8oyvng68-b4skse8du6.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\h9vwtoirpy-ab1c3rmv7g.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\o5k23vqhrk-u3xrusw2ol.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\iznc766avz-56d2bn4wt9.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ns4583i71s-mpyigms19s.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\47012z8l2l-73kdqttayv.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\4vzefxwp2m-bpk8xqwxhs.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\bh4v3mdph9-8inm30yfxf.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\l186vlgaag-ve6x09088i.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rsc7qacj1u-4gxs3k148c.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\z408qb6q7a-9b9oa1qrmt.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\qfr28sqcy1-fctod5rc9n.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\0k1i85ntyh-l2av4jpuoj.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\xa379ftczi-kbynt5jhd9.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\lr5hmrr0j7-25iw1kog22.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ivy2s9gwh5-c2nslu3uf3.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\higufxz8op-m39kt2b5c9.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\s3tglgz8hr-2lgwfvgpvi.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vw9sls9bhj-um2aeqy4ik.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ym8tkpcl2i-wsezl0heh6.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\zzna4nrm5w-o4kw7cc6tf.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\igscs4x0yk-6ukhryfubh.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\zap00c0tb5-zwph15dxgs.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\pogzkicjpz-u33ctipx7g.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\362sl0bktu-47otxtyo56.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vov7uhd1ha-4v8eqarkd7.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ldxy2n3w6q-356vix0kms.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ypthv7q62w-ay5nd8zt9x.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\t6e3b82hrf-9oaff4kq20.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\uocis9wxbx-pzqfkb6aqo.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\2tikzqlmtu-b7iojwaux1.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9muusbdg0a-x0q3zqp4vz.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\tpsq5dibur-fwhahm2icz.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\t0qo7o574p-dd6z7egasc.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\b9lhb08218-5pze98is44.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\yfc7ypekbg-mlv21k5csn.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\dbiliws3kw-qpe4m3wedq.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9ozojdk4mp-ap96b5ry4d.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vyba9yt6xn-61n19gt1b8.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hr1xetpmdt-09jztxskfe.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ik6vrl5uha-l60bqsik1a.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\qyxtx75lr6-bqjiyaj88i.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\dtywey9fwz-c2jlpeoesf.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\p1cqipruuk-erw9l3u2r3.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hf6mb9sqi6-aexeepp0ev.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\qcu0c64k6k-d7shbmvgxk.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cmysnooshb-ausgxo2sd3.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\w3t89ajasu-k8d9w2qqmf.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cdmqwbabx8-cosvhxvwiu.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\2qum0pw6vl-ub07r2b239.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\nnipqefale-fvhpjtyr6v.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\z7sspc35d7-b7pk76d08c.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\lwae4k1kxj-fsbi9cje9m.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\mxlqso0n8t-rzd6atqjts.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cz2t4k1xvp-ee0r1s7dh0.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\uzgeqw8g0r-dxx9fxp4il.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\4tlshnc95v-jd9uben2k1.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\iryx9d2u14-khv3u5hwcm.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\x6ktkkf943-r4e9w2rdcm.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\dnmje67jnq-lcd1t2u6c8.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\mh25x7dxn4-c2oey78nd0.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\j03li0he61-tdbxkamptv.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hjjku3auhp-j5mq2jizvt.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\g2m0o4e0op-06098lyss8.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\eevb7f4ha2-nvvlpmu67g.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\moyat39tlu-s35ty4nyc5.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rjenqejyb2-pj5nd1wqec.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\92incuuozp-46ein0sx1k.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kpmgzz51o7-v0zj4ognzu.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\6t5xgjyvy4-37tfw0ft22.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\k37f8zst45-hrwsygsryq.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kjqbenduor-pk9g2wxc8p.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\q01jaun2hx-ft3s53vfgj.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\tx4m3n47cj-6cfz1n2cew.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\fpoxb9ymy8-6pdc2jztkx.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ty5d3945e2-493y06b0oq.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\g4yidg9o11-iovd86k7lj.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9ni5ns2rzc-vr1egmr9el.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\0l2jc7ifdb-kbrnm935zg.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\psbyqgpufj-jj8uyg4cgr.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rub09m718x-y7v9cxd14o.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8mhfvoccvm-notf2xhcfb.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\nf8kmraev7-h1s4sie4z3.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\u11flt3e1y-63fj8s7r0e.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\wzhqahhn7d-0j3bgjxly4.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\gypkqi2i0e-47otxtyo56.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\4robr4y6ne-4v8eqarkd7.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kt620osh0x-356vix0kms.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8o6t75u5do-83jwlth58m.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\50nvaxgnsv-mrlpezrjn3.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\bca8m1kyi5-lzl9nlhx6b.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\aonen3nuor-ag7o75518u.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\b3rwncx9gz-x0q3zqp4vz.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\3nchlfm1gf-0i3buxo5is.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\aty9fknmib-o1o13a6vjx.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\wjzrpsifht-ttgo8qnofa.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8qu2if0bcn-2z0ns9nrw6.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rlrl3gld9v-muycvpuwrr.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\88stzrr2nn-87fc7y1x7t.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8hflnj7v84-mlv21k5csn.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\h7awpwlith-ns7z32njbc.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9o5fni41pk-y626i6m71y.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\2j0l8pot8o-y626i6m71y.gz
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.development.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboa.9B75CA37.Up2Date
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\refint\Scoreboard.Web.dll
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.pdb
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.genruntimeconfig.cache
+C:\Users\Usuario\Desktop\Proyecto sofbol\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\ref\Scoreboard.Web.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\appsettings.Development.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\appsettings.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.staticwebassets.runtime.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.staticwebassets.endpoints.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.exe
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.deps.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.runtimeconfig.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.pdb
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\FluentValidation.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Humanizer.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Razor.Language.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Build.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Build.Framework.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Build.Locator.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.Features.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Elfie.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Features.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Razor.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Scripting.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.DiaSymReader.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.DotNet.Scaffolding.Shared.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Logging.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.NET.StringTools.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\dotnet-aspnet-codegenerator-design.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Mono.TextTemplating.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\MySqlConnector.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Common.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Configuration.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.DependencyResolver.Core.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Frameworks.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.LibraryModel.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Packaging.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.ProjectModel.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Protocol.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\NuGet.Versioning.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.CodeDom.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Composition.AttributedModel.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Composition.Convention.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Composition.Hosting.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Composition.Runtime.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Composition.TypedParts.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Configuration.ConfigurationManager.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Reflection.MetadataLoadContext.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\af\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ar\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\az\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\bg\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\bn-BD\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\da\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\el\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fa\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fi-FI\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr-BE\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\he\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\hr\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\hu\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\hy\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\id\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\is\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko-KR\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ku\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\lv\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ms-MY\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\mt\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\nb\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\nb-NO\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\nl\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ro\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\sk\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\sl\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\sr\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\sr-Latn\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\sv\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\th-TH\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\uk\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\uz-Cyrl-UZ\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\uz-Latn-UZ\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\vi\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-CN\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Humanizer.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Features.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.csproj.AssemblyReference.cache
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.AssemblyInfoInputs.cache
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.AssemblyInfo.cs
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.RazorAssemblyInfo.cache
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.RazorAssemblyInfo.cs
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.sourcelink.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\rjimswa.dswa.cache.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\scopedcss\bundle\Scoreboard.Web.styles.css
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\scopedcss\projectbundle\Scoreboard.Web.bundle.scp.css
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ofa40bqe71-o84wqeh1og.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\j9swiz3yzq-90yqlj465b.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vltxs1u3vm-xtxxf3hu2r.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\14ipv7q33s-agp80tu62r.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rh65p086id-st1cbwfwo5.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\eb27mqwgz2-unj9p35syc.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9glsckmvxo-5vj65cig9w.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hh8ihyobdx-q2ku51ktnl.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\bww8ud00yd-2q4vfeazbq.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\edcrak57d7-n1oizzvkh6.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\sf8kf2lula-o371a8zbv2.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\3tzsqhslk9-7na4sro3qu.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\oxk5o6czdw-jeal3x0ldm.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\k8b25g0zwc-f8imaxxbri.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8axix7wldr-okkk44j0xs.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\d5z9sfpxbi-0wve5yxp74.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\u8428c4e9i-cwzlr5n8x4.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\tg53r17ghy-npxfuf8dg6.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\nlrl0f3xs3-wmug9u23qg.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\1fc4q00scq-tey0rigmnh.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8xykfy6qmd-j75batdsum.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vsrbd71spn-16095smhkz.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cynp17w084-vy0bq9ydhf.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\7o8oyvng68-b4skse8du6.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\h9vwtoirpy-ab1c3rmv7g.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\o5k23vqhrk-u3xrusw2ol.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\iznc766avz-56d2bn4wt9.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ns4583i71s-mpyigms19s.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\47012z8l2l-73kdqttayv.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\4vzefxwp2m-bpk8xqwxhs.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\bh4v3mdph9-8inm30yfxf.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\l186vlgaag-ve6x09088i.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rsc7qacj1u-4gxs3k148c.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\z408qb6q7a-9b9oa1qrmt.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\qfr28sqcy1-fctod5rc9n.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\0k1i85ntyh-l2av4jpuoj.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\xa379ftczi-kbynt5jhd9.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\lr5hmrr0j7-25iw1kog22.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ivy2s9gwh5-c2nslu3uf3.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\higufxz8op-m39kt2b5c9.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\s3tglgz8hr-2lgwfvgpvi.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vw9sls9bhj-um2aeqy4ik.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ym8tkpcl2i-wsezl0heh6.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\zzna4nrm5w-o4kw7cc6tf.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\igscs4x0yk-6ukhryfubh.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\zap00c0tb5-zwph15dxgs.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\pogzkicjpz-u33ctipx7g.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\362sl0bktu-47otxtyo56.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vov7uhd1ha-4v8eqarkd7.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ldxy2n3w6q-356vix0kms.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ypthv7q62w-ay5nd8zt9x.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\t6e3b82hrf-9oaff4kq20.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\uocis9wxbx-pzqfkb6aqo.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\2tikzqlmtu-b7iojwaux1.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9muusbdg0a-x0q3zqp4vz.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\tpsq5dibur-fwhahm2icz.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\t0qo7o574p-dd6z7egasc.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\b9lhb08218-5pze98is44.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\yfc7ypekbg-mlv21k5csn.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\dbiliws3kw-qpe4m3wedq.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vyba9yt6xn-61n19gt1b8.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ik6vrl5uha-l60bqsik1a.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\qyxtx75lr6-bqjiyaj88i.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\dtywey9fwz-c2jlpeoesf.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\p1cqipruuk-erw9l3u2r3.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hf6mb9sqi6-aexeepp0ev.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\qcu0c64k6k-d7shbmvgxk.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cmysnooshb-ausgxo2sd3.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\w3t89ajasu-k8d9w2qqmf.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cdmqwbabx8-cosvhxvwiu.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\2qum0pw6vl-ub07r2b239.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\nnipqefale-fvhpjtyr6v.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\z7sspc35d7-b7pk76d08c.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\lwae4k1kxj-fsbi9cje9m.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\mxlqso0n8t-rzd6atqjts.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cz2t4k1xvp-ee0r1s7dh0.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\uzgeqw8g0r-dxx9fxp4il.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\4tlshnc95v-jd9uben2k1.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\iryx9d2u14-khv3u5hwcm.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\x6ktkkf943-r4e9w2rdcm.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\dnmje67jnq-lcd1t2u6c8.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\mh25x7dxn4-c2oey78nd0.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\j03li0he61-tdbxkamptv.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hjjku3auhp-j5mq2jizvt.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\g2m0o4e0op-06098lyss8.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\eevb7f4ha2-nvvlpmu67g.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\moyat39tlu-s35ty4nyc5.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rjenqejyb2-pj5nd1wqec.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\92incuuozp-46ein0sx1k.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kpmgzz51o7-v0zj4ognzu.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\6t5xgjyvy4-37tfw0ft22.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\k37f8zst45-hrwsygsryq.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kjqbenduor-pk9g2wxc8p.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\q01jaun2hx-ft3s53vfgj.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\tx4m3n47cj-6cfz1n2cew.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\fpoxb9ymy8-6pdc2jztkx.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ty5d3945e2-493y06b0oq.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\g4yidg9o11-iovd86k7lj.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9ni5ns2rzc-vr1egmr9el.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\0l2jc7ifdb-kbrnm935zg.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\psbyqgpufj-jj8uyg4cgr.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rub09m718x-y7v9cxd14o.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8mhfvoccvm-notf2xhcfb.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\nf8kmraev7-h1s4sie4z3.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\u11flt3e1y-63fj8s7r0e.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\wzhqahhn7d-0j3bgjxly4.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\gypkqi2i0e-47otxtyo56.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\4robr4y6ne-4v8eqarkd7.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kt620osh0x-356vix0kms.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8o6t75u5do-83jwlth58m.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\50nvaxgnsv-mrlpezrjn3.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\bca8m1kyi5-lzl9nlhx6b.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\aonen3nuor-ag7o75518u.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\b3rwncx9gz-x0q3zqp4vz.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\3nchlfm1gf-0i3buxo5is.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\aty9fknmib-o1o13a6vjx.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\wjzrpsifht-ttgo8qnofa.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8qu2if0bcn-2z0ns9nrw6.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rlrl3gld9v-muycvpuwrr.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\88stzrr2nn-87fc7y1x7t.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8hflnj7v84-mlv21k5csn.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\h7awpwlith-ns7z32njbc.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9o5fni41pk-y626i6m71y.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\2j0l8pot8o-y626i6m71y.gz
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.development.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboa.9B75CA37.Up2Date
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\refint\Scoreboard.Web.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.pdb
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.genruntimeconfig.cache
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\ref\Scoreboard.Web.dll
+c:\Users\Usuario\Desktop\Proyecto final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+c:\Users\Usuario\Desktop\Proyecto final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.HealthChecks.dll
+c:\Users\Usuario\Desktop\Proyecto final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
+c:\Users\Usuario\Desktop\Proyecto final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore.dll
+c:\Users\Usuario\Desktop\Proyecto final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+c:\Users\Usuario\Desktop\Proyecto final\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\Users\Usuario\Desktop\Proyecto Final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9ozojdk4mp-pdn0rg4she.gz
+C:\Users\Usuario\Desktop\Proyecto final\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hr1xetpmdt-o98shmf56q.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\appsettings.Development.json
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\appsettings.json
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.staticwebassets.runtime.json
@@ -9,6 +777,8 @@ C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scor
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Scoreboard.Web.pdb
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\FluentValidation.dll
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Humanizer.dll
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.UI.dll
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Build.dll
@@ -38,6 +808,12 @@ C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Micr
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.HealthChecks.dll
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions.dll
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore.dll
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Hosting.Abstractions.dll
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Logging.dll
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
@@ -230,6 +1006,7 @@ C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scor
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.AssemblyInfoInputs.cache
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.AssemblyInfo.cs
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.csproj.CoreCompileInputs.cache
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.RazorAssemblyInfo.cache
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.RazorAssemblyInfo.cs
@@ -237,89 +1014,9 @@ C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scor
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\scopedcss\bundle\Scoreboard.Web.styles.css
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\scopedcss\projectbundle\Scoreboard.Web.bundle.scp.css
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vyba9yt6xn-61n19gt1b8.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\qyxtx75lr6-t1cqhe9u97.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\dtywey9fwz-c2jlpeoesf.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\p1cqipruuk-sejl45xvog.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hf6mb9sqi6-aexeepp0ev.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\qcu0c64k6k-xvp3kq03qx.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cmysnooshb-ausgxo2sd3.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\w3t89ajasu-22vffe00uq.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cdmqwbabx8-cosvhxvwiu.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\2qum0pw6vl-qesaa3a1fm.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\nnipqefale-fvhpjtyr6v.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\z7sspc35d7-tmc1g35s3z.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\lwae4k1kxj-fsbi9cje9m.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\mxlqso0n8t-rxsg74s51o.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cz2t4k1xvp-ee0r1s7dh0.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\uzgeqw8g0r-q9ht133ko3.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\4tlshnc95v-jd9uben2k1.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\iryx9d2u14-gye83jo8yx.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\x6ktkkf943-r4e9w2rdcm.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\dnmje67jnq-wl58j5mj3v.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\mh25x7dxn4-c2oey78nd0.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\j03li0he61-d4r6k3f320.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hjjku3auhp-j5mq2jizvt.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\g2m0o4e0op-keugtjm085.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\eevb7f4ha2-nvvlpmu67g.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\moyat39tlu-zub09dkrxp.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rjenqejyb2-pj5nd1wqec.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\92incuuozp-43atpzeawx.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kpmgzz51o7-v0zj4ognzu.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\6t5xgjyvy4-ynyaa8k90p.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\k37f8zst45-hrwsygsryq.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kjqbenduor-c63t5i9ira.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\q01jaun2hx-ft3s53vfgj.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\tx4m3n47cj-4094rpi4f9.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\fpoxb9ymy8-6pdc2jztkx.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ty5d3945e2-hd3gran6i8.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\g4yidg9o11-iovd86k7lj.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9ni5ns2rzc-ltid2c489k.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\0l2jc7ifdb-kbrnm935zg.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\psbyqgpufj-8vyfqsqgz1.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rub09m718x-y7v9cxd14o.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8mhfvoccvm-u9q1upor1n.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\nf8kmraev7-h1s4sie4z3.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\u11flt3e1y-4d85u1mtcx.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\wzhqahhn7d-0j3bgjxly4.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\gypkqi2i0e-03hjc8e09r.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\4robr4y6ne-48y08845bh.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kt620osh0x-356vix0kms.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8o6t75u5do-83jwlth58m.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\50nvaxgnsv-mrlpezrjn3.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\bca8m1kyi5-worgj0nhwm.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\aonen3nuor-gk0pw8i4co.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\b3rwncx9gz-x0q3zqp4vz.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\3nchlfm1gf-d6nrnj6jjx.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\aty9fknmib-m9qm4tazc0.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\wjzrpsifht-ttgo8qnofa.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8qu2if0bcn-jjsuc0puko.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rlrl3gld9v-9vr69e8ynj.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\88stzrr2nn-87fc7y1x7t.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8hflnj7v84-mlv21k5csn.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9o5fni41pk-y626i6m71y.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\2j0l8pot8o-y626i6m71y.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.json
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.json.cache
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.development.json
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.endpoints.json
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboa.9B75CA37.Up2Date
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.dll
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\refint\Scoreboard.Web.dll
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.pdb
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.genruntimeconfig.cache
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\ref\Scoreboard.Web.dll
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.UI.dll
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ofa40bqe71-o84wqeh1og.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\j9swiz3yzq-90yqlj465b.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vltxs1u3vm-xtxxf3hu2r.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ldxy2n3w6q-356vix0kms.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9muusbdg0a-x0q3zqp4vz.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\yfc7ypekbg-mlv21k5csn.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9ozojdk4mp-ap96b5ry4d.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ik6vrl5uha-l60bqsik1a.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ofa40bqe71-o84wqeh1og.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\14ipv7q33s-agp80tu62r.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rh65p086id-st1cbwfwo5.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\eb27mqwgz2-unj9p35syc.gz
@@ -366,13 +1063,90 @@ C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\comp
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\pogzkicjpz-u33ctipx7g.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\362sl0bktu-47otxtyo56.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vov7uhd1ha-4v8eqarkd7.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ldxy2n3w6q-356vix0kms.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ypthv7q62w-ay5nd8zt9x.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\t6e3b82hrf-9oaff4kq20.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\uocis9wxbx-pzqfkb6aqo.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\2tikzqlmtu-b7iojwaux1.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9muusbdg0a-x0q3zqp4vz.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\tpsq5dibur-fwhahm2icz.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\t0qo7o574p-dd6z7egasc.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\b9lhb08218-5pze98is44.gz
-C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hr1xetpmdt-09jztxskfe.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\yfc7ypekbg-mlv21k5csn.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\dbiliws3kw-qpe4m3wedq.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9ozojdk4mp-pdn0rg4she.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\vyba9yt6xn-61n19gt1b8.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hr1xetpmdt-o98shmf56q.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ik6vrl5uha-l60bqsik1a.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\qyxtx75lr6-bqjiyaj88i.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\dtywey9fwz-c2jlpeoesf.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\p1cqipruuk-erw9l3u2r3.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hf6mb9sqi6-aexeepp0ev.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\qcu0c64k6k-d7shbmvgxk.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cmysnooshb-ausgxo2sd3.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\w3t89ajasu-k8d9w2qqmf.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cdmqwbabx8-cosvhxvwiu.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\2qum0pw6vl-ub07r2b239.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\nnipqefale-fvhpjtyr6v.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\z7sspc35d7-b7pk76d08c.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\lwae4k1kxj-fsbi9cje9m.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\mxlqso0n8t-rzd6atqjts.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\cz2t4k1xvp-ee0r1s7dh0.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\uzgeqw8g0r-dxx9fxp4il.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\4tlshnc95v-jd9uben2k1.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\iryx9d2u14-khv3u5hwcm.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\x6ktkkf943-r4e9w2rdcm.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\dnmje67jnq-lcd1t2u6c8.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\mh25x7dxn4-c2oey78nd0.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\j03li0he61-tdbxkamptv.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\hjjku3auhp-j5mq2jizvt.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\g2m0o4e0op-06098lyss8.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\eevb7f4ha2-nvvlpmu67g.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\moyat39tlu-s35ty4nyc5.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rjenqejyb2-pj5nd1wqec.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\92incuuozp-46ein0sx1k.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kpmgzz51o7-v0zj4ognzu.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\6t5xgjyvy4-37tfw0ft22.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\k37f8zst45-hrwsygsryq.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kjqbenduor-pk9g2wxc8p.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\q01jaun2hx-ft3s53vfgj.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\tx4m3n47cj-6cfz1n2cew.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\fpoxb9ymy8-6pdc2jztkx.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\ty5d3945e2-493y06b0oq.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\g4yidg9o11-iovd86k7lj.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9ni5ns2rzc-vr1egmr9el.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\0l2jc7ifdb-kbrnm935zg.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\psbyqgpufj-jj8uyg4cgr.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rub09m718x-y7v9cxd14o.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8mhfvoccvm-notf2xhcfb.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\nf8kmraev7-h1s4sie4z3.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\u11flt3e1y-63fj8s7r0e.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\wzhqahhn7d-0j3bgjxly4.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\gypkqi2i0e-47otxtyo56.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\4robr4y6ne-4v8eqarkd7.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\kt620osh0x-356vix0kms.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8o6t75u5do-83jwlth58m.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\50nvaxgnsv-mrlpezrjn3.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\bca8m1kyi5-lzl9nlhx6b.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\aonen3nuor-ag7o75518u.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\b3rwncx9gz-x0q3zqp4vz.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\3nchlfm1gf-0i3buxo5is.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\aty9fknmib-o1o13a6vjx.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\wjzrpsifht-ttgo8qnofa.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8qu2if0bcn-2z0ns9nrw6.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\rlrl3gld9v-muycvpuwrr.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\88stzrr2nn-87fc7y1x7t.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\8hflnj7v84-mlv21k5csn.gz
 C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\h7awpwlith-ns7z32njbc.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\9o5fni41pk-y626i6m71y.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\compressed\2j0l8pot8o-y626i6m71y.gz
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.json
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.development.json
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\staticwebassets.build.endpoints.json
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboa.9B75CA37.Up2Date
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.dll
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\refint\Scoreboard.Web.dll
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.pdb
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\Scoreboard.Web.genruntimeconfig.cache
+C:\Users\nowel\source\repos\Softball-Scorer\Scoreboard.Web\obj\Debug\net9.0\ref\Scoreboard.Web.dll

@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Scoreboard.Web.Models;   // Aquí vive ApplicationUser
-using Scoreboard.Web.Modelos; // Aquí viven Equipo, Jugador, Partido, etc.
+using Scoreboard.Web.Modelos;
 
 namespace Scoreboard.Web.Datos
 {
-    // Ahora el contexto usa ApplicationUser
-    public class ContextoMarcador : IdentityDbContext<ApplicationUser>
+    public class ContextoMarcador : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
         public ContextoMarcador(DbContextOptions<ContextoMarcador> opciones) : base(opciones) { }
 
@@ -21,7 +19,6 @@ namespace Scoreboard.Web.Datos
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // MUY importante: que Identity registre ApplicationUser
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Partido>()

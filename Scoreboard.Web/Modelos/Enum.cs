@@ -1,20 +1,11 @@
 namespace Scoreboard.Web.Modelos
 {
-    public enum EstadoPartido
-    {
-        NoIniciado = 0,
-        EnCurso = 1,
-        Suspendido = 2,
-        Finalizado = 3
-    }
-
     public enum MitadEntrada
     {
         Alta = 0,
         Baja = 1
     }
 
-    // Resultados que usa tu MarcadorService
     public enum ResultadoTurno
     {
         Sencillo,
@@ -27,29 +18,45 @@ namespace Scoreboard.Web.Modelos
         OutEnJuego,
         SacrificioFly,
         SacrificioToque,
-        LlegaPorError
+        LlegaPorError,
+        DoblePlay
     }
 
-    // ÚNICA definición de Posicion con alias para cubrir ambos estilos (P/C/_1B... y nombres en español)
+    public enum EventoCorredor
+    {
+        Ninguno = 0,
+        RoboBase = 1,
+        PassedBall = 2,
+        WildPitch = 3
+    }
+
+    public enum BaseCorredor
+    {
+        Primera = 1,
+        Segunda = 2,
+        Tercera = 3
+    }
+
     public enum Posicion
     {
-        Desconocida = 0,
-
-        Pitcher = 1, Lanzador = Pitcher, P = Pitcher,
-        Catcher = 2, C = Catcher,
-
-        Primera = 3, _1B = Primera,
-        Segunda = 4, _2B = Segunda,
-        Tercera = 5, _3B = Tercera,
-
-        ShortStop = 6, SS = ShortStop,
-        Left = 7, LF = Left,
-        Center = 8, CF = Center,
-        Right = 9, RF = Right,
-
-        DesignatedHitter = 10, DH = DesignatedHitter,
-
+        Lanzador = 1,
+        Receptor = 2,
+        PrimeraBase = 3,
+        SegundaBase = 4,
+        TerceraBase = 5,
+        Campocorto = 6,
+        JardinIzquierdo = 7,
+        JardinCentral = 8,
+        JardinDerecho = 9,
+        BateadorDesignado = 10,
         Utility = 11
     }
 
+    public enum EstadoPartido
+    {
+        NoIniciado = 0,
+        EnCurso = 1,
+        Suspendido = 2,
+        Finalizado = 3
+    }
 }

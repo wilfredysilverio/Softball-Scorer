@@ -14,19 +14,19 @@ namespace Scoreboard.Web.Controllers
 {
     public class PartidosController : Controller
     {
-        private readonly ContextoMarcador _context;
+        private readonly ContextoMarcador _db;
         private readonly IMarcadorService _marcador;
         private readonly IReportesService _reportes;
-        public PartidosController(ContextoMarcador context, IMarcadorService marcador, IReportesService reportes)
+        public PartidosController(ContextoMarcador db, IMarcadorService marcador, IReportesService reportes)
         {
-            _context = context;
+            _db = db;
             _marcador = marcador;
             _reportes = reportes;
         }
 
         private void CargarCombos(int? casaId = null, int? visitaId = null)
         {
-            var equipos = _context.Equipos.AsNoTracking().OrderBy(e => e.Nombre).ToList();
+            var equipos = _db.Equipos.AsNoTracking().OrderBy(e => e.Nombre).ToList();
             ViewBag.EquiposCasa = new SelectList(equipos, "Id", "Nombre", casaId);
             ViewBag.EquiposVisita = new SelectList(equipos, "Id", "Nombre", visitaId);
         }
@@ -56,7 +56,7 @@ namespace Scoreboard.Web.Controllers
         private async Task<(List<Jugador> Lineup, Jugador? Bateador)> ObtenerContextoBateadorAsync(Partido partido)
         {
             var equipoBateaId = partido.Mitad == MitadEntrada.Baja ? partido.EquipoCasaId : partido.EquipoVisitaId;
-            var lineupItems = await _context.Lineups.AsNoTracking()
+            var lineupItems = await _db.Lineups.AsNoTracking()
                 .Where(l => l.PartidoId == partido.Id && l.EquipoId == equipoBateaId)
                 .OrderBy(l => l.Orden)
                 .Include(l => l.Jugador)
@@ -81,13 +81,12 @@ namespace Scoreboard.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var partidos = await _context.Partidos
+            var lista = await _db.Partidos.AsNoTracking()
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)
                 .OrderByDescending(p => p.Fecha)
                 .ToListAsync();
-
-            return View(partidos);
+            return View(lista);
         }
 
         [Authorize(Roles = "Admin")]
@@ -109,8 +108,8 @@ namespace Scoreboard.Web.Controllers
                 CargarCombos(modelo.EquipoCasaId, modelo.EquipoVisitaId);
                 return View(modelo);
             }
-            _context.Partidos.Add(modelo);
-            await _context.SaveChangesAsync();
+            _db.Partidos.Add(modelo);
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -118,7 +117,7 @@ namespace Scoreboard.Web.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             if (id is null) return NotFound();
-            var partido = await _context.Partidos.AsNoTracking()
+            var partido = await _db.Partidos.AsNoTracking()
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -129,7 +128,7 @@ namespace Scoreboard.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> MarcadorPublico(int id)
         {
-            var partido = await _context.Partidos.AsNoTracking()
+            var partido = await _db.Partidos.AsNoTracking()
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)
                 .Include(p => p.Entradas)
@@ -138,11 +137,10 @@ namespace Scoreboard.Web.Controllers
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (partido == null) return NotFound();
 
-            var entradas = partido.Entradas?
-                .OrderBy(e => e.NumeroInning)
-                .ToList() ?? new List<Entrada>();
+            var entradas = EntradaHelper.NormalizarEntradas(partido.Entradas);
+            partido.Entradas = entradas;
 
-            var jugadas = await _context.PlayLogs.AsNoTracking()
+            var jugadas = await _db.PlayLogs.AsNoTracking()
                 .Include(pl => pl.Jugador)
                 .Where(pl => pl.PartidoId == id && pl.IsActive)
                 .OrderByDescending(pl => pl.Id)
@@ -172,7 +170,8 @@ namespace Scoreboard.Web.Controllers
             {
                 Partido = partido,
                 Entradas = entradas,
-                UltimasJugadas = jugadas
+                UltimasJugadas = jugadas,
+                Outs = partido.Outs
             };
 
             return View(vm);
@@ -182,7 +181,7 @@ namespace Scoreboard.Web.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             if (id is null) return NotFound();
-            var partido = await _context.Partidos.FindAsync(id);
+            var partido = await _db.Partidos.FindAsync(id);
             if (partido is null) return NotFound();
             CargarCombos(partido.EquipoCasaId, partido.EquipoVisitaId);
             return View(partido);
@@ -201,8 +200,8 @@ namespace Scoreboard.Web.Controllers
                 CargarCombos(modelo.EquipoCasaId, modelo.EquipoVisitaId);
                 return View(modelo);
             }
-            _context.Entry(modelo).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _db.Entry(modelo).State = EntityState.Modified;
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
@@ -210,7 +209,7 @@ namespace Scoreboard.Web.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             if (id is null) return NotFound();
-            var partido = await _context.Partidos.AsNoTracking()
+            var partido = await _db.Partidos.AsNoTracking()
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -223,11 +222,11 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmado(int id)
         {
-            var partido = await _context.Partidos.FindAsync(id);
+            var partido = await _db.Partidos.FindAsync(id);
             if (partido is not null)
             {
-                _context.Partidos.Remove(partido);
-                await _context.SaveChangesAsync();
+                _db.Partidos.Remove(partido);
+                await _db.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
         }
@@ -236,16 +235,15 @@ namespace Scoreboard.Web.Controllers
         public async Task<IActionResult> VerPartido(int? id)
         {
             if (id is null) return NotFound();
-            var partido = await _context.Partidos.AsNoTracking()
+            var partido = await _db.Partidos.AsNoTracking()
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)
                 .Include(p => p.Entradas)
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (partido is null) return NotFound();
-            partido.Entradas = partido.Entradas?
-                .OrderBy(e => e.NumeroInning)
-                .ToList() ?? new List<Entrada>();
-            var maxInnings = Math.Max(9, Math.Max(partido.EntradaActual, partido.Entradas.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max()));
+            var entradasOrdenadas = EntradaHelper.NormalizarEntradas(partido.Entradas);
+            partido.Entradas = entradasOrdenadas;
+            var maxInnings = Math.Max(9, Math.Max(partido.EntradaActual, entradasOrdenadas.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max()));
             var (lineupJugadores, bateadorEsperado) = await ObtenerContextoBateadorAsync(partido);
             string? motivoBloqueo = null;
             if (!lineupJugadores.Any())
@@ -274,8 +272,15 @@ namespace Scoreboard.Web.Controllers
                 Lineup = lineupJugadores,
                 BateadorEsperado = bateadorEsperado,
                 Turno = turnoVm,
+                Evento = new RegistrarEventoCorredorVm
+                {
+                    PartidoId = partido.Id,
+                    Evento = EventoCorredor.Ninguno,
+                    Base = BaseCorredor.Primera
+                },
                 MaxInnings = maxInnings,
-                MotivoBloqueoTurno = motivoBloqueo
+                MotivoBloqueoTurno = motivoBloqueo,
+                Outs = partido.Outs
             };
 
             return View(vm);
@@ -284,12 +289,12 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin,Anotador")]
         public async Task<IActionResult> DefinirLineup(int id)
         {
-            var partido = await _context.Partidos.Include(p => p.EquipoCasa).Include(p => p.EquipoVisita).FirstOrDefaultAsync(p => p.Id == id);
+            var partido = await _db.Partidos.Include(p => p.EquipoCasa).Include(p => p.EquipoVisita).FirstOrDefaultAsync(p => p.Id == id);
             if (partido == null) return NotFound();
-            var jugadoresCasa = await _context.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoCasaId).OrderBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
-            var jugadoresVisita = await _context.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoVisitaId).OrderBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
-            var lineupCasa = await _context.Lineups.AsNoTracking().Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).OrderBy(l => l.Orden).ToListAsync();
-            var lineupVisita = await _context.Lineups.AsNoTracking().Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).OrderBy(l => l.Orden).ToListAsync();
+            var jugadoresCasa = await _db.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoCasaId).OrderBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
+            var jugadoresVisita = await _db.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoVisitaId).OrderBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
+            var lineupCasa = await _db.Lineups.AsNoTracking().Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).OrderBy(l => l.Orden).ToListAsync();
+            var lineupVisita = await _db.Lineups.AsNoTracking().Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).OrderBy(l => l.Orden).ToListAsync();
             ViewBag.JugadoresCasa = jugadoresCasa;
             ViewBag.JugadoresVisita = jugadoresVisita;
             ViewBag.LineupCasa = lineupCasa;
@@ -302,25 +307,25 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin,Anotador")]
         public async Task<IActionResult> DefinirLineup(int id, [FromForm] int[]? casaJugadores, [FromForm] int[]? visitaJugadores)
         {
-            var partido = await _context.Partidos.FindAsync(id);
+            var partido = await _db.Partidos.FindAsync(id);
             if (partido == null) return NotFound();
             if (casaJugadores is not null)
             {
-                var existentesCasa = await _context.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).ToListAsync();
-                if (existentesCasa.Any()) _context.Lineups.RemoveRange(existentesCasa);
+                var existentesCasa = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).ToListAsync();
+                if (existentesCasa.Any()) _db.Lineups.RemoveRange(existentesCasa);
                 int orden = 1;
                 foreach (var j in casaJugadores.Where(x => x > 0))
-                    _context.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = orden++ });
+                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = orden++ });
             }
             if (visitaJugadores is not null)
             {
-                var existentesVisita = await _context.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).ToListAsync();
-                if (existentesVisita.Any()) _context.Lineups.RemoveRange(existentesVisita);
+                var existentesVisita = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).ToListAsync();
+                if (existentesVisita.Any()) _db.Lineups.RemoveRange(existentesVisita);
                 int orden = 1;
                 foreach (var j in visitaJugadores.Where(x => x > 0))
-                    _context.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = orden++ });
+                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = orden++ });
             }
-            await _context.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             TempData["Ok"] = "Lineup actualizado.";
             return RedirectToAction(nameof(DefinirLineup), new { id });
         }
@@ -330,17 +335,17 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin,Anotador")]
         public async Task<IActionResult> GuardarLineupVisitante(int id, [FromForm] int[] visitaJugadores)
         {
-            var partido = await _context.Partidos.FindAsync(id);
+            var partido = await _db.Partidos.FindAsync(id);
             if (partido == null) return NotFound();
-            var existentes = await _context.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).ToListAsync();
-            if (existentes.Any()) _context.Lineups.RemoveRange(existentes);
+            var existentes = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).ToListAsync();
+            if (existentes.Any()) _db.Lineups.RemoveRange(existentes);
             int orden = 1;
             if (visitaJugadores != null)
             {
                 foreach (var j in visitaJugadores.Where(x => x > 0))
-                    _context.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = orden++ });
+                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = orden++ });
             }
-            await _context.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             TempData["Ok"] = "Lineup visitante guardado.";
             return RedirectToAction(nameof(DefinirLineup), new { id });
         }
@@ -350,17 +355,17 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin,Anotador")]
         public async Task<IActionResult> GuardarLineupCasa(int id, [FromForm] int[] casaJugadores)
         {
-            var partido = await _context.Partidos.FindAsync(id);
+            var partido = await _db.Partidos.FindAsync(id);
             if (partido == null) return NotFound();
-            var existentes = await _context.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).ToListAsync();
-            if (existentes.Any()) _context.Lineups.RemoveRange(existentes);
+            var existentes = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).ToListAsync();
+            if (existentes.Any()) _db.Lineups.RemoveRange(existentes);
             int orden = 1;
             if (casaJugadores != null)
             {
                 foreach (var j in casaJugadores.Where(x => x > 0))
-                    _context.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = orden++ });
+                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = orden++ });
             }
-            await _context.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             TempData["Ok"] = "Lineup casa guardado.";
             return RedirectToAction(nameof(DefinirLineup), new { id });
         }
@@ -370,17 +375,17 @@ namespace Scoreboard.Web.Controllers
         [Authorize(Roles = "Admin,Anotador")]
         public async Task<IActionResult> UpdateMarcador(int id, List<Entrada> entradas)
         {
-            var partido = await _context.Partidos.Include(p => p.Entradas).FirstOrDefaultAsync(p => p.Id == id);
+            var partido = await _db.Partidos.Include(p => p.Entradas).FirstOrDefaultAsync(p => p.Id == id);
             if (partido is null) return NotFound();
             var existentes = partido.Entradas.ToList();
-            if (existentes.Any()) _context.Entradas.RemoveRange(existentes);
+            if (existentes.Any()) _db.Entradas.RemoveRange(existentes);
             if (entradas != null && entradas.Any())
             {
                 foreach (var e in entradas)
                 {
                     e.PartidoId = partido.Id;
                     if (e.NumeroInning < 1) e.NumeroInning = 1;
-                    _context.Entradas.Add(e);
+                    _db.Entradas.Add(e);
                 }
             }
             partido.CarrerasCasa = entradas?.Sum(x => x.CarrerasCasa) ?? 0;
@@ -389,7 +394,7 @@ namespace Scoreboard.Web.Controllers
             partido.HitsVisita = entradas?.Sum(x => x.HitsVisita) ?? 0;
             partido.ErroresCasa = entradas?.Sum(x => x.ErroresCasa) ?? 0;
             partido.ErroresVisita = entradas?.Sum(x => x.ErroresVisita) ?? 0;
-            await _context.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             return RedirectToAction(nameof(VerPartido), new { id = partido.Id });
         }
 
@@ -472,7 +477,7 @@ namespace Scoreboard.Web.Controllers
                 return ErrorRegistro("Debe seleccionar un bateador y un resultado válidos.", esAjax, turno.PartidoId);
             }
 
-            var partido = await _context.Partidos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == turno.PartidoId);
+            var partido = await _db.Partidos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == turno.PartidoId);
             if (partido == null)
             {
                 return ErrorRegistro("Partido no encontrado.", esAjax, turno.PartidoId);
@@ -496,9 +501,40 @@ namespace Scoreboard.Web.Controllers
                 return ErrorRegistro("El formulario está desactualizado. Refresca la página antes de registrar el turno.", esAjax, turno.PartidoId);
             }
 
+            var eventoCorredorSeleccionado = turno.EventoCorredor ?? EventoCorredor.Ninguno;
+            var baseEventoSeleccionada = turno.BaseEvento;
+            if (eventoCorredorSeleccionado != EventoCorredor.Ninguno && !baseEventoSeleccionada.HasValue)
+            {
+                return ErrorRegistro("Selecciona el corredor que avanzó con el evento.", esAjax, turno.PartidoId);
+            }
+            if (eventoCorredorSeleccionado != EventoCorredor.Ninguno && !(partido.B1 || partido.B2 || partido.B3))
+            {
+                return ErrorRegistro("No hay corredores en base para aplicar el evento seleccionado.", esAjax, turno.PartidoId);
+            }
+            if (eventoCorredorSeleccionado != EventoCorredor.Ninguno && baseEventoSeleccionada.HasValue)
+            {
+                var baseDisponible = baseEventoSeleccionada.Value switch
+                {
+                    BaseCorredor.Primera => partido.B1,
+                    BaseCorredor.Segunda => partido.B2,
+                    BaseCorredor.Tercera => partido.B3,
+                    _ => false
+                };
+                if (!baseDisponible)
+                {
+                    return ErrorRegistro("La base seleccionada no tiene corredor actualmente. Refresca el marcador e intenta nuevamente.", esAjax, turno.PartidoId);
+                }
+            }
+
             try
             {
-                var partidoActualizado = await _marcador.RegistrarTurnoAsync(turno.PartidoId, turno.JugadorId, turno.Resultado);
+                var baseEvento = baseEventoSeleccionada ?? BaseCorredor.Primera;
+                var partidoActualizado = await _marcador.RegistrarTurnoAsync(
+                    turno.PartidoId,
+                    turno.JugadorId,
+                    turno.Resultado,
+                    eventoCorredorSeleccionado,
+                    baseEvento);
                 var marcador = await _marcador.ObtenerMarcadorAsync(partidoActualizado.Id);
                 var proximoBateador = marcador.BateadorEsperado;
                 var puedeRegistrar = marcador.PuedeRegistrar;
@@ -541,6 +577,55 @@ namespace Scoreboard.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Anotador")]
+        public async Task<IActionResult> RegistrarEventoCorredor([FromForm] RegistrarEventoCorredorVm request)
+        {
+            var esAjax = EsAjaxRequest();
+            if (!ModelState.IsValid || request.Evento == EventoCorredor.Ninguno)
+            {
+                return ErrorRegistro("Selecciona un evento válido de corredores.", esAjax, request.PartidoId);
+            }
+
+            var partido = await _db.Partidos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == request.PartidoId);
+            if (partido == null)
+            {
+                return ErrorRegistro("Partido no encontrado.", esAjax, request.PartidoId);
+            }
+            if (partido.Estado != EstadoPartido.EnCurso)
+            {
+                return ErrorRegistro("Solo puedes registrar eventos con el partido en curso.", esAjax, request.PartidoId);
+            }
+
+            bool baseDisponible = request.Base switch
+            {
+                BaseCorredor.Primera => partido.B1,
+                BaseCorredor.Segunda => partido.B2,
+                BaseCorredor.Tercera => partido.B3,
+                _ => false
+            };
+            if (!baseDisponible)
+            {
+                return ErrorRegistro("No hay corredor en la base seleccionada.", esAjax, request.PartidoId);
+            }
+
+            try
+            {
+                await _marcador.RegistrarEventoCorredorAsync(request.PartidoId, request.Evento, request.Base);
+                if (esAjax)
+                {
+                    return Json(new { ok = true, message = "Evento registrado correctamente." });
+                }
+                TempData["Ok"] = "Evento registrado correctamente.";
+                return RedirectToAction(nameof(VerPartido), new { id = request.PartidoId });
+            }
+            catch (Exception ex)
+            {
+                return ErrorRegistro(ex.Message, esAjax, request.PartidoId);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Anotador")]
         public async Task<IActionResult> Deshacer(int partidoId)
         {
             try
@@ -576,13 +661,14 @@ namespace Scoreboard.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ExportarBoxScore(int id)
         {
-            var partido = await _context.Partidos.AsNoTracking()
+            var partido = await _db.Partidos.AsNoTracking()
                 .Include(p => p.Entradas)
                 .Include(p => p.EquipoCasa)
                 .Include(p => p.EquipoVisita)
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (partido == null) return NotFound();
-            var maxInnings = Math.Max(9, partido.Entradas?.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max() ?? 9);
+            var entradas = EntradaHelper.NormalizarEntradas(partido.Entradas);
+            var maxInnings = Math.Max(9, entradas.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max());
             var sb = new StringBuilder();
             sb.Append("Equipo");
             for (int i = 1; i <= maxInnings; i++) sb.Append($";{i}");
@@ -590,7 +676,7 @@ namespace Scoreboard.Web.Controllers
             sb.Append(partido.EquipoVisita?.Nombre ?? "Visita");
             for (int i = 1; i <= maxInnings; i++)
             {
-                var e = partido.Entradas?.FirstOrDefault(x => x.NumeroInning == i);
+                var e = entradas.FirstOrDefault(x => x.NumeroInning == i);
                 var r = e?.CarrerasVisita ?? 0;
                 sb.Append($";{r}");
             }
@@ -598,7 +684,7 @@ namespace Scoreboard.Web.Controllers
             sb.Append(partido.EquipoCasa?.Nombre ?? "Casa");
             for (int i = 1; i <= maxInnings; i++)
             {
-                var e = partido.Entradas?.FirstOrDefault(x => x.NumeroInning == i);
+                var e = entradas.FirstOrDefault(x => x.NumeroInning == i);
                 var r = e?.CarrerasCasa ?? 0;
                 sb.Append($";{r}");
             }

@@ -9,11 +9,6 @@
 </div>
 <p class="auth-sub mb-4">Regístrate para usar Softball-Scorer.</p>
 
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success" role="alert">@TempData["Success"]</div>
-}
-
 <form asp-action="Register" method="post" novalidate>
     <input type="hidden" name="returnUrl" value="@returnUrl" />
     <div class="mb-3">
@@ -32,36 +27,21 @@
     </div>
     <div class="mb-3">
         <label asp-for="Password" class="form-label">Contraseña</label>
-        <input asp-for="Password" class="form-control form-control-lg" placeholder="Mínimo 8 caracteres" type="password" autocomplete="new-password" />
+        <input asp-for="Password" class="form-control form-control-lg" placeholder="Mínimo 8 caracteres" />
         <span asp-validation-for="Password" class="text-danger small"></span>
     </div>
     <div class="mb-4">
         <label asp-for="ConfirmPassword" class="form-label">Confirmar contraseña</label>
-        <input asp-for="ConfirmPassword" class="form-control form-control-lg" placeholder="Repite tu contraseña" type="password" autocomplete="new-password" />
+        <input asp-for="ConfirmPassword" class="form-control form-control-lg" placeholder="Repite tu contraseña" />
         <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
     </div>
     <button class="btn btn-success btn-lg w-100" type="submit">Crear cuenta</button>
-    <div class="small text-muted mt-2">Revisa los errores antes de continuar.</div>
 </form>
-
-@if (TempData["Success"] != null)
-{
-    <div class="text-center mt-3">
-        <a asp-action="Login" class="btn btn-outline-primary btn-sm">Ir a iniciar sesión</a>
-    </div>
-}
 
 <div class="text-center mt-3">
     <span class="text-muted">¿Ya tienes cuenta?</span>
     <a asp-action="Login" class="ms-1">Inicia sesión</a>
 </div>
-
-@if (TempData["Error"] != null)
-{
-    <div class="alert alert-danger mt-3" role="alert">@TempData["Error"]</div>
-}
-
-@Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

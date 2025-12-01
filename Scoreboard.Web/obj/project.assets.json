@@ -2,85 +2,6 @@
   "version": 3,
   "targets": {
     "net9.0": {
-      "ClosedXML/0.104.0": {
-        "type": "package",
-        "dependencies": {
-          "ClosedXML.Parser": "[1.2.0, 2.0.0)",
-          "DocumentFormat.OpenXml": "[3.0.1, 4.0.0)",
-          "ExcelNumberFormat": "1.1.0",
-          "RBush": "3.2.0",
-          "SixLabors.Fonts": "1.0.0",
-          "System.IO.Packaging": "8.0.0"
-        },
-        "compile": {
-          "lib/netstandard2.1/ClosedXML.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.1/ClosedXML.dll": {
-            "related": ".pdb;.xml"
-          }
-        }
-      },
-      "ClosedXML.Parser/1.2.0": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.1/ClosedXML.Parser.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.1/ClosedXML.Parser.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "DocumentFormat.OpenXml/3.0.1": {
-        "type": "package",
-        "dependencies": {
-          "DocumentFormat.OpenXml.Framework": "3.0.1"
-        },
-        "compile": {
-          "lib/net8.0/DocumentFormat.OpenXml.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/DocumentFormat.OpenXml.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "DocumentFormat.OpenXml.Framework/3.0.1": {
-        "type": "package",
-        "dependencies": {
-          "System.IO.Packaging": "8.0.0"
-        },
-        "compile": {
-          "lib/net8.0/DocumentFormat.OpenXml.Framework.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/DocumentFormat.OpenXml.Framework.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "ExcelNumberFormat/1.1.0": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/ExcelNumberFormat.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/ExcelNumberFormat.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "FluentValidation/12.0.0": {
         "type": "package",
         "compile": {
@@ -688,31 +609,31 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Cryptography.Internal/9.0.0": {
+      "Microsoft.AspNetCore.Cryptography.Internal/8.0.0": {
         "type": "package",
         "compile": {
-          "lib/net9.0/Microsoft.AspNetCore.Cryptography.Internal.dll": {
+          "lib/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net9.0/Microsoft.AspNetCore.Cryptography.Internal.dll": {
+          "lib/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll": {
             "related": ".xml"
           }
         }
       },
-      "Microsoft.AspNetCore.Cryptography.KeyDerivation/9.0.0": {
+      "Microsoft.AspNetCore.Cryptography.KeyDerivation/8.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AspNetCore.Cryptography.Internal": "9.0.0"
+          "Microsoft.AspNetCore.Cryptography.Internal": "8.0.0"
         },
         "compile": {
-          "lib/net9.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll": {
+          "lib/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net9.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll": {
+          "lib/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll": {
             "related": ".xml"
           }
         }
@@ -1738,38 +1659,38 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Identity.Core/9.0.0": {
+      "Microsoft.Extensions.Identity.Core/8.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AspNetCore.Cryptography.KeyDerivation": "9.0.0",
-          "Microsoft.Extensions.Logging": "9.0.0",
-          "Microsoft.Extensions.Options": "9.0.0"
+          "Microsoft.AspNetCore.Cryptography.KeyDerivation": "8.0.0",
+          "Microsoft.Extensions.Logging": "8.0.0",
+          "Microsoft.Extensions.Options": "8.0.0"
         },
         "compile": {
-          "lib/net9.0/Microsoft.Extensions.Identity.Core.dll": {
+          "lib/net8.0/Microsoft.Extensions.Identity.Core.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net9.0/Microsoft.Extensions.Identity.Core.dll": {
+          "lib/net8.0/Microsoft.Extensions.Identity.Core.dll": {
             "related": ".xml"
           }
         }
       },
-      "Microsoft.Extensions.Identity.Stores/9.0.0": {
+      "Microsoft.Extensions.Identity.Stores/8.0.0": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.Caching.Abstractions": "9.0.0",
-          "Microsoft.Extensions.Identity.Core": "9.0.0",
-          "Microsoft.Extensions.Logging": "9.0.0"
+          "Microsoft.Extensions.Caching.Abstractions": "8.0.0",
+          "Microsoft.Extensions.Identity.Core": "8.0.0",
+          "Microsoft.Extensions.Logging": "8.0.0"
         },
         "compile": {
-          "lib/net9.0/Microsoft.Extensions.Identity.Stores.dll": {
+          "lib/net8.0/Microsoft.Extensions.Identity.Stores.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net9.0/Microsoft.Extensions.Identity.Stores.dll": {
+          "lib/net8.0/Microsoft.Extensions.Identity.Stores.dll": {
             "related": ".xml"
           }
         }
@@ -2271,32 +2192,6 @@
           }
         }
       },
-      "RBush/3.2.0": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/RBush.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/RBush.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "SixLabors.Fonts/1.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/netcoreapp3.1/SixLabors.Fonts.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netcoreapp3.1/SixLabors.Fonts.dll": {
-            "related": ".xml"
-          }
-        }
-      },
       "System.CodeDom/6.0.0": {
         "type": "package",
         "compile": {
@@ -2510,22 +2405,6 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "System.IO.Packaging/8.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/System.IO.Packaging.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.IO.Packaging.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      },
       "System.IO.Pipelines/7.0.0": {
         "type": "package",
         "compile": {
@@ -2712,104 +2591,6 @@
     }
   },
   "libraries": {
-    "ClosedXML/0.104.0": {
-      "sha512": "rZagdoWY5QdrpvgFZvwoPtjvvoGcwRTr4YQ+3mM2iREczrgKlxMLGyWr7xxIISC6L3llNyDFhazc8mYlKbIQ9g==",
-      "type": "package",
-      "path": "closedxml/0.104.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "closedxml.0.104.0.nupkg.sha512",
-        "closedxml.nuspec",
-        "lib/netstandard2.0/ClosedXML.dll",
-        "lib/netstandard2.0/ClosedXML.pdb",
-        "lib/netstandard2.0/ClosedXML.xml",
-        "lib/netstandard2.1/ClosedXML.dll",
-        "lib/netstandard2.1/ClosedXML.pdb",
-        "lib/netstandard2.1/ClosedXML.xml",
-        "nuget-logo.png"
-      ]
-    },
-    "ClosedXML.Parser/1.2.0": {
-      "sha512": "w+/0tsxABS3lkSH8EUlA7IGme+mq5T/Puf3DbOiTckmSuUpAUO2LK29oXYByCcWkBv6wcRHxgWlQb1lxkwI0Tw==",
-      "type": "package",
-      "path": "closedxml.parser/1.2.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "README.md",
-        "closedxml.parser.1.2.0.nupkg.sha512",
-        "closedxml.parser.nuspec",
-        "lib/netstandard2.0/ClosedXML.Parser.dll",
-        "lib/netstandard2.0/ClosedXML.Parser.xml",
-        "lib/netstandard2.1/ClosedXML.Parser.dll",
-        "lib/netstandard2.1/ClosedXML.Parser.xml"
-      ]
-    },
-    "DocumentFormat.OpenXml/3.0.1": {
-      "sha512": "DCK1cwFUJ1FGGyYyo++HWl9H1RkqMWIu+FGOLRy6E4L4y0/HIhlJ7N/n1HKboFfOwKn1cMBRxt1RCuDbIEy5YQ==",
-      "type": "package",
-      "path": "documentformat.openxml/3.0.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "documentformat.openxml.3.0.1.nupkg.sha512",
-        "documentformat.openxml.nuspec",
-        "icon.png",
-        "lib/net35/DocumentFormat.OpenXml.dll",
-        "lib/net35/DocumentFormat.OpenXml.xml",
-        "lib/net40/DocumentFormat.OpenXml.dll",
-        "lib/net40/DocumentFormat.OpenXml.xml",
-        "lib/net46/DocumentFormat.OpenXml.dll",
-        "lib/net46/DocumentFormat.OpenXml.xml",
-        "lib/net8.0/DocumentFormat.OpenXml.dll",
-        "lib/net8.0/DocumentFormat.OpenXml.xml",
-        "lib/netstandard2.0/DocumentFormat.OpenXml.dll",
-        "lib/netstandard2.0/DocumentFormat.OpenXml.xml"
-      ]
-    },
-    "DocumentFormat.OpenXml.Framework/3.0.1": {
-      "sha512": "ifyI7OW7sggz7LQMIAD2aUsY/zVUON9QaHrpZ4MK33iVMeHlTG4uhUE2aLWb31nry+LCs2ALDAwf8OfUJGjgBg==",
-      "type": "package",
-      "path": "documentformat.openxml.framework/3.0.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "documentformat.openxml.framework.3.0.1.nupkg.sha512",
-        "documentformat.openxml.framework.nuspec",
-        "icon.png",
-        "lib/net35/DocumentFormat.OpenXml.Framework.dll",
-        "lib/net35/DocumentFormat.OpenXml.Framework.xml",
-        "lib/net40/DocumentFormat.OpenXml.Framework.dll",
-        "lib/net40/DocumentFormat.OpenXml.Framework.xml",
-        "lib/net46/DocumentFormat.OpenXml.Framework.dll",
-        "lib/net46/DocumentFormat.OpenXml.Framework.xml",
-        "lib/net6.0/DocumentFormat.OpenXml.Framework.dll",
-        "lib/net6.0/DocumentFormat.OpenXml.Framework.xml",
-        "lib/net8.0/DocumentFormat.OpenXml.Framework.dll",
-        "lib/net8.0/DocumentFormat.OpenXml.Framework.xml",
-        "lib/netstandard2.0/DocumentFormat.OpenXml.Framework.dll",
-        "lib/netstandard2.0/DocumentFormat.OpenXml.Framework.xml"
-      ]
-    },
-    "ExcelNumberFormat/1.1.0": {
-      "sha512": "R3BVHPs9O+RkExbZYTGT0+9HLbi8ZrNij1Yziyw6znd3J7P3uoIR07uwTLGOogtz1p6+0sna66eBoXu7tBiVQA==",
-      "type": "package",
-      "path": "excelnumberformat/1.1.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "excelnumberformat.1.1.0.nupkg.sha512",
-        "excelnumberformat.nuspec",
-        "icon.png",
-        "lib/net20/ExcelNumberFormat.dll",
-        "lib/net20/ExcelNumberFormat.xml",
-        "lib/netstandard1.0/ExcelNumberFormat.dll",
-        "lib/netstandard1.0/ExcelNumberFormat.xml",
-        "lib/netstandard2.0/ExcelNumberFormat.dll",
-        "lib/netstandard2.0/ExcelNumberFormat.xml"
-      ]
-    },
     "FluentValidation/12.0.0": {
       "sha512": "8NVLxtMUXynRHJIX3Hn1ACovaqZIJASufXIIFkD0EUbcd5PmMsL1xUD5h548gCezJ5BzlITaR9CAMrGe29aWpA==",
       "type": "package",
@@ -3571,10 +3352,10 @@
         "logo.png"
       ]
     },
-    "Microsoft.AspNetCore.Cryptography.Internal/9.0.0": {
-      "sha512": "M1dzTEl+2+RqT4vWcqEpWasPXHd58wC93U7QMlmPSmx+qixyVxCQjZ183wr7Wa68b4pF7wC501MU9rdA0ZNhMg==",
+    "Microsoft.AspNetCore.Cryptography.Internal/8.0.0": {
+      "sha512": "buuMMCTxFcVkOkEftb2OafYxrveNGre9KJF4Oi1DkR4rxIj6oLam7Wq3g0Fp9hNVpJteKEPiupsxYnPrD/oUGA==",
       "type": "package",
-      "path": "microsoft.aspnetcore.cryptography.internal/9.0.0",
+      "path": "microsoft.aspnetcore.cryptography.internal/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3582,18 +3363,18 @@
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net462/Microsoft.AspNetCore.Cryptography.Internal.dll",
         "lib/net462/Microsoft.AspNetCore.Cryptography.Internal.xml",
-        "lib/net9.0/Microsoft.AspNetCore.Cryptography.Internal.dll",
-        "lib/net9.0/Microsoft.AspNetCore.Cryptography.Internal.xml",
+        "lib/net8.0/Microsoft.AspNetCore.Cryptography.Internal.dll",
+        "lib/net8.0/Microsoft.AspNetCore.Cryptography.Internal.xml",
         "lib/netstandard2.0/Microsoft.AspNetCore.Cryptography.Internal.dll",
         "lib/netstandard2.0/Microsoft.AspNetCore.Cryptography.Internal.xml",
-        "microsoft.aspnetcore.cryptography.internal.9.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.cryptography.internal.8.0.0.nupkg.sha512",
         "microsoft.aspnetcore.cryptography.internal.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.Cryptography.KeyDerivation/9.0.0": {
-      "sha512": "9X4cx2IHNpYb9ka984BjDpJnKkindW17Z2kR/RI5pbTcbVUVMJjiAKnBhAqH24KtAEf1AU64LD60byzCn0/n8w==",
+    "Microsoft.AspNetCore.Cryptography.KeyDerivation/8.0.0": {
+      "sha512": "65w93R5wqUUs35R9wjHHDf75GqAbxJsNByKZo5TbQOWSXcUbLWrDUWBQHv78iXIT0PL1pXNqKQz7OHiHMvo0/A==",
       "type": "package",
-      "path": "microsoft.aspnetcore.cryptography.keyderivation/9.0.0",
+      "path": "microsoft.aspnetcore.cryptography.keyderivation/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3601,11 +3382,11 @@
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net462/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll",
         "lib/net462/Microsoft.AspNetCore.Cryptography.KeyDerivation.xml",
-        "lib/net9.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll",
-        "lib/net9.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.xml",
+        "lib/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll",
+        "lib/net8.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.xml",
         "lib/netstandard2.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll",
         "lib/netstandard2.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.xml",
-        "microsoft.aspnetcore.cryptography.keyderivation.9.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.cryptography.keyderivation.8.0.0.nupkg.sha512",
         "microsoft.aspnetcore.cryptography.keyderivation.nuspec"
       ]
     },
@@ -5429,10 +5210,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Identity.Core/9.0.0": {
-      "sha512": "+cQjUs8PIheIMALzrf/e4gW6A/yOK8XYBxeEmAfLvVIaV9lsBGvVT0zjEZ1KPQDJ9nUeQ9uAw077J7LPUwv8wA==",
+    "Microsoft.Extensions.Identity.Core/8.0.0": {
+      "sha512": "hnXHyIQc+uc2uNMcIbr43+oNBAPEhMpW6lE8ux3MOegRz50WBna4AItlZDY7Y+Id1LLBbf73osUqeTw7CQ371w==",
       "type": "package",
-      "path": "microsoft.extensions.identity.core/9.0.0",
+      "path": "microsoft.extensions.identity.core/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5440,18 +5221,18 @@
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net462/Microsoft.Extensions.Identity.Core.dll",
         "lib/net462/Microsoft.Extensions.Identity.Core.xml",
-        "lib/net9.0/Microsoft.Extensions.Identity.Core.dll",
-        "lib/net9.0/Microsoft.Extensions.Identity.Core.xml",
+        "lib/net8.0/Microsoft.Extensions.Identity.Core.dll",
+        "lib/net8.0/Microsoft.Extensions.Identity.Core.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Identity.Core.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Identity.Core.xml",
-        "microsoft.extensions.identity.core.9.0.0.nupkg.sha512",
+        "microsoft.extensions.identity.core.8.0.0.nupkg.sha512",
         "microsoft.extensions.identity.core.nuspec"
       ]
     },
-    "Microsoft.Extensions.Identity.Stores/9.0.0": {
-      "sha512": "XG3opf0KgWoYAUdLRhrIvI46W+/E45Ov8rzgwr0omrq5u06MCrsuMm0nPmd+pIWjMXRxbBk1uL47zGyW1lI5Hw==",
+    "Microsoft.Extensions.Identity.Stores/8.0.0": {
+      "sha512": "DmDCpSpngZDBm44wVmxCeYs4HGJr/m32jMItp6pfb7KKtqWYw2vybHRg880j18k/eSFyM4v9uONsnEPgDdi9lg==",
       "type": "package",
-      "path": "microsoft.extensions.identity.stores/9.0.0",
+      "path": "microsoft.extensions.identity.stores/8.0.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -5459,11 +5240,11 @@
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net462/Microsoft.Extensions.Identity.Stores.dll",
         "lib/net462/Microsoft.Extensions.Identity.Stores.xml",
-        "lib/net9.0/Microsoft.Extensions.Identity.Stores.dll",
-        "lib/net9.0/Microsoft.Extensions.Identity.Stores.xml",
+        "lib/net8.0/Microsoft.Extensions.Identity.Stores.dll",
+        "lib/net8.0/Microsoft.Extensions.Identity.Stores.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Identity.Stores.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Identity.Stores.xml",
-        "microsoft.extensions.identity.stores.9.0.0.nupkg.sha512",
+        "microsoft.extensions.identity.stores.8.0.0.nupkg.sha512",
         "microsoft.extensions.identity.stores.nuspec"
       ]
     },
@@ -6398,42 +6179,6 @@
         "pomelo.entityframeworkcore.mysql.nuspec"
       ]
     },
-    "RBush/3.2.0": {
-      "sha512": "ijGh9N0zZ7JfXk3oQkWCwK8SwSSByexbyh/MjbCjNxOft9eG5ZqKC1vdgiYq78h4IZRFmN4s3JZ/b10Jipud5w==",
-      "type": "package",
-      "path": "rbush/3.2.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net6.0/RBush.dll",
-        "lib/net6.0/RBush.xml",
-        "lib/netcoreapp3.1/RBush.dll",
-        "lib/netcoreapp3.1/RBush.xml",
-        "lib/netstandard1.2/RBush.dll",
-        "lib/netstandard1.2/RBush.xml",
-        "rbush.3.2.0.nupkg.sha512",
-        "rbush.nuspec",
-        "readme.md"
-      ]
-    },
-    "SixLabors.Fonts/1.0.0": {
-      "sha512": "LFQsCZlV0xlUyXAOMUo5kkSl+8zAQXXbbdwWchtk0B4o7zotZhQsQOcJUELGHdfPfm/xDAsz6hONAuV25bJaAg==",
-      "type": "package",
-      "path": "sixlabors.fonts/1.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/netcoreapp3.1/SixLabors.Fonts.dll",
-        "lib/netcoreapp3.1/SixLabors.Fonts.xml",
-        "lib/netstandard2.0/SixLabors.Fonts.dll",
-        "lib/netstandard2.0/SixLabors.Fonts.xml",
-        "lib/netstandard2.1/SixLabors.Fonts.dll",
-        "lib/netstandard2.1/SixLabors.Fonts.xml",
-        "sixlabors.fonts.1.0.0.nupkg.sha512",
-        "sixlabors.fonts.128.png",
-        "sixlabors.fonts.nuspec"
-      ]
-    },
     "System.CodeDom/6.0.0": {
       "sha512": "CPc6tWO1LAer3IzfZufDBRL+UZQcj5uS207NHALQzP84Vp/z6wF0Aa0YZImOQY8iStY0A2zI/e3ihKNPfUm8XA==",
       "type": "package",
@@ -6757,35 +6502,6 @@
         "lib/netstandard2.0/System.Formats.Asn1.xml",
         "system.formats.asn1.9.0.0-rc.2.24473.5.nupkg.sha512",
         "system.formats.asn1.nuspec",
-        "useSharedDesignerContext.txt"
-      ]
-    },
-    "System.IO.Packaging/8.0.0": {
-      "sha512": "8g1V4YRpdGAxFcK8v9OjuMdIOJSpF30Zb1JGicwVZhly3I994WFyBdV6mQEo8d3T+URQe55/M0U0eIH0Hts1bg==",
-      "type": "package",
-      "path": "system.io.packaging/8.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "Icon.png",
-        "LICENSE.TXT",
-        "THIRD-PARTY-NOTICES.TXT",
-        "buildTransitive/net461/System.IO.Packaging.targets",
-        "buildTransitive/net462/_._",
-        "buildTransitive/net6.0/_._",
-        "buildTransitive/netcoreapp2.0/System.IO.Packaging.targets",
-        "lib/net462/System.IO.Packaging.dll",
-        "lib/net462/System.IO.Packaging.xml",
-        "lib/net6.0/System.IO.Packaging.dll",
-        "lib/net6.0/System.IO.Packaging.xml",
-        "lib/net7.0/System.IO.Packaging.dll",
-        "lib/net7.0/System.IO.Packaging.xml",
-        "lib/net8.0/System.IO.Packaging.dll",
-        "lib/net8.0/System.IO.Packaging.xml",
-        "lib/netstandard2.0/System.IO.Packaging.dll",
-        "lib/netstandard2.0/System.IO.Packaging.xml",
-        "system.io.packaging.8.0.0.nupkg.sha512",
-        "system.io.packaging.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
@@ -7163,14 +6879,12 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "ClosedXML >= 0.104.0",
       "FluentValidation >= 12.0.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.0",
       "Microsoft.AspNetCore.Identity.UI >= 8.0.0",
       "Microsoft.EntityFrameworkCore >= 9.0.8",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.8",
       "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore >= 9.0.8",
-      "Microsoft.Extensions.Identity.Stores >= 9.0.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 9.0.0",
       "Pomelo.EntityFrameworkCore.MySql >= 9.0.0"
     ]
@@ -7226,10 +6940,6 @@
       "net9.0": {
         "targetAlias": "net9.0",
         "dependencies": {
-          "ClosedXML": {
-            "target": "Package",
-            "version": "[0.104.0, )"
-          },
           "FluentValidation": {
             "target": "Package",
             "version": "[12.0.0, )"
@@ -7255,10 +6965,6 @@
           "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": {
             "target": "Package",
             "version": "[9.0.8, )"
-          },
-          "Microsoft.Extensions.Identity.Stores": {
-            "target": "Package",
-            "version": "[9.0.0, )"
           },
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",

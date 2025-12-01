@@ -13,7 +13,8 @@ namespace Scoreboard.Web.Servicios.Marcador
         Task ReanudarPartidoAsync(int partidoId);
         // Finaliza un partido e impide más registros de jugadas
         Task FinalizarPartidoAsync(int partidoId);
-        Task<Partido> RegistrarTurnoAsync(int partidoId, int? jugadorConfirmadoId, ResultadoTurno resultado);
+        Task<Partido> RegistrarTurnoAsync(int partidoId, int? jugadorConfirmadoId, ResultadoTurno resultado, EventoCorredor eventoCorredor = EventoCorredor.Ninguno, BaseCorredor baseEvento = BaseCorredor.Primera);
+        Task<Partido> RegistrarEventoCorredorAsync(int partidoId, EventoCorredor eventoCorredor, BaseCorredor baseCorredor);
         Task<Partido> DeshacerUltimaJugadaAsync(int partidoId);
         Task<Partido> RehacerUltimaJugadaAsync(int partidoId);
         Task<Scoreboard.Web.Dtos.MarcadorDto> ObtenerMarcadorAsync(int partidoId);

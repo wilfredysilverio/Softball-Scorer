@@ -18,78 +18,49 @@ namespace Scoreboard.Web.Controllers
             _estadisticasService = estadisticasService;
         }
 
-        public async Task<IActionResult> Index(int? equipoId, string? q, int pagina = 1)
+        public async Task<IActionResult> Index(string? q, int? equipoId, int page = 1, int pageSize = 15)
         {
-            const int pageSize = 10;
+            var consulta = _db.Jugadores
+                              .Include(j => j.Equipo)
+                              .AsQueryable();
 
-            var query = _db.Jugadores
-                .Include(j => j.Equipo)
-                .AsQueryable();
-
-            // Filtro por equipo
-            if (equipoId.HasValue)
-                query = query.Where(j => j.EquipoId == equipoId.Value);
-
-            // Filtro por búsqueda (nombre, apellido o número de uniforme)
             if (!string.IsNullOrWhiteSpace(q))
             {
                 var texto = q.Trim();
-                query = query.Where(j =>
+                consulta = consulta.Where(j =>
                     j.Nombre.Contains(texto) ||
                     j.Apellido.Contains(texto) ||
                     j.NumeroUniforme.ToString().Contains(texto));
             }
 
-            // Calcular paginación
-            var totalRegistros = await query.CountAsync();
-            var totalPaginas = (int)Math.Ceiling(totalRegistros / (double)pageSize);
+            if (equipoId.HasValue)
+                consulta = consulta.Where(j => j.EquipoId == equipoId.Value);
 
-            // Validar página actual
-            if (pagina < 1) pagina = 1;
-            if (pagina > totalPaginas && totalPaginas > 0) pagina = totalPaginas;
+            page = page <= 0 ? 1 : page;
+            pageSize = 15;
 
-            // Obtener jugadores paginados
-            var jugadores = await query
+            var totalRegistros = await consulta.CountAsync();
+
+            ViewData["Equipos"] = new SelectList(
+                await _db.Equipos.OrderBy(e => e.Nombre).ToListAsync(), "Id", "Nombre", equipoId);
+            ViewData["q"] = q;
+
+            var jugadores = await consulta
                 .OrderBy(j => j.Equipo!.Nombre)
                 .ThenBy(j => j.NumeroUniforme)
-                .Skip((pagina - 1) * pageSize)
+                .Skip((page - 1) * pageSize)
                 .Take(pageSize)
+                .AsNoTracking()
                 .ToListAsync();
 
-            // Cargar equipos para dropdown
-            var equipos = await _db.Equipos
-                .OrderBy(e => e.Nombre)
-                .ToListAsync();
+            var totalPaginas = (int)Math.Ceiling(totalRegistros / (double)pageSize);
 
-            ViewBag.Equipos = new SelectList(equipos, "Id", "Nombre", equipoId);
-            ViewBag.q = q;
-            ViewBag.PaginaActual = pagina;
-            ViewBag.TotalPaginas = totalPaginas;
+            ViewBag.PaginaActual = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalRegistros = totalRegistros;
+            ViewBag.TotalPaginas = totalPaginas <= 0 ? 1 : totalPaginas;
 
             return View(jugadores);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Buscar(string q)
-        {
-            if (string.IsNullOrWhiteSpace(q))
-                return Json(new List<object>());
-
-            var texto = q.Trim();
-            var jugadores = await _db.Jugadores
-                .Where(j => j.Nombre.Contains(texto) || j.Apellido.Contains(texto))
-                .OrderBy(j => j.Nombre)
-                .ThenBy(j => j.Apellido)
-                .Take(10)
-                .Select(j => new
-                {
-                    nombre = j.Nombre,
-                    apellido = j.Apellido,
-                    nombreCompleto = j.Nombre + " " + j.Apellido
-                })
-                .ToListAsync();
-
-            return Json(jugadores);
         }
 
         public async Task<IActionResult> Details(int id)

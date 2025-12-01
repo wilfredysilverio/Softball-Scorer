@@ -1,122 +1,69 @@
 ﻿@model IEnumerable<Scoreboard.Web.Modelos.Equipo>
-
-@{
+    @{
     ViewData["Title"] = "Equipos";
-    var totalEquipos = Model?.Count() ?? 0;
-}
+    }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h1 class="h3 mb-1">Equipos</h1>
-        <p class="text-muted mb-0">
-            Selecciona un equipo para ver acciones rápidas como estadísticas, detalles o edición.
-        </p>
-    </div>
-    <div class="d-flex gap-2">
-        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
-            ← Volver al inicio
-        </a>
-        <a asp-action="Create" class="btn btn-primary">
-            + Crear equipo
-        </a>
+    <h2 class="mb-1">Equipos</h2>
+    <p class="text-muted">Selecciona un equipo para ver acciones rápidas como estadísticas, edición o eliminación.</p>
+
+    <p>
+        <a class="btn btn-primary" asp-action="Create">Crear equipo</a>
+    </p>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Ciudad</th>
+                        <th scope="col" class="text-end" style="width: 60px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null || !Model.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-muted">No hay equipos para mostrar.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var e in Model)
+                        {
+                            <tr class="fila-equipo" data-id="@e.Id" tabindex="0" role="button" aria-controls="acciones-equipo-@e.Id" aria-expanded="false">
+                                <td>@e.Id</td>
+                                <td class="fw-semibold">@e.Nombre</td>
+                                <td>@e.Ciudad</td>
+                                <td class="text-end small text-muted">
+                                    <span class="toggle-caret" aria-hidden="true">▸</span>
+                                    <span class="visually-hidden">Mostrar acciones</span>
+                                </td>
+                            </tr>
+                            <tr class="collapse acciones-equipo" id="acciones-equipo-@e.Id">
+                                <td colspan="4" class="py-3">
+                                    <div class="d-flex gap-2 flex-wrap justify-content-end align-items-center">
+                                        <a asp-action="Estadisticas" asp-route-id="@e.Id" class="btn btn-outline-info btn-sm">Estadísticas</a>
+                                        <div class="btn-group">
+                                            <a asp-action="Details" asp-route-id="@e.Id" class="btn btn-outline-secondary btn-sm">Detalles</a>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <span class="visually-hidden">Opciones</span>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <a class="dropdown-item text-danger" asp-action="Delete" asp-route-id="@e.Id" data-confirm="¿Eliminar equipo?">Eliminar</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-
-<div class="mb-3">
-    <span class="badge bg-light text-dark">
-        @totalEquipos equipo@(totalEquipos == 1 ? "" : "s") registrados
-    </span>
-</div>
-
-@if (totalEquipos == 0)
-{
-    <div class="alert alert-light border">
-        Todavía no tienes equipos registrados. Crea el primero para comenzar.
-    </div>
-}
-else
-{
-    <div class="list-group shadow-sm">
-        @foreach (var e in Model.OrderByDescending(x => x.Id))
-        {
-            var collapseId = $"equipo-{e.Id}";
-            <div class="list-group-item p-0 border-0 border-bottom">
-                <!-- Fila principal clickeable -->
-                <button type="button"
-                        class="w-100 border-0 bg-white d-flex justify-content-between align-items-center px-3 py-3 fila-equipo"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#@collapseId"
-                        aria-expanded="false"
-                        aria-controls="@collapseId">
-                    <div>
-                        <div class="fw-semibold">
-                            @e.Nombre
-                        </div>
-                        <small class="text-muted">
-                            Ciudad: @e.Ciudad
-                        </small>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <small class="text-muted d-none d-md-inline">
-                            Ver opciones
-                        </small>
-                        <span class="badge bg-light text-muted">
-                            <span class="toggle-caret" aria-hidden="true">▸</span>
-                        </span>
-                    </div>
-                </button>
-
-                <!-- Panel de acciones -->
-                <div class="collapse" id="@collapseId">
-                    <div class="px-3 pb-3 pt-2 bg-light">
-                        <div class="d-flex flex-wrap justify-content-end gap-2">
-                            <a asp-action="Estadisticas"
-                               asp-route-id="@e.Id"
-                               class="btn btn-outline-info btn-sm">
-                                📊 Estadísticas
-                            </a>
-                            <a asp-action="Details"
-                               asp-route-id="@e.Id"
-                               class="btn btn-outline-secondary btn-sm">
-                                Detalles
-                            </a>
-                            <a asp-action="Edit"
-                               asp-route-id="@e.Id"
-                               class="btn btn-outline-primary btn-sm">
-                                Editar
-                            </a>
-                            <a asp-action="Delete"
-                               asp-route-id="@e.Id"
-                               class="btn btn-outline-danger btn-sm"
-                               data-confirm="¿Eliminar equipo?">
-                                Eliminar
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-}
-
-@section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelectorAll(".fila-equipo").forEach(function (fila) {
-                const targetSelector = fila.getAttribute("data-bs-target");
-                const collapseEl = document.querySelector(targetSelector);
-                const caret = fila.querySelector(".toggle-caret");
-
-                if (!collapseEl || !caret) return;
-
-                collapseEl.addEventListener("show.bs.collapse", function () {
-                    caret.style.transform = "rotate(90deg)";
-                });
-
-                collapseEl.addEventListener("hide.bs.collapse", function () {
-                    caret.style.transform = "rotate(0deg)";
-                });
-            });
-        });
-    </script>
-}

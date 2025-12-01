@@ -12,6 +12,8 @@ namespace Scoreboard.Web.Modelos.ViewModels
 
         public RegistrarTurnoVm Turno { get; set; } = new();
 
+        public RegistrarEventoCorredorVm Evento { get; set; } = new();
+
         public IReadOnlyList<Jugador> Lineup { get; set; } = Array.Empty<Jugador>();
 
         public Jugador? BateadorEsperado { get; set; }
@@ -19,6 +21,8 @@ namespace Scoreboard.Web.Modelos.ViewModels
         public int MaxInnings { get; set; } = 9;
 
         public string? MotivoBloqueoTurno { get; set; }
+
+        public int Outs { get; set; }
     }
 
     public class RegistrarTurnoVm
@@ -32,5 +36,22 @@ namespace Scoreboard.Web.Modelos.ViewModels
 
         [Required]
         public ResultadoTurno Resultado { get; set; } = ResultadoTurno.Sencillo;
+
+        public EventoCorredor? EventoCorredor { get; set; }
+
+        public BaseCorredor? BaseEvento { get; set; }
+    }
+
+    public class RegistrarEventoCorredorVm
+    {
+        [Required]
+        [Range(1, int.MaxValue)]
+        public int PartidoId { get; set; }
+
+        [Required]
+        public EventoCorredor Evento { get; set; }
+
+        [Required]
+        public BaseCorredor Base { get; set; }
     }
 }
