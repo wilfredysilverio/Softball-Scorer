@@ -1,9 +1,13 @@
 .vs/
+.idea/
 bin/
 obj/
 *.user
 *.suo
 *.log
+*.slnx
 arbol_proyecto.txt
 dotnet_info.txt
 paquetes_web.txt
+Scoreboard.Web/wwwroot/uploads/jugadores/*
+!Scoreboard.Web/wwwroot/uploads/jugadores/.gitkeep

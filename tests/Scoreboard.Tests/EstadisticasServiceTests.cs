@@ -41,6 +41,7 @@ namespace Scoreboard.Tests
             var jugador = new Jugador { Nombre = "Test", Apellido = "Player", EquipoId = 1 };
             context.Jugadores.Add(jugador);
             context.Equipos.Add(new Equipo { Id = 1, Nombre = "Equipo", Ciudad = "Ciudad" });
+            context.Equipos.Add(new Equipo { Id = 2, Nombre = "Rival", Ciudad = "Ciudad" });
             await context.SaveChangesAsync();
 
             // Añadir dos registros en la misma temporada
@@ -91,8 +92,8 @@ namespace Scoreboard.Tests
             });
 
             // Ensure partidos referenced by stats exist (foreign keys)
-            context.Partidos.Add(new Partido { Id = 10, EquipoCasaId = 1, EquipoVisitaId = 1, Fecha = new DateTime(2024, 5, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
-            context.Partidos.Add(new Partido { Id = 11, EquipoCasaId = 1, EquipoVisitaId = 1, Fecha = new DateTime(2024, 6, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
+            context.Partidos.Add(new Partido { Id = 10, EquipoCasaId = 1, EquipoVisitaId = 2, Fecha = new DateTime(2024, 5, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
+            context.Partidos.Add(new Partido { Id = 11, EquipoCasaId = 1, EquipoVisitaId = 2, Fecha = new DateTime(2024, 6, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
 
             await context.SaveChangesAsync();
 
@@ -130,6 +131,7 @@ namespace Scoreboard.Tests
             var jugador = new Jugador { Nombre = "OBP", Apellido = "ZeroAB", EquipoId = 1 };
             context.Jugadores.Add(jugador);
             context.Equipos.Add(new Equipo { Id = 1, Nombre = "Equipo2", Ciudad = "Ciudad" });
+            context.Equipos.Add(new Equipo { Id = 2, Nombre = "Rival2", Ciudad = "Ciudad" });
             await context.SaveChangesAsync();
 
             // AB = 0, pero BB and HBP exist, with SF present -> OBP = (H + BB + HBP)/(AB + BB + HBP + SF)
@@ -157,7 +159,7 @@ namespace Scoreboard.Tests
             });
 
             // Ensure partido referenced by stat exists
-            context.Partidos.Add(new Partido { Id = 20, EquipoCasaId = 1, EquipoVisitaId = 1, Fecha = new DateTime(2024, 7, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
+            context.Partidos.Add(new Partido { Id = 20, EquipoCasaId = 1, EquipoVisitaId = 2, Fecha = new DateTime(2024, 7, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
 
             await context.SaveChangesAsync();
 
@@ -178,6 +180,7 @@ namespace Scoreboard.Tests
             var jugador = new Jugador { Nombre = "Multi", Apellido = "Season", EquipoId = 2 };
             context.Jugadores.Add(jugador);
             context.Equipos.Add(new Equipo { Id = 2, Nombre = "Equipo3", Ciudad = "Ciudad" });
+            context.Equipos.Add(new Equipo { Id = 3, Nombre = "Rival3", Ciudad = "Ciudad" });
             await context.SaveChangesAsync();
 
             // 2023 stats
@@ -225,8 +228,8 @@ namespace Scoreboard.Tests
             });
 
             // Ensure partidos referenced by stats exist
-            context.Partidos.Add(new Partido { Id = 30, EquipoCasaId = 2, EquipoVisitaId = 2, Fecha = new DateTime(2023, 5, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
-            context.Partidos.Add(new Partido { Id = 31, EquipoCasaId = 2, EquipoVisitaId = 2, Fecha = new DateTime(2024, 6, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
+            context.Partidos.Add(new Partido { Id = 30, EquipoCasaId = 2, EquipoVisitaId = 3, Fecha = new DateTime(2023, 5, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
+            context.Partidos.Add(new Partido { Id = 31, EquipoCasaId = 2, EquipoVisitaId = 3, Fecha = new DateTime(2024, 6, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
 
             await context.SaveChangesAsync();
 
@@ -329,12 +332,13 @@ namespace Scoreboard.Tests
             using var context = new ContextoMarcador(_options);
 
             var equipo = new Equipo { Id = 50, Nombre = "OPS", Ciudad = "Ciudad" };
-            context.Equipos.Add(equipo);
+            var oponente = new Equipo { Id = 51, Nombre = "OPS Rival", Ciudad = "Ciudad" };
+            context.Equipos.AddRange(equipo, oponente);
             var jugador = new Jugador { Nombre = "Slash", Apellido = "Line", EquipoId = equipo.Id };
             context.Jugadores.Add(jugador);
             await context.SaveChangesAsync();
 
-            context.Partidos.Add(new Partido { Id = 501, EquipoCasaId = equipo.Id, EquipoVisitaId = equipo.Id, Fecha = new DateTime(2024, 8, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
+            context.Partidos.Add(new Partido { Id = 501, EquipoCasaId = equipo.Id, EquipoVisitaId = oponente.Id, Fecha = new DateTime(2024, 8, 1), CarrerasCasa = 0, CarrerasVisita = 0 });
 
             context.PlayerBattingStats.Add(new PlayerBattingStat
             {

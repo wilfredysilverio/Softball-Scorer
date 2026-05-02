@@ -1,255 +1,119 @@
-@model Scoreboard.Web.Modelos.ViewModels.EstadisticasEquipoVm
+﻿@model Scoreboard.Web.Modelos.ViewModels.EstadisticasEquipoVm
 @{
-    ViewData["Title"] = "Estadísticas del equipo";
+    ViewData["Title"] = "Estadisticas del equipo";
 }
 
-<div class="container-fluid py-4">
-    <div class="card mb-4">
-        <div class="card-body d-flex gap-3 align-items-center">
-            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width:84px;height:84px;font-size:1.5rem;">
-                @((Model.Equipo.Nombre?.Substring(0,1) ?? "?") )
-            </div>
+<div class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="score-kicker">Equipo</span>
+            <h1>@Model.Equipo.Nombre</h1>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i>Volver</a>
+    </div>
+
+    <section class="work-panel mb-4">
+        <div class="detail-hero">
+            <span class="team-badge"><i class="bi bi-shield-fill"></i></span>
             <div>
-                <h3 class="mb-0">@Model.Equipo.Nombre <small class="text-muted">@Model.Equipo.Ciudad</small></h3>
-                <div class="text-muted">Jugadores: @Model.Jugadores • Partidos: @Model.PartidosJugados</div>
-            </div>
-            <div class="ms-auto">
-                <a asp-action="Index" class="btn btn-secondary">Volver</a>
+                <h2>@Model.Equipo.Nombre</h2>
+                <p>@Model.Jugadores jugadores - @Model.PartidosJugados partidos</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="row g-3 mb-3">
-        <div class="col-6 col-md-2">
-            <div class="card text-center p-3 shadow-sm">
-                <div class="text-muted small">Turnos</div>
-                <div class="h4 mt-2">@Model.Turnos</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-2">
-            <div class="card text-center p-3 shadow-sm">
-                <div class="text-muted small">Hits</div>
-                <div class="h4 mt-2">@Model.Hits</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-2">
-            <div class="card text-center p-3 shadow-sm">
-                <div class="text-muted small">Carreras</div>
-                <div class="h4 mt-2">@Model.Carreras</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-2">
-            <div class="card text-center p-3 shadow-sm">
-                <div class="text-muted small">HR</div>
-                <div class="h4 mt-2">@Model.HomeRuns</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-2">
-            <div class="card text-center p-3 shadow-sm">
-                <div class="text-muted small">AVG</div>
-                <div class="h4 mt-2">@((Model.Turnos > 0) ? Model.Promedio.ToString("0.000") : "-.---")</div>
-            </div>
-        </div>
-    </div>
+    <section class="stat-grid mb-4">
+        <div class="metric-tile"><span>Turnos</span><strong>@Model.Turnos</strong></div>
+        <div class="metric-tile"><span>Hits</span><strong>@Model.Hits</strong></div>
+        <div class="metric-tile"><span>Carreras</span><strong>@Model.Carreras</strong></div>
+        <div class="metric-tile metric-live"><span>HR</span><strong>@Model.HomeRuns</strong></div>
+        <div class="metric-tile"><span>AVG</span><strong>@((Model.Turnos > 0) ? Model.Promedio.ToString("0.000") : "-.---")</strong></div>
+        <div class="metric-tile"><span>OPS</span><strong>@((Model.PA > 0) ? Model.OPS.ToString("0.000") : "-.---")</strong></div>
+    </section>
 
-    <div class="row g-3 mb-4">
-        <div class="col-6 col-md-2">
-            <div class="card text-center p-3 shadow-sm">
-                <div class="text-muted small">PA</div>
-                <div class="h4 mt-2">@Model.PA</div>
+    <section class="work-panel mb-4">
+        <div class="panel-title">
+            <div>
+                <span class="score-kicker">Bateo</span>
+                <h2>Temporada</h2>
             </div>
         </div>
-        <div class="col-6 col-md-2">
-            <div class="card text-center p-3 shadow-sm">
-                <div class="text-muted small">BB</div>
-                <div class="h4 mt-2">@Model.BB</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-2">
-            <div class="card text-center p-3 shadow-sm">
-                <div class="text-muted small">SO</div>
-                <div class="h4 mt-2">@Model.SO</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-2">
-            <div class="card text-center p-3 shadow-sm">
-                <div class="text-muted small">OBP</div>
-                <div class="h4 mt-2">@((Model.PA > 0) ? Model.OBP.ToString("0.000") : "-.---")</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-2">
-            <div class="card text-center p-3 shadow-sm">
-                <div class="text-muted small">SLG</div>
-                <div class="h4 mt-2">@((Model.AB > 0) ? Model.SLG.ToString("0.000") : "-.---")</div>
-            </div>
-        </div>
-        <div class="col-6 col-md-2">
-            <div class="card text-center p-3 shadow-sm">
-                <div class="text-muted small">OPS</div>
-                <div class="h4 mt-2">@((Model.PA > 0) ? Model.OPS.ToString("0.000") : "-.---")</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-body">
-            <h5>Tabla de bateo</h5>
-            <div class="mb-3">
-                <canvas id="teamChart" height="120"></canvas>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>Temporada</th>
-                            <th>G</th>
-                            <th>AB</th>
-                            <th>R</th>
-                            <th>H</th>
-                            <th>2B</th>
-                            <th>3B</th>
-                            <th>HR</th>
-                            <th>RBI</th>
-                            <th>BB</th>
-                            <th>SO</th>
-                            <th>PA</th>
-                            <th>AVG</th>
-                            <th>OBP</th>
-                            <th>SLG</th>
-                            <th>OPS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Lineas != null && Model.Lineas.Any())
-                        {
-                            foreach (var linea in Model.Lineas)
-                            {
-                                <tr>
-                                    <td>@linea.Temporada</td>
-                                    <td>@linea.G</td>
-                                    <td>@linea.AB</td>
-                                    <td>@linea.R</td>
-                                    <td>@linea.H</td>
-                                    <td>@linea.Doubles</td>
-                                    <td>@linea.Triples</td>
-                                    <td>@linea.HR</td>
-                                    <td>@linea.RBI</td>
-                                    <td>@linea.BB</td>
-                                    <td>@linea.SO</td>
-                                    <td>@linea.PA</td>
-                                    <td>@(linea.AVG.ToString("0.000"))</td>
-                                    <td>@(linea.OBP.ToString("0.000"))</td>
-                                    <td>@(linea.SLG.ToString("0.000"))</td>
-                                    <td>@(linea.OPS.ToString("0.000"))</td>
-                                </tr>
-                            }
-                        }
-                        else
+        <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0 mobile-stack-table">
+                <thead>
+                    <tr>
+                        <th>Temporada</th><th>G</th><th>AB</th><th>R</th><th>H</th><th>2B</th><th>3B</th><th>HR</th><th>RBI</th><th>BB</th><th>SO</th><th>PA</th><th>AVG</th><th>OBP</th><th>SLG</th><th>OPS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Lineas != null && Model.Lineas.Any())
+                    {
+                        foreach (var linea in Model.Lineas)
                         {
                             <tr>
-                                <td colspan="16" class="text-center text-muted">No hay datos de bateo para este equipo.</td>
+                                <td data-label="Temporada">@linea.Temporada</td>
+                                <td data-label="G">@linea.G</td>
+                                <td data-label="AB">@linea.AB</td>
+                                <td data-label="R">@linea.R</td>
+                                <td data-label="H">@linea.H</td>
+                                <td data-label="2B">@linea.Doubles</td>
+                                <td data-label="3B">@linea.Triples</td>
+                                <td data-label="HR">@linea.HR</td>
+                                <td data-label="RBI">@linea.RBI</td>
+                                <td data-label="BB">@linea.BB</td>
+                                <td data-label="SO">@linea.SO</td>
+                                <td data-label="PA">@linea.PA</td>
+                                <td data-label="AVG">@linea.AVG.ToString("0.000")</td>
+                                <td data-label="OBP">@linea.OBP.ToString("0.000")</td>
+                                <td data-label="SLG">@linea.SLG.ToString("0.000")</td>
+                                <td data-label="OPS">@linea.OPS.ToString("0.000")</td>
                             </tr>
                         }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-        <div class="card mt-4">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="mb-0">Detalle por jugador</h5>
-                    <small class="text-muted">Ordenado por OPS</small>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-hover table-sm align-middle">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Jugador</th>
-                                <th>AB</th>
-                                <th>H</th>
-                                <th>HR</th>
-                                <th>RBI</th>
-                                <th>BB</th>
-                                <th>SO</th>
-                                <th>PA</th>
-                                <th>AVG</th>
-                                <th>OBP</th>
-                                <th>SLG</th>
-                                <th>OPS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.JugadoresDetalle != null && Model.JugadoresDetalle.Any())
-                            {
-                                foreach (var jugador in Model.JugadoresDetalle)
-                                {
-                                    <tr>
-                                        <td>@(jugador.Numero == 0 ? "–" : jugador.Numero.ToString())</td>
-                                        <td>
-                                            <a asp-controller="Jugadores" asp-action="Estadisticas" asp-route-id="@jugador.JugadorId" class="text-decoration-none">
-                                                @jugador.Nombre
-                                            </a>
-                                        </td>
-                                        <td>@jugador.AB</td>
-                                        <td>@jugador.H</td>
-                                        <td>@jugador.HR</td>
-                                        <td>@jugador.RBI</td>
-                                        <td>@jugador.BB</td>
-                                        <td>@jugador.SO</td>
-                                        <td>@jugador.PA</td>
-                                        <td>@jugador.AVG.ToString("0.000")</td>
-                                        <td>@jugador.OBP.ToString("0.000")</td>
-                                        <td>@jugador.SLG.ToString("0.000")</td>
-                                        <td>@jugador.OPS.ToString("0.000")</td>
-                                    </tr>
-                                }
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td colspan="13" class="text-center text-muted">Sin jugadores con estadísticas registradas.</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-</div>
-
-@section Scripts {
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script>
-        (function () {
-            const lineas = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Lineas ?? new List<Scoreboard.Web.Modelos.ViewModels.LineaTemporadaVm>()));
-            if (!lineas || !lineas.length) return;
-
-            const labels = lineas.map(l => l.Temporada).reverse();
-            const avgs = lineas.map(l => parseFloat((l.AVG || 0).toFixed(3))).reverse();
-            const obps = lineas.map(l => parseFloat((l.OBP || 0).toFixed(3))).reverse();
-            const slgs = lineas.map(l => parseFloat((l.SLG || 0).toFixed(3))).reverse();
-
-            const ctx = document.getElementById('teamChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        { label: 'AVG', data: avgs, borderColor: '#0d6efd', backgroundColor: 'rgba(13,110,253,0.08)', tension: 0.2 },
-                        { label: 'OBP', data: obps, borderColor: '#198754', backgroundColor: 'rgba(25,135,84,0.06)', tension: 0.2 },
-                        { label: 'SLG', data: slgs, borderColor: '#dc3545', backgroundColor: 'rgba(220,53,69,0.06)', tension: 0.2 }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { beginAtZero: true }
                     }
-                }
-            });
-        })();
-    </script>
-}
+                    else
+                    {
+                        <tr><td colspan="16" class="text-center text-muted py-4">Sin estadisticas.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="work-panel">
+        <div class="panel-title">
+            <div>
+                <span class="score-kicker">Roster</span>
+                <h2>Jugadores</h2>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0 mobile-stack-table">
+                <thead>
+                    <tr><th>#</th><th>Jugador</th><th>AB</th><th>H</th><th>HR</th><th>RBI</th><th>AVG</th><th>OPS</th></tr>
+                </thead>
+                <tbody>
+                    @if (Model.JugadoresDetalle != null && Model.JugadoresDetalle.Any())
+                    {
+                        foreach (var jugador in Model.JugadoresDetalle)
+                        {
+                            <tr>
+                                <td data-label="#">@(jugador.Numero == 0 ? "-" : jugador.Numero.ToString())</td>
+                                <td data-label="Jugador"><a asp-controller="Jugadores" asp-action="Estadisticas" asp-route-id="@jugador.JugadorId">@jugador.Nombre</a></td>
+                                <td data-label="AB">@jugador.AB</td>
+                                <td data-label="H">@jugador.H</td>
+                                <td data-label="HR">@jugador.HR</td>
+                                <td data-label="RBI">@jugador.RBI</td>
+                                <td data-label="AVG">@jugador.AVG.ToString("0.000")</td>
+                                <td data-label="OPS">@jugador.OPS.ToString("0.000")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="8" class="text-center text-muted py-4">Sin jugadores con estadisticas.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>

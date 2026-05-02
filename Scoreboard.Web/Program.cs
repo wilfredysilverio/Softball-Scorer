@@ -9,11 +9,22 @@ using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 // DbContext
 builder.Services.AddDbContext<ContextoMarcador>(options =>
 {
     var cs = builder.Configuration.GetConnectionString("PorDefecto");
-    options.UseMySql(cs, ServerVersion.AutoDetect(cs));
+    if (string.IsNullOrWhiteSpace(cs))
+    {
+        throw new InvalidOperationException("Falta configurar ConnectionStrings:PorDefecto.");
+    }
+
+    options.UseMySql(
+        cs,
+        new MariaDbServerVersion(new Version(10, 4, 32)));
 });
 
 // SignalR (tiempo real)
@@ -95,10 +106,16 @@ builder.Services.AddScoped<Scoreboard.Web.Servicios.IReportesService, Scoreboard
 
 var app = builder.Build();
 
-// Semilla de roles/usuario admin (antes de mapear endpoints)
-await Scoreboard.Web.Infra.IdentitySeeder.SeedAsync(app.Services);
-// Seed inicial de equipos y jugadores (idempotente)
-await Scoreboard.Web.Datos.Seed.InitialSeed.EnsureAsync(app.Services);
+// Semillas idempotentes. En Development la app puede arrancar aunque MySQL no este levantado.
+try
+{
+    await Scoreboard.Web.Infra.IdentitySeeder.SeedAsync(app.Services);
+    await Scoreboard.Web.Datos.Seed.InitialSeed.EnsureAsync(app.Services);
+}
+catch (Exception ex) when (app.Environment.IsDevelopment())
+{
+    app.Logger.LogWarning(ex, "No se pudo ejecutar el seed inicial. Revise que MySQL este activo y que la cadena PorDefecto sea correcta.");
+}
 
 // HTTPS opcional en Dev (déjalo activo en Prod)
 if (!app.Environment.IsDevelopment())
@@ -192,6 +209,11 @@ if (app.Environment.IsDevelopment())
 
 // Razor Pages (Identity UI)
 app.MapRazorPages();
+
+app.MapGet("/", (HttpContext context) =>
+    context.User.Identity?.IsAuthenticated == true
+        ? Results.Redirect("/Home/Index")
+        : Results.Redirect("/Account/Login"));
 
 app.MapControllerRoute(
     name: "default",

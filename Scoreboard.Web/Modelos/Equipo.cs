@@ -2,6 +2,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Scoreboard.Web.Modelos
 {
+    /// <summary>
+    /// Entidad que representa un equipo de softbol.
+    ///
+    /// Se conecta con:
+    /// - Jugador: cada jugador pertenece a un equipo.
+    /// - Partido: un equipo puede jugar como casa o visitante.
+    /// - LineupItem: define jugadores disponibles en un partido.
+    ///
+    /// Flujo simple:
+    /// 1. Guarda nombre y ciudad.
+    /// 2. Se usa para crear partidos y agrupar jugadores.
+    /// 3. Aparece en marcador, estadisticas y reportes.
+    ///
+    /// Cuidado:
+    /// Cambiar o borrar equipos afecta jugadores, partidos e historial.
+    /// </summary>
     public class Equipo
     {
         public int Id { get; set; }

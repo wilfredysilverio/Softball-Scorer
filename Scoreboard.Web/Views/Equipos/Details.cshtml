@@ -1,17 +1,28 @@
-@model Scoreboard.Web.Modelos.Equipo
+﻿@model Scoreboard.Web.Modelos.Equipo
 @{
-    ViewData["Title"] = "Detalles del equipo";
+    ViewData["Title"] = "Equipo";
 }
-<h1>Detalles</h1>
-<dl class="row">
-    <dt class="col-sm-2">Id</dt>
-    <dd class="col-sm-10">@Model.Id</dd>
-    <dt class="col-sm-2">Nombre</dt>
-    <dd class="col-sm-10">@Model.Nombre</dd>
-    <dt class="col-sm-2">Ciudad</dt>
-    <dd class="col-sm-10">@Model.Ciudad</dd>
-</dl>
-<p>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
-    <a asp-action="Index" class="btn btn-secondary">Volver</a>
-</p>
+
+<div class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="score-kicker">Equipo</span>
+            <h1>@Model.Nombre</h1>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i>Volver</a>
+    </div>
+
+    <section class="work-panel">
+        <div class="detail-hero">
+            <span class="team-badge"><i class="bi bi-shield-fill"></i></span>
+            <div>
+                <h2>@Model.Nombre</h2>
+                <p>@(string.IsNullOrWhiteSpace(Model.Ciudad) ? "Sin ciudad" : Model.Ciudad)</p>
+            </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+            <a asp-action="Estadisticas" asp-route-id="@Model.Id" class="btn btn-primary"><i class="bi bi-bar-chart me-2"></i>Estadisticas</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary"><i class="bi bi-pencil me-2"></i>Editar</a>
+        </div>
+    </section>
+</div>

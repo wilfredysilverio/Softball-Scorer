@@ -5,6 +5,22 @@ using Scoreboard.Web.ViewModels;
 
 namespace Scoreboard.Web.Controllers
 {
+    /// <summary>
+    /// Controlador MVC para cuentas de usuario: login, registro, logout y acceso denegado.
+    ///
+    /// Se conecta con:
+    /// - ASP.NET Core Identity: para validar usuarios, contrasenas y sesiones.
+    /// - LoginViewModel/RegisterViewModel: para recibir datos de formularios.
+    /// - Views/Account: para mostrar pantallas de cuenta.
+    ///
+    /// Flujo simple:
+    /// 1. Recibe correo/contrasena o datos de registro.
+    /// 2. Usa Identity para autenticar o crear el usuario.
+    /// 3. Redirige al home o devuelve errores de validacion.
+    ///
+    /// Cuidado:
+    /// Cambiar rutas, nombres de acciones o modelos puede romper el login.
+    /// </summary>
     public class AccountController : Controller
     {
         private readonly SignInManager<IdentityUser> _signIn;

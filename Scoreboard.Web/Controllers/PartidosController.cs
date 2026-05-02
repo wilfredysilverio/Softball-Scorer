@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +12,24 @@ using Scoreboard.Web.Helpers;
 
 namespace Scoreboard.Web.Controllers
 {
+    /// <summary>
+    /// Controlador MVC de partidos y marcador.
+    ///
+    /// Se conecta con:
+    /// - ContextoMarcador: para consultar partidos, equipos, jugadores y jugadas.
+    /// - IMarcadorService: para aplicar reglas del juego y actualizar el marcador.
+    /// - IReportesService: para generar descargas CSV.
+    /// - Views/Partidos: para mostrar crear, listar, definir lineup y anotar partidos.
+    ///
+    /// Flujo simple:
+    /// 1. Recibe acciones del usuario desde las pantallas de partidos.
+    /// 2. Valida datos basicos y delega la logica pesada a servicios.
+    /// 3. Devuelve una vista, una redireccion, un archivo CSV o JSON para JavaScript.
+    ///
+    /// Cuidado:
+    /// Este controlador conecta la pantalla con el marcador. Cambios en nombres de acciones,
+    /// parametros o JSON deben revisarse junto con VerPartido.cshtml y marcador.js.
+    /// </summary>
     public class PartidosController : Controller
     {
         private readonly ContextoMarcador _db;
@@ -53,6 +71,29 @@ namespace Scoreboard.Web.Controllers
             return RedirectToAction(nameof(VerPartido), new { id = partidoId });
         }
 
+        private IActionResult RequiereConfirmacionFueraTurno(string mensaje, bool esAjax, int partidoId, Jugador bateadorEsperado)
+        {
+            if (esAjax)
+            {
+                return Json(new
+                {
+                    ok = false,
+                    requiereConfirmacion = true,
+                    message = mensaje,
+                    bateadorEsperado = new
+                    {
+                        bateadorEsperado.Id,
+                        bateadorEsperado.Nombre,
+                        bateadorEsperado.Apellido,
+                        bateadorEsperado.NumeroUniforme
+                    }
+                });
+            }
+
+            TempData["Error"] = mensaje;
+            return RedirectToAction(nameof(VerPartido), new { id = partidoId });
+        }
+
         private async Task<(List<Jugador> Lineup, Jugador? Bateador)> ObtenerContextoBateadorAsync(Partido partido)
         {
             var equipoBateaId = partido.Mitad == MitadEntrada.Baja ? partido.EquipoCasaId : partido.EquipoVisitaId;
@@ -76,6 +117,35 @@ namespace Scoreboard.Web.Controllers
             }
 
             return (jugadores, bateadorEsperado);
+        }
+
+        private async Task CrearLineupAutomaticoSiFaltaAsync(int partidoId, int equipoId)
+        {
+            var yaTieneLineup = await _db.Lineups.AnyAsync(l => l.PartidoId == partidoId && l.EquipoId == equipoId);
+            if (yaTieneLineup)
+            {
+                return;
+            }
+
+            var jugadores = await _db.Jugadores.AsNoTracking()
+                .Where(j => j.EquipoId == equipoId)
+                .OrderBy(j => j.NumeroUniforme)
+                .ThenBy(j => j.Nombre)
+                .ThenBy(j => j.Apellido)
+                .Select(j => j.Id)
+                .ToListAsync();
+
+            var orden = 1;
+            foreach (var jugadorId in jugadores)
+            {
+                _db.Lineups.Add(new LineupItem
+                {
+                    PartidoId = partidoId,
+                    EquipoId = equipoId,
+                    JugadorId = jugadorId,
+                    Orden = orden++
+                });
+            }
         }
 
         [AllowAnonymous]
@@ -110,7 +180,12 @@ namespace Scoreboard.Web.Controllers
             }
             _db.Partidos.Add(modelo);
             await _db.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            await CrearLineupAutomaticoSiFaltaAsync(modelo.Id, modelo.EquipoVisitaId);
+            await CrearLineupAutomaticoSiFaltaAsync(modelo.Id, modelo.EquipoCasaId);
+            await _db.SaveChangesAsync();
+
+            TempData["Ok"] = "Partido creado con el roster completo. Desmarca los jugadores que no fueron hoy.";
+            return RedirectToAction(nameof(DefinirLineup), new { id = modelo.Id });
         }
 
         [AllowAnonymous]
@@ -245,6 +320,25 @@ namespace Scoreboard.Web.Controllers
             partido.Entradas = entradasOrdenadas;
             var maxInnings = Math.Max(9, Math.Max(partido.EntradaActual, entradasOrdenadas.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max()));
             var (lineupJugadores, bateadorEsperado) = await ObtenerContextoBateadorAsync(partido);
+            var ultimasJugadas = await _db.PlayLogs.AsNoTracking()
+                .Include(pl => pl.Jugador)
+                .Where(pl => pl.PartidoId == partido.Id && pl.IsActive && pl.Resultado != null)
+                .OrderByDescending(pl => pl.Id)
+                .Take(8)
+                .ToListAsync();
+
+            foreach (var log in ultimasJugadas)
+            {
+                var (before, after) = PlayLogSnapshotHelper.ExtractSnapshots(log.SnapshotJson);
+                log.EntradaContext = before?.EntradaActual ?? after?.EntradaActual;
+                log.MitadContext = before?.Mitad ?? after?.Mitad;
+                log.OutsAfter = after?.Outs;
+                if (after != null)
+                {
+                    log.BasesAfter = $"1B:{(after.B1 ? "ocupada" : "libre")} 2B:{(after.B2 ? "ocupada" : "libre")} 3B:{(after.B3 ? "ocupada" : "libre")}";
+                }
+            }
+
             string? motivoBloqueo = null;
             if (!lineupJugadores.Any())
             {
@@ -271,6 +365,7 @@ namespace Scoreboard.Web.Controllers
                 Partido = partido,
                 Lineup = lineupJugadores,
                 BateadorEsperado = bateadorEsperado,
+                UltimasJugadas = ultimasJugadas,
                 Turno = turnoVm,
                 Evento = new RegistrarEventoCorredorVm
                 {
@@ -291,8 +386,12 @@ namespace Scoreboard.Web.Controllers
         {
             var partido = await _db.Partidos.Include(p => p.EquipoCasa).Include(p => p.EquipoVisita).FirstOrDefaultAsync(p => p.Id == id);
             if (partido == null) return NotFound();
-            var jugadoresCasa = await _db.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoCasaId).OrderBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
-            var jugadoresVisita = await _db.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoVisitaId).OrderBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
+            await CrearLineupAutomaticoSiFaltaAsync(partido.Id, partido.EquipoVisitaId);
+            await CrearLineupAutomaticoSiFaltaAsync(partido.Id, partido.EquipoCasaId);
+            await _db.SaveChangesAsync();
+
+            var jugadoresCasa = await _db.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoCasaId).OrderBy(j => j.NumeroUniforme).ThenBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
+            var jugadoresVisita = await _db.Jugadores.AsNoTracking().Where(j => j.EquipoId == partido.EquipoVisitaId).OrderBy(j => j.NumeroUniforme).ThenBy(j => j.Nombre).ThenBy(j => j.Apellido).ToListAsync();
             var lineupCasa = await _db.Lineups.AsNoTracking().Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).OrderBy(l => l.Orden).ToListAsync();
             var lineupVisita = await _db.Lineups.AsNoTracking().Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).OrderBy(l => l.Orden).ToListAsync();
             ViewBag.JugadoresCasa = jugadoresCasa;
@@ -309,64 +408,54 @@ namespace Scoreboard.Web.Controllers
         {
             var partido = await _db.Partidos.FindAsync(id);
             if (partido == null) return NotFound();
-            if (casaJugadores is not null)
-            {
-                var existentesCasa = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).ToListAsync();
-                if (existentesCasa.Any()) _db.Lineups.RemoveRange(existentesCasa);
-                int orden = 1;
-                foreach (var j in casaJugadores.Where(x => x > 0))
-                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = orden++ });
-            }
-            if (visitaJugadores is not null)
-            {
-                var existentesVisita = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).ToListAsync();
-                if (existentesVisita.Any()) _db.Lineups.RemoveRange(existentesVisita);
-                int orden = 1;
-                foreach (var j in visitaJugadores.Where(x => x > 0))
-                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = orden++ });
-            }
+            var existentesCasa = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).ToListAsync();
+            if (existentesCasa.Any()) _db.Lineups.RemoveRange(existentesCasa);
+            int ordenCasa = 1;
+            foreach (var j in (casaJugadores ?? Array.Empty<int>()).Where(x => x > 0))
+                _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = ordenCasa++ });
+
+            var existentesVisita = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).ToListAsync();
+            if (existentesVisita.Any()) _db.Lineups.RemoveRange(existentesVisita);
+            int ordenVisita = 1;
+            foreach (var j in (visitaJugadores ?? Array.Empty<int>()).Where(x => x > 0))
+                _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = ordenVisita++ });
+
             await _db.SaveChangesAsync();
-            TempData["Ok"] = "Lineup actualizado.";
+            TempData["Ok"] = "Jugadores del partido actualizados.";
             return RedirectToAction(nameof(DefinirLineup), new { id });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Anotador")]
-        public async Task<IActionResult> GuardarLineupVisitante(int id, [FromForm] int[] visitaJugadores)
+        public async Task<IActionResult> GuardarLineupVisitante(int id, [FromForm] int[]? visitaJugadores)
         {
             var partido = await _db.Partidos.FindAsync(id);
             if (partido == null) return NotFound();
             var existentes = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoVisitaId).ToListAsync();
             if (existentes.Any()) _db.Lineups.RemoveRange(existentes);
             int orden = 1;
-            if (visitaJugadores != null)
-            {
-                foreach (var j in visitaJugadores.Where(x => x > 0))
-                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = orden++ });
-            }
+            foreach (var j in (visitaJugadores ?? Array.Empty<int>()).Where(x => x > 0))
+                _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoVisitaId, JugadorId = j, Orden = orden++ });
             await _db.SaveChangesAsync();
-            TempData["Ok"] = "Lineup visitante guardado.";
+            TempData["Ok"] = "Jugadores visitantes actualizados.";
             return RedirectToAction(nameof(DefinirLineup), new { id });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Anotador")]
-        public async Task<IActionResult> GuardarLineupCasa(int id, [FromForm] int[] casaJugadores)
+        public async Task<IActionResult> GuardarLineupCasa(int id, [FromForm] int[]? casaJugadores)
         {
             var partido = await _db.Partidos.FindAsync(id);
             if (partido == null) return NotFound();
             var existentes = await _db.Lineups.Where(l => l.PartidoId == id && l.EquipoId == partido.EquipoCasaId).ToListAsync();
             if (existentes.Any()) _db.Lineups.RemoveRange(existentes);
             int orden = 1;
-            if (casaJugadores != null)
-            {
-                foreach (var j in casaJugadores.Where(x => x > 0))
-                    _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = orden++ });
-            }
+            foreach (var j in (casaJugadores ?? Array.Empty<int>()).Where(x => x > 0))
+                _db.Lineups.Add(new LineupItem { PartidoId = id, EquipoId = partido.EquipoCasaId, JugadorId = j, Orden = orden++ });
             await _db.SaveChangesAsync();
-            TempData["Ok"] = "Lineup casa guardado.";
+            TempData["Ok"] = "Jugadores de casa actualizados.";
             return RedirectToAction(nameof(DefinirLineup), new { id });
         }
 
@@ -474,7 +563,7 @@ namespace Scoreboard.Web.Controllers
             var esAjax = EsAjaxRequest();
             if (!ModelState.IsValid)
             {
-                return ErrorRegistro("Debe seleccionar un bateador y un resultado válidos.", esAjax, turno.PartidoId);
+                return ErrorRegistro("Debe seleccionar un bateador y un resultado vÃ¡lidos.", esAjax, turno.PartidoId);
             }
 
             var partido = await _db.Partidos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == turno.PartidoId);
@@ -484,7 +573,7 @@ namespace Scoreboard.Web.Controllers
             }
             if (partido.Estado != EstadoPartido.EnCurso)
             {
-                return ErrorRegistro("Solo puedes registrar jugadas cuando el partido está en curso.", esAjax, turno.PartidoId);
+                return ErrorRegistro("Solo puedes registrar jugadas cuando el partido estÃ¡ en curso.", esAjax, turno.PartidoId);
             }
 
             var (lineupActual, bateadorEsperado) = await ObtenerContextoBateadorAsync(partido);
@@ -494,18 +583,18 @@ namespace Scoreboard.Web.Controllers
             }
             if (bateadorEsperado == null)
             {
-                return ErrorRegistro("No se pudo determinar el bateador esperado. Refresca la página o revisa el lineup.", esAjax, turno.PartidoId);
+                return ErrorRegistro("No se pudo determinar el bateador esperado. Refresca la pÃ¡gina o revisa el lineup.", esAjax, turno.PartidoId);
             }
-            if (turno.JugadorId.HasValue && turno.JugadorId.Value != bateadorEsperado.Id)
+            if (turno.JugadorId.HasValue && turno.JugadorId.Value != bateadorEsperado.Id && !turno.ConfirmarFueraTurno)
             {
-                return ErrorRegistro("El formulario está desactualizado. Refresca la página antes de registrar el turno.", esAjax, turno.PartidoId);
+                return RequiereConfirmacionFueraTurno("Este jugador no es el bateador que sigue en el orden. ¿Seguro que deseas anotar esta jugada para él?", esAjax, turno.PartidoId, bateadorEsperado);
             }
 
             var eventoCorredorSeleccionado = turno.EventoCorredor ?? EventoCorredor.Ninguno;
             var baseEventoSeleccionada = turno.BaseEvento;
             if (eventoCorredorSeleccionado != EventoCorredor.Ninguno && !baseEventoSeleccionada.HasValue)
             {
-                return ErrorRegistro("Selecciona el corredor que avanzó con el evento.", esAjax, turno.PartidoId);
+                return ErrorRegistro("Selecciona el corredor que avanzÃ³ con el evento.", esAjax, turno.PartidoId);
             }
             if (eventoCorredorSeleccionado != EventoCorredor.Ninguno && !(partido.B1 || partido.B2 || partido.B3))
             {
@@ -534,7 +623,8 @@ namespace Scoreboard.Web.Controllers
                     turno.JugadorId,
                     turno.Resultado,
                     eventoCorredorSeleccionado,
-                    baseEvento);
+                    baseEvento,
+                    turno.ConfirmarFueraTurno);
                 var marcador = await _marcador.ObtenerMarcadorAsync(partidoActualizado.Id);
                 var proximoBateador = marcador.BateadorEsperado;
                 var puedeRegistrar = marcador.PuedeRegistrar;
@@ -548,6 +638,9 @@ namespace Scoreboard.Web.Controllers
                         message = "Turno registrado correctamente.",
                         puedeRegistrar,
                         motivoBloqueo,
+                        equipoBateando = marcador.EquipoBateando,
+                        equipoBateandoId = marcador.EquipoBateandoId,
+                        lineupBateando = marcador.LineupBateando,
                         bateador = proximoBateador == null ? null : new
                         {
                             proximoBateador.Id,
@@ -582,7 +675,7 @@ namespace Scoreboard.Web.Controllers
             var esAjax = EsAjaxRequest();
             if (!ModelState.IsValid || request.Evento == EventoCorredor.Ninguno)
             {
-                return ErrorRegistro("Selecciona un evento válido de corredores.", esAjax, request.PartidoId);
+                return ErrorRegistro("Selecciona un evento vÃ¡lido de corredores.", esAjax, request.PartidoId);
             }
 
             var partido = await _db.Partidos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == request.PartidoId);
@@ -631,7 +724,7 @@ namespace Scoreboard.Web.Controllers
             try
             {
                 await _marcador.DeshacerUltimaJugadaAsync(partidoId);
-                TempData["Ok"] = "Se deshizo la última jugada.";
+                TempData["Ok"] = "Se deshizo la Ãºltima jugada.";
             }
             catch (Exception ex)
             {
@@ -739,3 +832,4 @@ namespace Scoreboard.Web.Controllers
         }
     }
 }
+

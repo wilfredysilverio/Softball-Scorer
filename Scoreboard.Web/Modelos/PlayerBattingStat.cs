@@ -3,6 +3,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Scoreboard.Web.Modelos
 {
+    /// <summary>
+    /// Entidad que guarda el aporte ofensivo de un jugador en un turno.
+    ///
+    /// Se conecta con:
+    /// - Jugador y Equipo: identifican a quien pertenece la estadistica.
+    /// - Partido: indica en que juego ocurrio.
+    /// - MarcadorService: crea una fila por turno registrado.
+    /// - EstadisticasService: suma filas para calcular lideres y promedios.
+    ///
+    /// Flujo simple:
+    /// 1. Recibe del marcador los incrementos de la jugada.
+    /// 2. Guarda AB, H, HR, RBI, BB, SO y otros campos.
+    /// 3. Luego se acumula para mostrar estadisticas.
+    ///
+    /// Cuidado:
+    /// Si una jugada no guarda bien esta entidad, las estadisticas saldran incorrectas.
+    /// </summary>
     public class PlayerBattingStat
     {
         public int Id { get; set; }

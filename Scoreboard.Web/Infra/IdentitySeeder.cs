@@ -1,8 +1,25 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Scoreboard.Web.Infra
 {
+    /// <summary>
+    /// Crea datos iniciales de seguridad para Identity.
+    ///
+    /// Se conecta con:
+    /// - RoleManager: para crear roles.
+    /// - UserManager: para crear el usuario administrador.
+    /// - IConfiguration: para leer datos de configuracion.
+    ///
+    /// Flujo simple:
+    /// 1. Crea roles base si no existen.
+    /// 2. Crea el usuario admin si no existe.
+    /// 3. Asigna el rol Admin.
+    ///
+    /// Cuidado:
+    /// Cambiar credenciales o roles puede afectar el acceso al sistema.
+    /// </summary>
     public static class IdentitySeeder
     {
         public static async Task SeedAsync(IServiceProvider sp)
@@ -10,6 +27,7 @@ namespace Scoreboard.Web.Infra
             using var scope = sp.CreateScope();
             var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var logger = scope.ServiceProvider.GetService<ILoggerFactory>()?.CreateLogger("IdentitySeeder");
 
             string[] roles = ["Admin", "Anotador", "Viewer"];
@@ -32,7 +50,8 @@ namespace Scoreboard.Web.Infra
             }
 
             // Usuario admin principal
-            var email = "admin@local";
+            var email = config["Auth:AdminUser"] ?? "admin@softball.local";
+            var password = config["Auth:AdminPass"] ?? "Softball#2025";
             var admin = await userMgr.FindByEmailAsync(email);
             if (admin == null)
             {
@@ -42,7 +61,7 @@ namespace Scoreboard.Web.Infra
                     Email = email,
                     EmailConfirmed = true
                 };
-                var createUser = await userMgr.CreateAsync(admin, "Admin!2025");
+                var createUser = await userMgr.CreateAsync(admin, password);
                 if (!createUser.Succeeded)
                 {
                     logger?.LogError("No se pudo crear usuario admin: {Errores}", string.Join(",", createUser.Errors.Select(e => e.Description)));
@@ -53,6 +72,19 @@ namespace Scoreboard.Web.Infra
             else
             {
                 logger?.LogInformation("Usuario admin ya existe {Email}", email);
+            }
+
+            if (!await userMgr.CheckPasswordAsync(admin, password))
+            {
+                var resetToken = await userMgr.GeneratePasswordResetTokenAsync(admin);
+                var resetPassword = await userMgr.ResetPasswordAsync(admin, resetToken, password);
+                if (!resetPassword.Succeeded)
+                {
+                    logger?.LogError("No se pudo restablecer la clave admin: {Errores}", string.Join(",", resetPassword.Errors.Select(e => e.Description)));
+                    throw new Exception("No se pudo restablecer la clave del usuario admin");
+                }
+
+                logger?.LogInformation("Clave admin restablecida para {Email}", email);
             }
 
             if (!await userMgr.IsInRoleAsync(admin, "Admin"))

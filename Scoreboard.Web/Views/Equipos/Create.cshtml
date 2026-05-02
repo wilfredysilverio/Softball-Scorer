@@ -3,54 +3,61 @@
     ViewData["Title"] = "Crear equipo";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-8 col-xl-6">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-primary text-white rounded-top-4 py-4">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-people-fill fs-2 me-2"></i>
-                        <div>
-                            <h2 class="h4 mb-0">Crear equipo</h2>
-                            <small class="text-white-50">Agregar una nueva novena a la liga</small>
+<div class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="score-kicker">Clubes</span>
+            <h1>Crear equipo</h1>
+            <p>Agrega un equipo para programar partidos como casa o visitante.</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Volver
+        </a>
+    </div>
+
+    <div class="form-panel">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <i class="bi bi-shield-plus me-2"></i>Datos del equipo
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post" class="row g-3">
+                    @Html.AntiForgeryToken()
+
+                    <div class="col-12">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-0"></div>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Nombre" class="form-label fw-semibold"></label>
+                        <input asp-for="Nombre" class="form-control form-control-lg" placeholder="Ej. Tigres de Villa Duarte" />
+                        <span asp-validation-for="Nombre" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Ciudad" class="form-label fw-semibold"></label>
+                        <input asp-for="Ciudad" class="form-control form-control-lg" placeholder="Ej. Santo Domingo Este" />
+                        <span asp-validation-for="Ciudad" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="section-note">
+                            Despues de guardar el equipo, puedes agregar sus jugadores desde el modulo Jugadores.
                         </div>
                     </div>
-                </div>
-                <div class="card-body p-4 p-lg-5">
-                    <form asp-action="Create" method="post" class="row g-4">
-                        @Html.AntiForgeryToken()
 
-                        <div class="col-12">
-                            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 shadow-sm mb-3"></div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="mb-4">
-                                <label asp-for="Nombre" class="form-label fw-semibold"></label>
-                                <input asp-for="Nombre" class="form-control form-control-lg rounded-3 shadow-sm" placeholder="Nombre oficial" />
-                                <span asp-validation-for="Nombre" class="text-danger small"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="mb-4">
-                                <label asp-for="Ciudad" class="form-label fw-semibold"></label>
-                                <input asp-for="Ciudad" class="form-control form-control-lg rounded-3 shadow-sm" placeholder="Ciudad o sede" />
-                                <span asp-validation-for="Ciudad" class="text-danger small"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-12 d-flex justify-content-between flex-wrap gap-3">
-                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg rounded-3 px-4">
-                                <i class="bi bi-arrow-left me-2"></i>Cancelar
-                            </a>
-                            <button type="submit" class="btn btn-primary btn-lg rounded-3 shadow px-5">
-                                <i class="bi bi-check-circle me-2"></i>Guardar equipo
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="col-12 d-flex justify-content-end flex-wrap gap-2">
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-lg">Cancelar</a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle me-2"></i>Guardar equipo
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

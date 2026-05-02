@@ -2,6 +2,22 @@
 
 namespace Scoreboard.Web.ViewModels
 {
+    /// <summary>
+    /// ViewModel del formulario de registro.
+    ///
+    /// Se conecta con:
+    /// - AccountController.Register.
+    /// - Views/Account/Register.cshtml.
+    /// - ASP.NET Core Identity.
+    ///
+    /// Flujo simple:
+    /// 1. Recibe datos del nuevo usuario.
+    /// 2. Valida contrasena y confirmacion.
+    /// 3. AccountController crea el usuario.
+    ///
+    /// Cuidado:
+    /// Cambiar validaciones puede afectar quien logra registrarse.
+    /// </summary>
     public class RegisterViewModel
     {
         [Required(ErrorMessage = "Escribe tu nombre.")]

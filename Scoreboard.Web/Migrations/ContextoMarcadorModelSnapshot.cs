@@ -295,6 +295,10 @@ namespace Scoreboard.Web.Migrations
                     b.Property<int>("EquipoId")
                         .HasColumnType("int");
 
+                    b.Property<string>("FotoPerfilRuta")
+                        .HasMaxLength(260)
+                        .HasColumnType("varchar(260)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(60)
@@ -412,7 +416,18 @@ namespace Scoreboard.Web.Migrations
 
                     b.HasIndex("EquipoVisitaId");
 
-                    b.ToTable("Partidos");
+                    b.ToTable("Partidos", t =>
+                        {
+                            t.HasCheckConstraint("CK_Partidos_Carreras_NoNegativas", "CarrerasCasa >= 0 AND CarrerasVisita >= 0");
+
+                            t.HasCheckConstraint("CK_Partidos_Entrada_Outs_Validos", "EntradaActual >= 1 AND Outs >= 0");
+
+                            t.HasCheckConstraint("CK_Partidos_Equipos_Diferentes", "EquipoCasaId <> EquipoVisitaId");
+
+                            t.HasCheckConstraint("CK_Partidos_Errores_NoNegativos", "ErroresCasa >= 0 AND ErroresVisita >= 0");
+
+                            t.HasCheckConstraint("CK_Partidos_Hits_NoNegativos", "HitsCasa >= 0 AND HitsVisita >= 0");
+                        });
                 });
 
             modelBuilder.Entity("Scoreboard.Web.Modelos.PlayLog", b =>
@@ -427,14 +442,27 @@ namespace Scoreboard.Web.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("Fecha");
 
+                    b.Property<int?>("EquipoBateoId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("EsCorreccionManual")
+                        .HasColumnType("bit(1)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit(1)");
+
+                    b.Property<int?>("JugadorEsperadoId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("JugadorId")
                         .HasColumnType("int");
 
                     b.Property<int>("Kind")
                         .HasColumnType("int");
+
+                    b.Property<string>("Nota")
+                        .HasMaxLength(240)
+                        .HasColumnType("varchar(240)");
 
                     b.Property<int>("PartidoId")
                         .HasColumnType("int");
@@ -453,6 +481,8 @@ namespace Scoreboard.Web.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JugadorId");
 
                     b.ToTable("PlayLogs");
                 });
@@ -652,6 +682,15 @@ namespace Scoreboard.Web.Migrations
                     b.Navigation("EquipoCasa");
 
                     b.Navigation("EquipoVisita");
+                });
+
+            modelBuilder.Entity("Scoreboard.Web.Modelos.PlayLog", b =>
+                {
+                    b.HasOne("Scoreboard.Web.Modelos.Jugador", "Jugador")
+                        .WithMany()
+                        .HasForeignKey("JugadorId");
+
+                    b.Navigation("Jugador");
                 });
 
             modelBuilder.Entity("Scoreboard.Web.Modelos.PlayerBattingStat", b =>

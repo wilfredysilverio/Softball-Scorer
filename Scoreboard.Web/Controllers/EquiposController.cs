@@ -6,6 +6,22 @@ using Scoreboard.Web.Modelos.ViewModels;
 
 namespace Scoreboard.Web.Controllers
 {
+    /// <summary>
+    /// Controlador MVC para administrar equipos.
+    ///
+    /// Se conecta con:
+    /// - ContextoMarcador: para leer y guardar equipos.
+    /// - Views/Equipos: para listar, crear, editar, ver detalles y estadisticas.
+    /// - EstadisticasService: para datos agregados cuando aplica.
+    ///
+    /// Flujo simple:
+    /// 1. Recibe acciones sobre equipos.
+    /// 2. Consulta o modifica la tabla Equipos.
+    /// 3. Devuelve una vista o redirecciona.
+    ///
+    /// Cuidado:
+    /// Un equipo puede estar relacionado con jugadores y partidos; borrar o cambiar ids afecta esas relaciones.
+    /// </summary>
     public class EquiposController : Controller
     {
         private readonly ContextoMarcador _db;

@@ -1,73 +1,147 @@
 @model Scoreboard.Web.Modelos.Partido
 @{
-    ViewData["Title"] = "Definir lineup";
+    ViewData["Title"] = "Jugadores del partido";
     var jugadoresCasa = ViewBag.JugadoresCasa as IEnumerable<Scoreboard.Web.Modelos.Jugador> ?? Enumerable.Empty<Scoreboard.Web.Modelos.Jugador>();
     var jugadoresVisita = ViewBag.JugadoresVisita as IEnumerable<Scoreboard.Web.Modelos.Jugador> ?? Enumerable.Empty<Scoreboard.Web.Modelos.Jugador>();
     var lineupCasa = ViewBag.LineupCasa as IEnumerable<Scoreboard.Web.Modelos.LineupItem> ?? Enumerable.Empty<Scoreboard.Web.Modelos.LineupItem>();
     var lineupVisita = ViewBag.LineupVisita as IEnumerable<Scoreboard.Web.Modelos.LineupItem> ?? Enumerable.Empty<Scoreboard.Web.Modelos.LineupItem>();
+    var idsCasa = lineupCasa.Select(l => l.JugadorId).ToHashSet();
+    var idsVisita = lineupVisita.Select(l => l.JugadorId).ToHashSet();
 }
 
-<div class="container py-3">
-    <h2>Definir lineup — Partido #@Model.Id</h2>
-    <div class="row g-3">
-        <div class="col-12 col-md-6">
-            <div class="card">
-                <div class="card-header">@Model.EquipoVisita?.Nombre (Visitante)</div>
-                <div class="card-body">
-                    <form asp-action="GuardarLineupVisitante" asp-controller="Partidos" method="post" class="d-grid gap-2">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        @for (int i = 1; i <= 9; i++)
-                        {
-                            var sel = lineupVisita.FirstOrDefault(l => l.Orden == i)?.JugadorId ?? 0;
-                            <div>
-                                <label class="form-label">@i</label>
-                                <select class="form-select" name="visitaJugadores">
-                                    <option value="0">-- Seleccionar --</option>
-                                    @foreach (var j in jugadoresVisita)
-                                    {
-                                        <option value="@j.Id" selected="@(sel == j.Id)">@j.Nombre @j.Apellido (@j.NumeroUniforme)</option>
-                                    }
-                                </select>
-                            </div>
-                        }
-                        <div class="d-grid mt-2">
-                            <button type="submit" class="btn btn-primary">Guardar lineup visitante</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="flow-shell">
+    @if (TempData["Ok"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Ok"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
-        <div class="col-12 col-md-6">
-            <div class="card">
-                <div class="card-header">@Model.EquipoCasa?.Nombre (Casa)</div>
-                <div class="card-body">
-                    <form asp-action="GuardarLineupCasa" asp-controller="Partidos" method="post" class="d-grid gap-2">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="id" value="@Model.Id" />
-                        @for (int i = 1; i <= 9; i++)
-                        {
-                            var sel = lineupCasa.FirstOrDefault(l => l.Orden == i)?.JugadorId ?? 0;
-                            <div>
-                                <label class="form-label">@i</label>
-                                <select class="form-select" name="casaJugadores">
-                                    <option value="0">-- Seleccionar --</option>
-                                    @foreach (var j in jugadoresCasa)
-                                    {
-                                        <option value="@j.Id" selected="@(sel == j.Id)">@j.Nombre @j.Apellido (@j.NumeroUniforme)</option>
-                                    }
-                                </select>
-                            </div>
-                        }
-                        <div class="d-grid mt-2">
-                            <button type="submit" class="btn btn-primary">Guardar lineup casa</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    }
+
+    <div class="flow-header">
+        <div>
+            <span class="score-kicker">Paso 2 de 3</span>
+            <h1>Jugadores de hoy</h1>
+            <p>@Model.EquipoVisita?.Nombre vs @Model.EquipoCasa?.Nombre</p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-action="VerPartido" asp-route-id="@Model.Id" class="btn btn-primary">
+                <i class="bi bi-play-circle me-2"></i>Ir a anotar
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary">Partidos</a>
         </div>
     </div>
-    <div class="mt-3">
-        <a asp-action="VerPartido" asp-route-id="@Model.Id" class="btn btn-outline-dark">Volver</a>
+
+    <div class="flow-steps mb-4">
+        <div class="flow-step done"><strong>1</strong><span>Partido</span></div>
+        <div class="flow-step active"><strong>2</strong><span>Quitar ausentes</span></div>
+        <div class="flow-step"><strong>3</strong><span>Anotar</span></div>
     </div>
+
+    <div class="lineup-layout attendance-layout">
+        <section class="work-panel attendance-panel">
+            <div class="panel-title">
+                <div>
+                    <span class="score-kicker">Visitante</span>
+                    <h2>@Model.EquipoVisita?.Nombre</h2>
+                </div>
+                <span class="status-pill subtle" data-count-for="visitaJugadores">@idsVisita.Count/@jugadoresVisita.Count()</span>
+            </div>
+            <form asp-action="GuardarLineupVisitante" asp-controller="Partidos" method="post" class="attendance-form" data-team-form>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div class="attendance-toolbar">
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-check-all>Todos</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-uncheck-all>Ninguno</button>
+                </div>
+                <div class="attendance-list">
+                    @foreach (var j in jugadoresVisita)
+                    {
+                        var checkedAttr = idsVisita.Contains(j.Id) ? "checked" : string.Empty;
+                        <label class="attendance-player">
+                            <input class="form-check-input" type="checkbox" name="visitaJugadores" value="@j.Id" @checkedAttr />
+                            <span class="player-number">#@j.NumeroUniforme</span>
+                            <span>
+                                <strong>@j.Nombre @j.Apellido</strong>
+                                <small>@j.Posicion</small>
+                            </span>
+                        </label>
+                    }
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-save me-2"></i>Guardar visitante
+                </button>
+            </form>
+        </section>
+
+        <section class="work-panel attendance-panel">
+            <div class="panel-title">
+                <div>
+                    <span class="score-kicker">Casa</span>
+                    <h2>@Model.EquipoCasa?.Nombre</h2>
+                </div>
+                <span class="status-pill subtle" data-count-for="casaJugadores">@idsCasa.Count/@jugadoresCasa.Count()</span>
+            </div>
+            <form asp-action="GuardarLineupCasa" asp-controller="Partidos" method="post" class="attendance-form" data-team-form>
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div class="attendance-toolbar">
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-check-all>Todos</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-uncheck-all>Ninguno</button>
+                </div>
+                <div class="attendance-list">
+                    @foreach (var j in jugadoresCasa)
+                    {
+                        var checkedAttr = idsCasa.Contains(j.Id) ? "checked" : string.Empty;
+                        <label class="attendance-player">
+                            <input class="form-check-input" type="checkbox" name="casaJugadores" value="@j.Id" @checkedAttr />
+                            <span class="player-number">#@j.NumeroUniforme</span>
+                            <span>
+                                <strong>@j.Nombre @j.Apellido</strong>
+                                <small>@j.Posicion</small>
+                            </span>
+                        </label>
+                    }
+                </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-save me-2"></i>Guardar casa
+                </button>
+            </form>
+        </section>
+    </div>
+
+    <section class="work-panel mt-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <strong>¿Listo?</strong>
+            <a asp-action="VerPartido" asp-route-id="@Model.Id" class="btn btn-success">
+                <i class="bi bi-clipboard2-pulse me-2"></i>Abrir marcador
+            </a>
+        </div>
+    </section>
 </div>
+
+@section Scripts {
+    <script>
+        function updateAttendanceCount(form) {
+            const firstInput = form.querySelector('input[type="checkbox"]');
+            if (!firstInput) return;
+            const target = document.querySelector(`[data-count-for="${firstInput.name}"]`);
+            const total = form.querySelectorAll('input[type="checkbox"]').length;
+            const checked = form.querySelectorAll('input[type="checkbox"]:checked').length;
+            if (target) target.textContent = `${checked}/${total}`;
+        }
+
+        document.querySelectorAll('[data-team-form]').forEach(form => {
+            form.addEventListener('change', () => updateAttendanceCount(form));
+            form.querySelector('[data-check-all]')?.addEventListener('click', () => {
+                form.querySelectorAll('input[type="checkbox"]').forEach(input => input.checked = true);
+                updateAttendanceCount(form);
+            });
+            form.querySelector('[data-uncheck-all]')?.addEventListener('click', () => {
+                form.querySelectorAll('input[type="checkbox"]').forEach(input => input.checked = false);
+                updateAttendanceCount(form);
+            });
+            updateAttendanceCount(form);
+        });
+    </script>
+}
