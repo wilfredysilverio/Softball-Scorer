@@ -114,6 +114,16 @@ body {
 .sidebar .brand a { display:flex; align-items:center; gap:.5rem; }
 .sidebar .brand i{ font-size:1.25rem; }
 
+.app-brand {
+    min-width: 0;
+}
+
+.app-brand span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /* Mejor separación en main */
 .app-content{ padding: 1rem; }
 
@@ -1115,6 +1125,47 @@ body {
 .team-card {
     grid-template-columns: auto minmax(0, 1fr);
     align-items: start;
+}
+
+.team-logo-edit {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    min-width: 0;
+    padding: .85rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #f8fafc;
+}
+
+.team-logo-edit > div:last-child {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.team-logo {
+    width: 58px;
+    height: 58px;
+    flex: 0 0 auto;
+    display: inline-grid;
+    place-items: center;
+    overflow: hidden;
+    border: 2px solid #ccfbf1;
+    border-radius: 8px;
+    background: #ecfdf5;
+    color: #0f766e;
+    object-fit: cover;
+}
+
+.team-logo-lg {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+    font-size: 1.7rem;
+}
+
+.team-logo-fallback {
+    font-size: 1.35rem;
 }
 
 .team-actions {

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Scoreboard.Web.Modelos;
 using Scoreboard.Web.ViewModels;
 
 namespace Scoreboard.Web.Controllers
@@ -23,10 +24,10 @@ namespace Scoreboard.Web.Controllers
     /// </summary>
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signIn;
-        private readonly UserManager<IdentityUser> _users;
+        private readonly SignInManager<UsuarioAplicacion> _signIn;
+        private readonly UserManager<UsuarioAplicacion> _users;
 
-        public AccountController(SignInManager<IdentityUser> signIn, UserManager<IdentityUser> users)
+        public AccountController(SignInManager<UsuarioAplicacion> signIn, UserManager<UsuarioAplicacion> users)
         {
             _signIn = signIn;
             _users = users;
@@ -86,7 +87,14 @@ namespace Scoreboard.Web.Controllers
                 ModelState.AddModelError(string.Empty, "El usuario ya existe");
                 return View(vm);
             }
-            var u = new IdentityUser { UserName = vm.Email, Email = vm.Email, EmailConfirmed = true, PhoneNumber = vm.Phone };
+            var u = new UsuarioAplicacion
+            {
+                UserName = vm.Email,
+                Email = vm.Email,
+                EmailConfirmed = true,
+                PhoneNumber = vm.Phone,
+                NombreCompleto = vm.FullName.Trim()
+            };
             var r = await _users.CreateAsync(u, vm.Password);
             if (r.Succeeded)
             {

@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Scoreboard.Web.Modelos;
 
 namespace Scoreboard.Web.Areas.Identity.Pages.Account
 {
@@ -22,10 +23,10 @@ namespace Scoreboard.Web.Areas.Identity.Pages.Account
     /// </summary>
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<UsuarioAplicacion> _userManager;
         private readonly ILogger<ResetPasswordModel> _logger;
 
-        public ResetPasswordModel(UserManager<IdentityUser> userManager, ILogger<ResetPasswordModel> logger)
+        public ResetPasswordModel(UserManager<UsuarioAplicacion> userManager, ILogger<ResetPasswordModel> logger)
         {
             _userManager = userManager;
             _logger = logger;

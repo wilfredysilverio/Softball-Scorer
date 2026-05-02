@@ -21,7 +21,7 @@
                 <i class="bi bi-shield-plus me-2"></i>Datos del equipo
             </div>
             <div class="card-body">
-                <form asp-action="Create" method="post" class="row g-3">
+                <form asp-action="Create" method="post" enctype="multipart/form-data" class="row g-3">
                     @Html.AntiForgeryToken()
 
                     <div class="col-12">
@@ -38,6 +38,13 @@
                         <label asp-for="Ciudad" class="form-label fw-semibold"></label>
                         <input asp-for="Ciudad" class="form-control form-control-lg" placeholder="Ej. Santo Domingo Este" />
                         <span asp-validation-for="Ciudad" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="logoEquipo" class="form-label fw-semibold">Logo del equipo</label>
+                        <input id="logoEquipo" name="logoEquipo" type="file" class="form-control form-control-lg" accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml" />
+                        <span class="text-danger small field-validation-valid" data-valmsg-for="logoEquipo" data-valmsg-replace="true"></span>
+                        <div class="form-text">Opcional. Formatos permitidos: JPG, PNG, WEBP o SVG. Maximo 2 MB.</div>
                     </div>
 
                     <div class="col-12">

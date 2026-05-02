@@ -61,7 +61,7 @@ builder.Services
 
 // Identity con roles y tokens
 builder.Services
-    .AddIdentity<IdentityUser, IdentityRole>(options =>
+    .AddIdentity<UsuarioAplicacion, IdentityRole>(options =>
     {
         options.Password.RequireDigit = false;
         options.Password.RequireLowercase = false;

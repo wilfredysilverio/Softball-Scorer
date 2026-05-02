@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Scoreboard.Web.Modelos;
 
 namespace Scoreboard.Web.Infra
 {
@@ -26,7 +27,7 @@ namespace Scoreboard.Web.Infra
         {
             using var scope = sp.CreateScope();
             var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<UsuarioAplicacion>>();
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var logger = scope.ServiceProvider.GetService<ILoggerFactory>()?.CreateLogger("IdentitySeeder");
 
@@ -55,11 +56,12 @@ namespace Scoreboard.Web.Infra
             var admin = await userMgr.FindByEmailAsync(email);
             if (admin == null)
             {
-                admin = new IdentityUser
+                admin = new UsuarioAplicacion
                 {
                     UserName = email,
                     Email = email,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    NombreCompleto = "Administrador del sistema"
                 };
                 var createUser = await userMgr.CreateAsync(admin, password);
                 if (!createUser.Succeeded)
@@ -72,6 +74,17 @@ namespace Scoreboard.Web.Infra
             else
             {
                 logger?.LogInformation("Usuario admin ya existe {Email}", email);
+            }
+
+            if (string.IsNullOrWhiteSpace(admin.NombreCompleto))
+            {
+                admin.NombreCompleto = "Administrador del sistema";
+                var updateName = await userMgr.UpdateAsync(admin);
+                if (!updateName.Succeeded)
+                {
+                    logger?.LogError("No se pudo actualizar nombre del admin: {Errores}", string.Join(",", updateName.Errors.Select(e => e.Description)));
+                    throw new Exception("No se pudo actualizar el nombre del usuario admin");
+                }
             }
 
             if (!await userMgr.CheckPasswordAsync(admin, password))

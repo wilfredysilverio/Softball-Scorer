@@ -21,7 +21,7 @@ namespace Scoreboard.Web.Datos
     /// Cuidado:
     /// Cambiar relaciones, nombres o propiedades puede requerir migraciones y afectar datos existentes.
     /// </summary>
-    public class ContextoMarcador : IdentityDbContext<IdentityUser, IdentityRole, string>
+    public class ContextoMarcador : IdentityDbContext<UsuarioAplicacion, IdentityRole, string>
     {
         public ContextoMarcador(DbContextOptions<ContextoMarcador> opciones) : base(opciones) { }
 

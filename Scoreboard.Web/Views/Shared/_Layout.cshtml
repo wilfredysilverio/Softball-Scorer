@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#0f766e" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>@ViewData["Title"] - Softball-Scorer</title>
+    <link rel="icon" type="image/svg+xml" href="~/img/softball-scorer-logo.svg" />
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
@@ -51,12 +52,20 @@
             overflow-y: auto;
             z-index: 1030;
             scrollbar-width: thin;
+            transition: transform .22s ease-in-out;
         }
 
             .sidebar .brand {
                 font-weight: 700;
                 padding: 1rem 1.25rem;
                 border-bottom: 1px solid rgba(255,255,255,.08);
+            }
+
+            .sidebar .brand-logo {
+                width: 34px;
+                height: 34px;
+                flex: 0 0 auto;
+                border-radius: 10px;
             }
 
             .sidebar a.nav-link {
@@ -95,6 +104,16 @@
         .shell-layout .app-main {
             width: calc(100% - var(--sb-width));
             margin-left: var(--sb-width);
+            transition: width .22s ease-in-out, margin-left .22s ease-in-out;
+        }
+
+        .shell-layout.sidebar-collapsed .sidebar {
+            transform: translateX(calc(-1 * var(--sb-width)));
+        }
+
+        .shell-layout.sidebar-collapsed .app-main {
+            width: 100%;
+            margin-left: 0;
         }
 
         .account-layout .app-main {
@@ -103,8 +122,20 @@
         }
 
         .app-topbar {
+            min-height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: .75rem 1.25rem;
             border-bottom: 1px solid #e5e7eb;
             background: #ffffff;
+        }
+
+        .app-topbar__title {
+            color: #64748b;
+            font-size: .9rem;
+            font-weight: 700;
         }
 
         .app-content {
@@ -138,6 +169,14 @@
                     transform: translateX(0);
                 }
 
+            .shell-layout.sidebar-collapsed .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .shell-layout.sidebar-collapsed .sidebar.show {
+                transform: translateX(0);
+            }
+
             .offcanvas-backdrop-custom {
                 position: fixed;
                 inset: 0;
@@ -168,8 +207,9 @@
 
         <aside id="sb" class="sidebar">
         <div class="brand d-flex align-items-center justify-content-between">
-            <a class="text-decoration-none text-white" asp-controller="Home" asp-action="Index">
-                <i class="bi bi-trophy-fill me-1"></i> Softball-Scorer
+            <a class="app-brand text-decoration-none text-white" asp-controller="Home" asp-action="Index">
+                <img src="~/img/softball-scorer-logo.svg" alt="Softball-Scorer" class="brand-logo" />
+                <span>Softball-Scorer</span>
             </a>
             <button class="btn btn-sm btn-outline-light d-lg-none" id="btnCloseSidebar" title="Cerrar menú">
                 <i class="bi bi-x-lg"></i>
@@ -254,10 +294,17 @@
 
     <!-- ========== Panel derecho (topbar + contenido) ========== -->
     <div class="app-main">
+        @if (!esCuenta)
+        {
+            <header class="app-topbar">
+                <button class="btn btn-outline-secondary" id="btnSidebarToggle" type="button" aria-label="Alternar menú" aria-expanded="true">
+                    <i class="bi bi-list me-2"></i>Menú
+                </button>
+                <span class="app-topbar__title d-none d-sm-inline">Softball-Scorer</span>
+            </header>
+        }
+
         <main class="app-content">
-            <button class="btn btn-outline-secondary d-lg-none mb-3" id="btnOpenSidebar" type="button" title="Abrir menú">
-                <i class="bi bi-list"></i> Menú
-            </button>
             @RenderBody()
         </main>
 
@@ -298,11 +345,12 @@
         // ====== Sidebar en móviles (mostrar/ocultar con backdrop) ======
         (function () {
             const sb = document.getElementById('sb');
-            const openBtn = document.getElementById('btnOpenSidebar');
             const closeBtn = document.getElementById('btnCloseSidebar');
+            const sidebarToggleBtn = document.getElementById('btnSidebarToggle');
             let backdrop;
 
             function open() {
+                if (!sb) return;
                 sb.classList.add('show');
                 backdrop = document.createElement('div');
                 backdrop.className = 'offcanvas-backdrop-custom';
@@ -310,12 +358,39 @@
                 document.body.appendChild(backdrop);
             }
             function close() {
+                if (!sb) return;
                 sb.classList.remove('show');
                 if (backdrop) { backdrop.remove(); backdrop = null; }
             }
+            function setSidebarCollapsed(collapsed) {
+                document.body.classList.toggle('sidebar-collapsed', collapsed);
+                localStorage.setItem('scoreboard.sidebarCollapsed', collapsed ? 'true' : 'false');
 
-            openBtn?.addEventListener('click', open);
+                const icon = sidebarToggleBtn?.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('bi-list', !collapsed);
+                    icon.classList.toggle('bi-layout-sidebar-inset', collapsed);
+                }
+
+                if (sidebarToggleBtn) {
+                    const label = collapsed ? 'Mostrar menú' : 'Ocultar menú';
+                    sidebarToggleBtn.title = label;
+                    sidebarToggleBtn.setAttribute('aria-label', label);
+                    sidebarToggleBtn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+                }
+            }
+
+            setSidebarCollapsed(localStorage.getItem('scoreboard.sidebarCollapsed') === 'true');
+
             closeBtn?.addEventListener('click', close);
+            sidebarToggleBtn?.addEventListener('click', () => {
+                if (window.matchMedia('(max-width: 991.98px)').matches) {
+                    open();
+                    return;
+                }
+
+                setSidebarCollapsed(!document.body.classList.contains('sidebar-collapsed'));
+            });
         })();
 
     </script>

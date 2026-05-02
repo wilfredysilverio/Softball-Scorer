@@ -11,3 +11,5 @@ dotnet_info.txt
 paquetes_web.txt
 Scoreboard.Web/wwwroot/uploads/jugadores/*
 !Scoreboard.Web/wwwroot/uploads/jugadores/.gitkeep
+Scoreboard.Web/wwwroot/uploads/equipos/*
+!Scoreboard.Web/wwwroot/uploads/equipos/.gitkeep

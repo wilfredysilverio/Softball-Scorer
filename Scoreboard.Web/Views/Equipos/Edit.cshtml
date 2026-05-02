@@ -12,11 +12,29 @@
         <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i>Volver</a>
     </div>
 
-    <form asp-action="Edit" method="post" class="form-panel">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-panel">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
         <section class="work-panel">
             <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="team-logo-edit mb-3">
+                @if (!string.IsNullOrWhiteSpace(Model.LogoRuta))
+                {
+                    <img src="@Model.LogoRuta" alt="Logo de @Model.Nombre" class="team-logo team-logo-lg" />
+                }
+                else
+                {
+                    <div class="team-logo team-logo-lg team-logo-fallback" aria-hidden="true">
+                        <i class="bi bi-shield-fill"></i>
+                    </div>
+                }
+                <div>
+                    <label for="logoEquipo" class="form-label fw-bold">Logo del equipo</label>
+                    <input id="logoEquipo" name="logoEquipo" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml" />
+                    <span class="text-danger small field-validation-valid" data-valmsg-for="logoEquipo" data-valmsg-replace="true"></span>
+                    <div class="form-text">Opcional. Si subes uno nuevo, reemplaza el logo visible del equipo.</div>
+                </div>
+            </div>
             <div class="row g-3">
                 <div class="col-12 col-md-7">
                     <label asp-for="Nombre" class="form-label fw-bold"></label>

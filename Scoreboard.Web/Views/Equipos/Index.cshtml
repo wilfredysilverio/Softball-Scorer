@@ -28,9 +28,16 @@
         foreach (var e in Model)
         {
             <article class="team-card">
-                <div class="team-badge">
-                    <i class="bi bi-shield-fill"></i>
-                </div>
+                @if (!string.IsNullOrWhiteSpace(e.LogoRuta))
+                {
+                    <img src="@e.LogoRuta" alt="Logo de @e.Nombre" class="team-logo" />
+                }
+                else
+                {
+                    <div class="team-logo team-logo-fallback" aria-hidden="true">
+                        <i class="bi bi-shield-fill"></i>
+                    </div>
+                }
                 <div>
                     <h3>@e.Nombre</h3>
                     <span>@(string.IsNullOrWhiteSpace(e.Ciudad) ? "Sin ciudad" : e.Ciudad)</span>

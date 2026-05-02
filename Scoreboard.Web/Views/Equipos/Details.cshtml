@@ -14,7 +14,16 @@
 
     <section class="work-panel">
         <div class="detail-hero">
-            <span class="team-badge"><i class="bi bi-shield-fill"></i></span>
+            @if (!string.IsNullOrWhiteSpace(Model.LogoRuta))
+            {
+                <img src="@Model.LogoRuta" alt="Logo de @Model.Nombre" class="team-logo team-logo-lg" />
+            }
+            else
+            {
+                <div class="team-logo team-logo-lg team-logo-fallback" aria-hidden="true">
+                    <i class="bi bi-shield-fill"></i>
+                </div>
+            }
             <div>
                 <h2>@Model.Nombre</h2>
                 <p>@(string.IsNullOrWhiteSpace(Model.Ciudad) ? "Sin ciudad" : Model.Ciudad)</p>

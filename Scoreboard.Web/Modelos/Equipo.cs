@@ -26,6 +26,9 @@ namespace Scoreboard.Web.Modelos
         public string Nombre { get; set; } = "";
 
         [StringLength(80)]
-        public string? Ciudad { get; set; } 
+        public string? Ciudad { get; set; }
+
+        [StringLength(260)]
+        public string? LogoRuta { get; set; }
     }
 }
