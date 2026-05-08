@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Scoreboard.Web.Modelos;
 using Scoreboard.Web.ViewModels;
 
@@ -44,6 +45,7 @@ namespace Scoreboard.Web.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [EnableRateLimiting("auth")]
         public async Task<IActionResult> Login(LoginViewModel vm, string? returnUrl = null)
         {
             if (!ModelState.IsValid)
@@ -57,8 +59,13 @@ namespace Scoreboard.Web.Controllers
                 ModelState.AddModelError(string.Empty, "Usuario no encontrado");
                 return View(vm);
             }
-            var r = await _signIn.PasswordSignInAsync(user, vm.Password, vm.RememberMe, lockoutOnFailure: false);
+            var r = await _signIn.PasswordSignInAsync(user, vm.Password, vm.RememberMe, lockoutOnFailure: true);
             if (r.Succeeded) return Redirect(returnUrl ?? Url.Action("Index", "Home")!);
+            if (r.IsLockedOut)
+            {
+                ModelState.AddModelError(string.Empty, "Cuenta bloqueada temporalmente por varios intentos fallidos. Intenta de nuevo en unos minutos.");
+                return View(vm);
+            }
             ModelState.AddModelError(string.Empty, "Credenciales inválidas");
             return View(vm);
         }
@@ -74,6 +81,7 @@ namespace Scoreboard.Web.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [EnableRateLimiting("auth")]
         public async Task<IActionResult> Register(RegisterViewModel vm, string? returnUrl = null)
         {
             if (!ModelState.IsValid)

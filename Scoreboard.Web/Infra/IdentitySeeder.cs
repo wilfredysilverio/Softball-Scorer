@@ -29,6 +29,7 @@ namespace Scoreboard.Web.Infra
             var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<UsuarioAplicacion>>();
             var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+            var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
             var logger = scope.ServiceProvider.GetService<ILoggerFactory>()?.CreateLogger("IdentitySeeder");
 
             string[] roles = ["Admin", "Anotador", "Viewer"];
@@ -51,8 +52,18 @@ namespace Scoreboard.Web.Infra
             }
 
             // Usuario admin principal
-            var email = config["Auth:AdminUser"] ?? "admin@softball.local";
-            var password = config["Auth:AdminPass"] ?? "Softball#2025";
+            var email = config["Auth:AdminUser"];
+            var password = config["Auth:AdminPass"];
+            if (env.IsDevelopment())
+            {
+                email ??= "admin@softball.local";
+            }
+
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                throw new InvalidOperationException("Falta configurar Auth:AdminUser y Auth:AdminPass como secretos o variables de entorno.");
+            }
+
             var admin = await userMgr.FindByEmailAsync(email);
             if (admin == null)
             {

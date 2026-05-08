@@ -28,8 +28,8 @@ http://localhost:5118/Account/Login
 Credenciales locales:
 
 ```text
-Usuario: admin@softball.local
-Clave: Softball#2025
+Usuario: el correo configurado en Auth:AdminUser
+Clave: la clave configurada en Auth:AdminPass
 ```
 
 ## Flujo normal para anotar un juego
@@ -162,8 +162,8 @@ Estos archivos sirven para revisar que paso en el juego.
 Revisa usuario y clave:
 
 ```text
-admin@softball.local
-Softball#2025
+Auth:AdminUser
+Auth:AdminPass
 ```
 
 ### El partido no deja anotar

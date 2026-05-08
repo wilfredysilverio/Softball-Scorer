@@ -86,20 +86,17 @@ dotnet test .\tests\Scoreboard.Tests\Scoreboard.Tests.csproj
 
 ## Login local
 
-```text
-Usuario: admin@softball.local
-Clave: Softball#2025
+El usuario administrador inicial se configura con secretos locales o variables de entorno:
+
+```powershell
+dotnet user-secrets set "Auth:AdminUser" "admin@softball.local"
+dotnet user-secrets set "Auth:AdminPass" "CAMBIA_ESTA_CLAVE"
 ```
 
 ## Base de datos local
 
-```text
-Server=127.0.0.1
-Port=3306
-Database=softball
-User=softuser
-Password=ClaveSegura123!
-```
+La cadena `ConnectionStrings:PorDefecto` no debe guardarse con claves reales en GitHub.
+Configura la conexion local con `dotnet user-secrets` o con variables de entorno del servidor.
 
 ## Nota importante sobre MySQL
 

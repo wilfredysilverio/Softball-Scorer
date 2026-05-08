@@ -9,6 +9,7 @@ obj/
 arbol_proyecto.txt
 dotnet_info.txt
 paquetes_web.txt
+artifacts/
 Scoreboard.Web/wwwroot/uploads/jugadores/*
 !Scoreboard.Web/wwwroot/uploads/jugadores/.gitkeep
 Scoreboard.Web/wwwroot/uploads/equipos/*

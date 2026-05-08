@@ -2,26 +2,15 @@
 
 El proyecto usa MySQL o MariaDB con Entity Framework Core.
 
-## Configuracion local
+## Configuracion local segura
 
-Archivos:
+La cadena real no debe escribirse en `appsettings.json` porque ese archivo se sube a GitHub.
+Usa `dotnet user-secrets` en desarrollo o variables de entorno en el servidor.
 
-```text
-Scoreboard.Web/appsettings.json
-Scoreboard.Web/appsettings.Development.json
-```
+Ejemplo:
 
-Cadena local:
-
-```text
-Server=127.0.0.1;
-Port=3306;
-Database=softball;
-User=softuser;
-Password=ClaveSegura123!;
-TreatTinyAsBoolean=false;
-SslMode=None;
-AllowPublicKeyRetrieval=True;
+```powershell
+dotnet user-secrets set "ConnectionStrings:PorDefecto" "Server=127.0.0.1;Port=3306;Database=softball;User=softuser;Password=TU_CLAVE_LOCAL;TreatTinyAsBoolean=false;SslMode=None;AllowPublicKeyRetrieval=True;" --project .\Scoreboard.Web\Scoreboard.Web.csproj
 ```
 
 ## Revisar si MySQL esta activo

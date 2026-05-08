@@ -33,6 +33,12 @@ namespace Scoreboard.Web.Controllers
             ".png",
             ".webp"
         };
+        private static readonly HashSet<string> TiposFotoPermitidos = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        };
 
         private readonly ContextoMarcador _db;
         private readonly Scoreboard.Web.Servicios.IEstadisticasService _estadisticasService;
@@ -234,6 +240,11 @@ namespace Scoreboard.Web.Controllers
             if (!ExtensionesFotoPermitidas.Contains(extension))
             {
                 ModelState.AddModelError("fotoPerfil", "La foto debe ser JPG, PNG o WEBP.");
+            }
+
+            if (!TiposFotoPermitidos.Contains(fotoPerfil.ContentType))
+            {
+                ModelState.AddModelError("fotoPerfil", "El tipo de archivo de la foto no es valido.");
             }
         }
 

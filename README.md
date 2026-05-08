@@ -49,23 +49,15 @@ Si vas a programar o revisar el codigo:
 - MySQL escuchando en `127.0.0.1:3306`.
 - Base de datos `softball`.
 
-## Conexion local
+## Conexion local segura
 
-La conexion local esta en:
+La cadena de conexion y la clave del admin no se guardan en `appsettings.json`.
+Para desarrollo local se guardan con `dotnet user-secrets`, que no se sube a GitHub.
 
-```text
-Scoreboard.Web/appsettings.json
-Scoreboard.Web/appsettings.Development.json
-```
-
-Valores usados localmente:
-
-```text
-Servidor: 127.0.0.1
-Puerto: 3306
-Base de datos: softball
-Usuario: softuser
-Clave: ClaveSegura123!
+```powershell
+dotnet user-secrets set "ConnectionStrings:PorDefecto" "Server=127.0.0.1;Port=3306;Database=softball;User=softuser;Password=TU_CLAVE_LOCAL;TreatTinyAsBoolean=false;SslMode=None;AllowPublicKeyRetrieval=True;" --project .\Scoreboard.Web\Scoreboard.Web.csproj
+dotnet user-secrets set "Auth:AdminUser" "admin@softball.local" --project .\Scoreboard.Web\Scoreboard.Web.csproj
+dotnet user-secrets set "Auth:AdminPass" "CAMBIA_ESTA_CLAVE" --project .\Scoreboard.Web\Scoreboard.Web.csproj
 ```
 
 ## Levantar el proyecto
@@ -94,8 +86,8 @@ http://localhost:5118/Account/Login
 Credenciales locales:
 
 ```text
-Usuario: admin@softball.local
-Clave: Softball#2025
+Usuario: el valor de Auth:AdminUser
+Clave: el valor de Auth:AdminPass
 ```
 
 ## Probar que todo funciona

@@ -30,8 +30,13 @@ namespace Scoreboard.Web.Controllers
             ".jpg",
             ".jpeg",
             ".png",
-            ".webp",
-            ".svg"
+            ".webp"
+        };
+        private static readonly HashSet<string> TiposLogoPermitidos = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "image/jpeg",
+            "image/png",
+            "image/webp"
         };
 
         private readonly ContextoMarcador _db;
@@ -186,7 +191,12 @@ namespace Scoreboard.Web.Controllers
             var extension = Path.GetExtension(logoEquipo.FileName);
             if (!ExtensionesLogoPermitidas.Contains(extension))
             {
-                ModelState.AddModelError("logoEquipo", "El logo debe ser JPG, PNG, WEBP o SVG.");
+                ModelState.AddModelError("logoEquipo", "El logo debe ser JPG, PNG o WEBP.");
+            }
+
+            if (!TiposLogoPermitidos.Contains(logoEquipo.ContentType))
+            {
+                ModelState.AddModelError("logoEquipo", "El tipo de archivo del logo no es valido.");
             }
         }
 
