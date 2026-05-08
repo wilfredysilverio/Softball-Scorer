@@ -5,92 +5,96 @@
     ViewData["Title"] = "Crear jugador";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-10 col-xl-8">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-primary text-white rounded-top-4 py-4">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-person-plus fs-2 me-2"></i>
-                        <div>
-                            <h2 class="h4 mb-0">Crear jugador</h2>
-                            <small class="text-white-50">Registra a un nuevo integrante para Ferretería Yoel</small>
+<div class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="score-kicker">Roster</span>
+            <h1>Crear jugador</h1>
+            <p>Registra un jugador para poder agregarlo al lineup y acumular sus estadisticas durante los partidos.</p>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Volver
+        </a>
+    </div>
+
+    <div class="form-panel">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <i class="bi bi-person-plus me-2"></i>Datos del jugador
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post" enctype="multipart/form-data" class="row g-3">
+                    @Html.AntiForgeryToken()
+
+                    <div class="col-12">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-0"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Nombre" class="form-label fw-semibold"></label>
+                        <input asp-for="Nombre" class="form-control form-control-lg" placeholder="Nombre" />
+                        <span asp-validation-for="Nombre" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Apellido" class="form-label fw-semibold"></label>
+                        <input asp-for="Apellido" class="form-control form-control-lg" placeholder="Apellido" />
+                        <span asp-validation-for="Apellido" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="NumeroUniforme" class="form-label fw-semibold">Numero</label>
+                        <input asp-for="NumeroUniforme" type="number" class="form-control form-control-lg" placeholder="27" />
+                        <span asp-validation-for="NumeroUniforme" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="EquipoId" class="form-label fw-semibold">Equipo</label>
+                        <select asp-for="EquipoId" class="form-select form-select-lg" asp-items="ViewBag.EquipoId">
+                            <option value="">Selecciona equipo</option>
+                        </select>
+                        <span asp-validation-for="EquipoId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Posicion" class="form-label fw-semibold">Posicion</label>
+                        <select asp-for="Posicion" class="form-select form-select-lg">
+                            <option value="">Selecciona posicion</option>
+                            <option value="@((int)Posicion.Utility)">Utility</option>
+                            <option value="@((int)Posicion.Lanzador)">Pitcher</option>
+                            <option value="@((int)Posicion.Receptor)">Receptor</option>
+                            <option value="@((int)Posicion.PrimeraBase)">1B</option>
+                            <option value="@((int)Posicion.SegundaBase)">2B</option>
+                            <option value="@((int)Posicion.Campocorto)">SS</option>
+                            <option value="@((int)Posicion.TerceraBase)">3B</option>
+                            <option value="@((int)Posicion.JardinIzquierdo)">LF</option>
+                            <option value="@((int)Posicion.JardinCentral)">CF</option>
+                            <option value="@((int)Posicion.JardinDerecho)">RF</option>
+                            <option value="@((int)Posicion.BateadorDesignado)">DH</option>
+                        </select>
+                        <span asp-validation-for="Posicion" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label for="fotoPerfil" class="form-label fw-semibold">Foto de perfil</label>
+                        <input id="fotoPerfil" name="fotoPerfil" type="file" class="form-control form-control-lg" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+                        <span class="text-danger small field-validation-valid" data-valmsg-for="fotoPerfil" data-valmsg-replace="true"></span>
+                        <div class="form-text">Opcional. Formatos permitidos: JPG, PNG o WEBP. Maximo 2 MB.</div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="section-note">
+                            Luego de guardar, podras seleccionarlo en el lineup de su equipo.
                         </div>
                     </div>
-                </div>
-                <div class="card-body p-4 p-lg-5">
-                    <form asp-action="Create" method="post" class="row g-4">
-                        @Html.AntiForgeryToken()
 
-                        <div class="col-12">
-                            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 shadow-sm mb-3"></div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-4">
-                                <label asp-for="Nombre" class="form-label fw-semibold"></label>
-                                <input asp-for="Nombre" class="form-control form-control-lg rounded-3 shadow-sm" placeholder="Nombre del jugador" />
-                                <span asp-validation-for="Nombre" class="text-danger small"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-4">
-                                <label asp-for="Apellido" class="form-label fw-semibold"></label>
-                                <input asp-for="Apellido" class="form-control form-control-lg rounded-3 shadow-sm" placeholder="Apellido del jugador" />
-                                <span asp-validation-for="Apellido" class="text-danger small"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-4">
-                                <label asp-for="NumeroUniforme" class="form-label fw-semibold"></label>
-                                <input asp-for="NumeroUniforme" type="number" class="form-control form-control-lg rounded-3 shadow-sm" placeholder="Ej. 27" />
-                                <span asp-validation-for="NumeroUniforme" class="text-danger small"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="mb-4">
-                                <label asp-for="EquipoId" class="form-label fw-semibold">Equipo</label>
-                                <select asp-for="EquipoId" class="form-select form-select-lg rounded-3 shadow-sm" asp-items="ViewBag.EquipoId">
-                                    <option value="">Selecciona un equipo</option>
-                                </select>
-                                <span asp-validation-for="EquipoId" class="text-danger small"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="mb-4">
-                                <label asp-for="Posicion" class="form-label fw-semibold">Posición</label>
-                                <select asp-for="Posicion" class="form-select form-select-lg rounded-3 shadow-sm">
-                                    <option value="">Selecciona una posición</option>
-                                    <option value="@((int)Posicion.Utility)">Utility</option>
-                                    <option value="@((int)Posicion.Lanzador)">Pitcher</option>
-                                    <option value="@((int)Posicion.Receptor)">Receptor</option>
-                                    <option value="@((int)Posicion.PrimeraBase)">1B</option>
-                                    <option value="@((int)Posicion.SegundaBase)">2B</option>
-                                    <option value="@((int)Posicion.Campocorto)">SS</option>
-                                    <option value="@((int)Posicion.TerceraBase)">3B</option>
-                                    <option value="@((int)Posicion.JardinIzquierdo)">LF</option>
-                                    <option value="@((int)Posicion.JardinCentral)">CF</option>
-                                    <option value="@((int)Posicion.JardinDerecho)">RF</option>
-                                    <option value="@((int)Posicion.BateadorDesignado)">DH</option>
-                                </select>
-                                <span asp-validation-for="Posicion" class="text-danger small"></span>
-                            </div>
-                        </div>
-
-                        <div class="col-12 d-flex justify-content-between flex-wrap gap-3">
-                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg rounded-3 px-4">
-                                <i class="bi bi-arrow-left me-2"></i>Volver
-                            </a>
-                            <button type="submit" class="btn btn-primary btn-lg rounded-3 shadow px-5">
-                                <i class="bi bi-check-circle me-2"></i>Guardar jugador
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="col-12 d-flex justify-content-end flex-wrap gap-2">
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-lg">Cancelar</a>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle me-2"></i>Guardar jugador
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

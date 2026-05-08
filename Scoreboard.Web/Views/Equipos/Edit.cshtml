@@ -1,24 +1,60 @@
-@model Scoreboard.Web.Modelos.Equipo
+﻿@model Scoreboard.Web.Modelos.Equipo
 @{
     ViewData["Title"] = "Editar equipo";
 }
-<h1>Editar equipo</h1>
-<form asp-action="Edit" method="post" class="needs-validation" novalidate>
-    <input type="hidden" asp-for="Id" />
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="mb-3">
-        <label asp-for="Nombre" class="form-label"></label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
+<div class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="score-kicker">Editar</span>
+            <h1>Equipo</h1>
+        </div>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i>Volver</a>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Ciudad" class="form-label"></label>
-        <input asp-for="Ciudad" class="form-control" />
-        <span asp-validation-for="Ciudad" class="text-danger"></span>
-    </div>
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-panel">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <section class="work-panel">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="team-logo-edit mb-3">
+                @if (!string.IsNullOrWhiteSpace(Model.LogoRuta))
+                {
+                    <img src="@Model.LogoRuta" alt="Logo de @Model.Nombre" class="team-logo team-logo-lg" />
+                }
+                else
+                {
+                    <div class="team-logo team-logo-lg team-logo-fallback" aria-hidden="true">
+                        <i class="bi bi-shield-fill"></i>
+                    </div>
+                }
+                <div>
+                    <label for="logoEquipo" class="form-label fw-bold">Logo del equipo</label>
+                    <input id="logoEquipo" name="logoEquipo" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml" />
+                    <span class="text-danger small field-validation-valid" data-valmsg-for="logoEquipo" data-valmsg-replace="true"></span>
+                    <div class="form-text">Opcional. Si subes uno nuevo, reemplaza el logo visible del equipo.</div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-12 col-md-7">
+                    <label asp-for="Nombre" class="form-label fw-bold"></label>
+                    <input asp-for="Nombre" class="form-control form-control-lg" />
+                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                </div>
+                <div class="col-12 col-md-5">
+                    <label asp-for="Ciudad" class="form-label fw-bold"></label>
+                    <input asp-for="Ciudad" class="form-control form-control-lg" />
+                    <span asp-validation-for="Ciudad" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-save me-2"></i>Guardar</button>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-lg">Cancelar</a>
+            </div>
+        </section>
+    </form>
+</div>
 
-    <button type="submit" class="btn btn-primary">Guardar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

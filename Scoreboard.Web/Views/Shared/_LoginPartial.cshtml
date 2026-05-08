@@ -1,11 +1,13 @@
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using Scoreboard.Web.Modelos
+@inject SignInManager<UsuarioAplicacion> SignInManager
+@inject UserManager<UsuarioAplicacion> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
+    var usuario = await UserManager.GetUserAsync(User);
     <div class="d-flex align-items-center gap-2">
-        <span class="me-2">Hola, @User.Identity?.Name</span>
+        <span class="me-2">Hola, @(usuario?.NombreCompleto ?? User.Identity?.Name)</span>
         <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
             @Html.AntiForgeryToken()
             <button type="submit" class="btn btn-outline-secondary btn-sm">Salir</button>

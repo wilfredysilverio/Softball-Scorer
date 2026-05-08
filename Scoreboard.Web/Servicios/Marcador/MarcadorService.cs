@@ -1,4 +1,4 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 using Microsoft.AspNetCore.SignalR;
 using Scoreboard.Web.Dtos;
 using Scoreboard.Web.Hubs;
@@ -10,6 +10,23 @@ using System.Text.Json.Serialization;
 
 namespace Scoreboard.Web.Servicios.Marcador
 {
+    /// <summary>
+    /// Servicio central que aplica las reglas reales del anotador de softbol.
+    ///
+    /// Se conecta con:
+    /// - ContextoMarcador: para leer y guardar partido, entrada, lineup, historial y estadisticas.
+    /// - MarcadorHub: para notificar cambios en tiempo real.
+    /// - PlayLog: para guardar el historial con snapshot antes/despues.
+    /// - PlayerBattingStat: para guardar estadisticas ofensivas.
+    ///
+    /// Flujo simple:
+    /// 1. Recibe una accion del partido, como hit, ponche, out o evento de corredor.
+    /// 2. Calcula outs, bases, carreras, entrada y proximo bateador.
+    /// 3. Guarda los cambios y notifica al frontend.
+    ///
+    /// Cuidado:
+    /// Esta clase es el corazon del marcador. Cambios aqui pueden alterar resultados, historial y estadisticas.
+    /// </summary>
     public class MarcadorService : IMarcadorService
     {
         private readonly ContextoMarcador _db;
@@ -27,7 +44,7 @@ namespace Scoreboard.Web.Servicios.Marcador
         {
             var partido = await _db.Partidos.FindAsync(partidoId);
             if (partido == null) throw new KeyNotFoundException("Partido no encontrado");
-            // Validaciones de estado: idempotente si ya está en curso; no permitir iniciar si finalizado
+            // Validaciones de estado: idempotente si ya estÃ¡ en curso; no permitir iniciar si finalizado
             if (partido.Estado == EstadoPartido.EnCurso)
             {
                 // Nada que hacer (idempotente)
@@ -46,7 +63,7 @@ namespace Scoreboard.Web.Servicios.Marcador
             partido.Mitad = MitadEntrada.Alta; // Inicia alta normalmente
             partido.Outs = 0;               // Sin outs
             partido.B1 = partido.B2 = partido.B3 = false; // Bases limpias
-            // Inicializar índices si hay lineups definidos
+            // Inicializar Ã­ndices si hay lineups definidos
             if (lineupCasa.Count > 0) partido.IndexBateadorCasa = 0; else partido.IndexBateadorCasa = null;
             if (lineupVisita.Count > 0) partido.IndexBateadorVisita = 0; else partido.IndexBateadorVisita = null; // visitante batea primero cuando toque
             await _db.SaveChangesAsync();
@@ -82,19 +99,19 @@ namespace Scoreboard.Web.Servicios.Marcador
             var partido = await _db.Partidos.FindAsync(partidoId);
             if (partido == null) throw new KeyNotFoundException("Partido no encontrado");
             if (partido.Estado == EstadoPartido.Finalizado)
-                throw new InvalidOperationException("El partido ya está finalizado.");
+                throw new InvalidOperationException("El partido ya estÃ¡ finalizado.");
             partido.Estado = EstadoPartido.Finalizado;
             await _db.SaveChangesAsync();
             await NotifyCambioMarcadorAsync(partidoId);
         }
 
-        public async Task<Partido> RegistrarTurnoAsync(int partidoId, int? jugadorConfirmadoId, ResultadoTurno resultado, EventoCorredor eventoCorredor = EventoCorredor.Ninguno, BaseCorredor baseEvento = BaseCorredor.Primera)
+        public async Task<Partido> RegistrarTurnoAsync(int partidoId, int? jugadorConfirmadoId, ResultadoTurno resultado, EventoCorredor eventoCorredor = EventoCorredor.Ninguno, BaseCorredor baseEvento = BaseCorredor.Primera, bool permitirFueraTurno = false)
         {
-            // Transacción para registrar la jugada, actualizar partido y crear PlayLog + PlayerBattingStat
+            // TransacciÃ³n para registrar la jugada, actualizar partido y crear PlayLog + PlayerBattingStat
             using var tx = await _db.Database.BeginTransactionAsync();
             var partido = await _db.Partidos.Include(p => p.Entradas).FirstOrDefaultAsync(p => p.Id == partidoId);
             if (partido == null) throw new KeyNotFoundException("Partido no encontrado");
-            if (partido.Estado != EstadoPartido.EnCurso) throw new InvalidOperationException("El partido no está en curso");
+            if (partido.Estado != EstadoPartido.EnCurso) throw new InvalidOperationException("El partido no estÃ¡ en curso");
 
             // Obtener o crear la entrada (inning) actual para llevar control por entrada
             var numeroInning = partido.EntradaActual;
@@ -133,7 +150,7 @@ namespace Scoreboard.Web.Servicios.Marcador
                 .ToListAsync();
             if (!lineup.Any())
             {
-                throw new InvalidOperationException("Debe definir el lineup del equipo que está bateando.");
+                throw new InvalidOperationException("Debe definir el lineup del equipo que estÃ¡ bateando.");
             }
 
             int idxEsperado = casaBatea ? (partido.IndexBateadorCasa ?? 0) : (partido.IndexBateadorVisita ?? 0);
@@ -142,16 +159,30 @@ namespace Scoreboard.Web.Servicios.Marcador
                 idxEsperado = 0;
             }
             var turnoActual = lineup[idxEsperado];
-            var jugadorId = turnoActual.JugadorId;
+            var jugadorEsperadoId = turnoActual.JugadorId;
+            var jugadorId = jugadorEsperadoId;
+            var esCorreccionManual = false;
 
-            if (jugadorConfirmadoId.HasValue && jugadorConfirmadoId.Value != jugadorId)
+            if (jugadorConfirmadoId.HasValue && jugadorConfirmadoId.Value != jugadorEsperadoId)
             {
-                throw new InvalidOperationException("El bateador proporcionado no coincide con el próximo en el lineup.");
-            }
+                if (!permitirFueraTurno)
+                {
+                    throw new InvalidOperationException("El bateador proporcionado no coincide con el proximo en el lineup.");
+                }
 
+                if (!lineup.Any(l => l.JugadorId == jugadorConfirmadoId.Value))
+                {
+                    throw new InvalidOperationException("El bateador manual debe pertenecer al lineup del equipo que esta bateando.");
+                }
+
+                jugadorId = jugadorConfirmadoId.Value;
+                esCorreccionManual = true;
+            }
             var siguienteIdx = (idxEsperado + 1) % lineup.Count;
 
-            var jugador = turnoActual.Jugador;
+            var jugador = esCorreccionManual
+                ? lineup.FirstOrDefault(l => l.JugadorId == jugadorId)?.Jugador
+                : turnoActual.Jugador;
             if (jugador == null)
             {
                 jugador = await _db.Jugadores.AsNoTracking().FirstOrDefaultAsync(j => j.Id == jugadorId)
@@ -169,7 +200,7 @@ namespace Scoreboard.Web.Servicios.Marcador
             };
             var runs = outcome.RunsScored;
 
-            // Walk-off: si en la baja de la 9na (o más) el equipo de casa pasa arriba con esta jugada, termina el partido
+            // Walk-off: si en la baja de la 9na (o mÃ¡s) el equipo de casa pasa arriba con esta jugada, termina el partido
             if (partido.Mitad == MitadEntrada.Baja && partido.EntradaActual >= 9 && partido.CarrerasCasa > partido.CarrerasVisita)
             {
                 partido.Estado = EstadoPartido.Finalizado;
@@ -215,8 +246,12 @@ namespace Scoreboard.Web.Servicios.Marcador
             {
                 PartidoId = partidoId,
                 JugadorId = jugadorId,
+                JugadorEsperadoId = jugadorEsperadoId,
+                EquipoBateoId = equipoBateoId,
                 Resultado = resultado,
                 RunsScored = runs,
+                EsCorreccionManual = esCorreccionManual,
+                Nota = esCorreccionManual ? $"Bateador fuera de turno confirmado. Esperado: {jugadorEsperadoId}; registrado: {jugadorId}." : null,
                 SnapshotJson = JsonSerializer.Serialize(wrapper),
                 StatDeltaJson = JsonSerializer.Serialize(delta)
             };
@@ -235,13 +270,13 @@ namespace Scoreboard.Web.Servicios.Marcador
         {
             if (eventoCorredor == EventoCorredor.Ninguno)
             {
-                throw new InvalidOperationException("Selecciona un evento válido de corredores.");
+                throw new InvalidOperationException("Selecciona un evento vÃ¡lido de corredores.");
             }
 
             using var tx = await _db.Database.BeginTransactionAsync();
             var partido = await _db.Partidos.Include(p => p.Entradas).FirstOrDefaultAsync(p => p.Id == partidoId);
             if (partido == null) throw new KeyNotFoundException("Partido no encontrado");
-            if (partido.Estado != EstadoPartido.EnCurso) throw new InvalidOperationException("El partido no está en curso");
+            if (partido.Estado != EstadoPartido.EnCurso) throw new InvalidOperationException("El partido no estÃ¡ en curso");
 
             var numeroInning = partido.EntradaActual;
             if (numeroInning < 1)
@@ -378,7 +413,7 @@ namespace Scoreboard.Web.Servicios.Marcador
             var undone = await _db.PlayLogs.Where(pl => pl.PartidoId == partidoId && !pl.IsActive).OrderByDescending(pl => pl.CreadoUtc).FirstOrDefaultAsync();
             if (undone == null) throw new InvalidOperationException("No hay jugadas para rehacer");
 
-            // Si tenemos snapshot After, aplícalo directamente; si no, fallback a re-registrar
+            // Si tenemos snapshot After, aplÃ­calo directamente; si no, fallback a re-registrar
             if (!string.IsNullOrEmpty(undone.SnapshotJson))
             {
                 try
@@ -431,12 +466,34 @@ namespace Scoreboard.Web.Servicios.Marcador
             }
 
             var (bateador, puedeRegistrar, motivoBloqueo) = await ObtenerContextoTurnoAsync(partido);
+            var equipoBateandoId = partido.Mitad == MitadEntrada.Baja ? partido.EquipoCasaId : partido.EquipoVisitaId;
+            var equipoBateando = partido.Mitad == MitadEntrada.Baja
+                ? partido.EquipoCasa?.Nombre ?? "Casa"
+                : partido.EquipoVisita?.Nombre ?? "Visitante";
+            var lineupBateandoItems = await _db.Lineups.AsNoTracking()
+                .Where(l => l.PartidoId == partido.Id && l.EquipoId == equipoBateandoId)
+                .OrderBy(l => l.Orden)
+                .Include(l => l.Jugador)
+                .ToListAsync();
+            var lineupBateando = lineupBateandoItems
+                .Where(l => l.Jugador != null)
+                .Select(l => new MarcadorBateadorDto
+                {
+                    Id = l.Jugador!.Id,
+                    Nombre = l.Jugador.Nombre,
+                    Apellido = l.Jugador.Apellido,
+                    EquipoId = l.Jugador.EquipoId,
+                    NumeroUniforme = l.Jugador.NumeroUniforme
+                })
+                .ToList();
 
             var dto = new MarcadorDto
             {
                 PartidoId = partido.Id,
                 EquipoCasa = partido.EquipoCasa?.Nombre ?? "",
                 EquipoVisita = partido.EquipoVisita?.Nombre ?? "",
+                EquipoBateandoId = equipoBateandoId,
+                EquipoBateando = equipoBateando,
                 CarrerasCasaPorInning = casa,
                 CarrerasVisitaPorInning = vis,
                 CarrerasCasa = partido.CarrerasCasa,
@@ -461,6 +518,7 @@ namespace Scoreboard.Web.Servicios.Marcador
                     })
                     .ToList(),
                 BateadorEsperado = bateador,
+                LineupBateando = lineupBateando,
                 PuedeRegistrar = puedeRegistrar,
                 MotivoBloqueo = motivoBloqueo
             };
@@ -549,7 +607,7 @@ namespace Scoreboard.Web.Servicios.Marcador
             if (partido.Estado != EstadoPartido.EnCurso)
             {
                 var motivo = partido.Estado == EstadoPartido.Finalizado
-                    ? "El partido está finalizado."
+                    ? "El partido estÃ¡ finalizado."
                     : "El partido debe estar en curso para registrar jugadas.";
                 return (null, false, motivo);
             }
@@ -695,7 +753,7 @@ namespace Scoreboard.Web.Servicios.Marcador
                 var baseIdx = (int)baseEvento - 1;
                 if (baseIdx < 0 || baseIdx > 2)
                 {
-                    throw new InvalidOperationException("Seleccione una base válida para el evento del corredor.");
+                    throw new InvalidOperationException("Seleccione una base vÃ¡lida para el evento del corredor.");
                 }
                 var runsPorEvento = AvanzarCorredorDesdeBase(partido, baseIdx);
                 if (runsPorEvento > 0)
@@ -780,7 +838,7 @@ namespace Scoreboard.Web.Servicios.Marcador
                 case ResultadoTurno.DoblePlay:
                     ab = 1;
                     IncrementarOut(partido, 2);
-                    // Sin información granular del corrido, asumimos que cae el corredor forzado más cercano al bateador
+                    // Sin informaciÃ³n granular del corrido, asumimos que cae el corredor forzado mÃ¡s cercano al bateador
                     if (partido.B1)
                     {
                         partido.B1 = false;
@@ -999,3 +1057,4 @@ namespace Scoreboard.Web.Servicios.Marcador
         }
     }
 }
+

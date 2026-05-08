@@ -73,70 +73,6 @@ namespace Scoreboard.Web.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit(1)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit(1)");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit(1)");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("longtext");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit(1)");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -269,6 +205,10 @@ namespace Scoreboard.Web.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("varchar(80)");
 
+                    b.Property<string>("LogoRuta")
+                        .HasMaxLength(260)
+                        .HasColumnType("varchar(260)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(80)
@@ -294,6 +234,10 @@ namespace Scoreboard.Web.Migrations
 
                     b.Property<int>("EquipoId")
                         .HasColumnType("int");
+
+                    b.Property<string>("FotoPerfilRuta")
+                        .HasMaxLength(260)
+                        .HasColumnType("varchar(260)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -412,7 +356,18 @@ namespace Scoreboard.Web.Migrations
 
                     b.HasIndex("EquipoVisitaId");
 
-                    b.ToTable("Partidos");
+                    b.ToTable("Partidos", t =>
+                        {
+                            t.HasCheckConstraint("CK_Partidos_Carreras_NoNegativas", "CarrerasCasa >= 0 AND CarrerasVisita >= 0");
+
+                            t.HasCheckConstraint("CK_Partidos_Entrada_Outs_Validos", "EntradaActual >= 1 AND Outs >= 0");
+
+                            t.HasCheckConstraint("CK_Partidos_Equipos_Diferentes", "EquipoCasaId <> EquipoVisitaId");
+
+                            t.HasCheckConstraint("CK_Partidos_Errores_NoNegativos", "ErroresCasa >= 0 AND ErroresVisita >= 0");
+
+                            t.HasCheckConstraint("CK_Partidos_Hits_NoNegativos", "HitsCasa >= 0 AND HitsVisita >= 0");
+                        });
                 });
 
             modelBuilder.Entity("Scoreboard.Web.Modelos.PlayLog", b =>
@@ -427,14 +382,27 @@ namespace Scoreboard.Web.Migrations
                         .HasColumnType("datetime(6)")
                         .HasColumnName("Fecha");
 
+                    b.Property<int?>("EquipoBateoId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("EsCorreccionManual")
+                        .HasColumnType("bit(1)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit(1)");
+
+                    b.Property<int?>("JugadorEsperadoId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("JugadorId")
                         .HasColumnType("int");
 
                     b.Property<int>("Kind")
                         .HasColumnType("int");
+
+                    b.Property<string>("Nota")
+                        .HasMaxLength(240)
+                        .HasColumnType("varchar(240)");
 
                     b.Property<int>("PartidoId")
                         .HasColumnType("int");
@@ -453,6 +421,8 @@ namespace Scoreboard.Web.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("JugadorId");
 
                     b.ToTable("PlayLogs");
                 });
@@ -535,6 +505,75 @@ namespace Scoreboard.Web.Migrations
                     b.ToTable("PlayerBattingStats");
                 });
 
+            modelBuilder.Entity("Scoreboard.Web.Modelos.UsuarioAplicacion", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit(1)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit(1)");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("NombreCompleto")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("varchar(120)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit(1)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit(1)");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -546,7 +585,7 @@ namespace Scoreboard.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Scoreboard.Web.Modelos.UsuarioAplicacion", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -555,7 +594,7 @@ namespace Scoreboard.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Scoreboard.Web.Modelos.UsuarioAplicacion", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -570,7 +609,7 @@ namespace Scoreboard.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Scoreboard.Web.Modelos.UsuarioAplicacion", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -579,7 +618,7 @@ namespace Scoreboard.Web.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("Scoreboard.Web.Modelos.UsuarioAplicacion", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -652,6 +691,15 @@ namespace Scoreboard.Web.Migrations
                     b.Navigation("EquipoCasa");
 
                     b.Navigation("EquipoVisita");
+                });
+
+            modelBuilder.Entity("Scoreboard.Web.Modelos.PlayLog", b =>
+                {
+                    b.HasOne("Scoreboard.Web.Modelos.Jugador", "Jugador")
+                        .WithMany()
+                        .HasForeignKey("JugadorId");
+
+                    b.Navigation("Jugador");
                 });
 
             modelBuilder.Entity("Scoreboard.Web.Modelos.PlayerBattingStat", b =>

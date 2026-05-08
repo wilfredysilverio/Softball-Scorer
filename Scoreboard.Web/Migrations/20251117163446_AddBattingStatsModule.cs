@@ -68,15 +68,19 @@ namespace Scoreboard.Web.Migrations
             ");
 
             migrationBuilder.Sql(@"
-                WITH Ranked AS (
-                    SELECT Id,
-                           ROW_NUMBER() OVER (PARTITION BY JugadorId, PartidoId ORDER BY Fecha, Id) AS rn
-                    FROM PlayerBattingStats
-                )
+                CREATE TEMPORARY TABLE RankedPlayerBattingStats AS
+                SELECT Id,
+                       ROW_NUMBER() OVER (PARTITION BY JugadorId, PartidoId ORDER BY Fecha, Id) AS rn
+                FROM PlayerBattingStats;
+            ");
+
+            migrationBuilder.Sql(@"
                 UPDATE PlayerBattingStats p
-                INNER JOIN Ranked r ON r.Id = p.Id
+                INNER JOIN RankedPlayerBattingStats r ON r.Id = p.Id
                 SET p.PartidosJugados = CASE WHEN r.rn = 1 THEN 1 ELSE 0 END;
             ");
+
+            migrationBuilder.Sql("DROP TEMPORARY TABLE IF EXISTS RankedPlayerBattingStats;");
 
             migrationBuilder.Sql(@"
                 UPDATE PlayerBattingStats

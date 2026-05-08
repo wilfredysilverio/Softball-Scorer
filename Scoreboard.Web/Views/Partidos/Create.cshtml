@@ -3,109 +3,87 @@
     ViewData["Title"] = "Crear partido";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-xl-10">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-primary text-white rounded-top-4 py-4">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-trophy fs-2 me-2"></i>
-                        <div>
-                            <h2 class="h4 mb-0">Crear partido</h2>
-                            <small class="text-white-50">Programa el siguiente juego de Ferretería Yoel</small>
-                        </div>
+<div class="flow-shell">
+    <div class="flow-header">
+        <div>
+            <span class="score-kicker">Paso 1 de 3</span>
+            <h1>Nuevo partido</h1>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Volver
+        </a>
+    </div>
+
+    <div class="flow-steps mb-4">
+        <div class="flow-step active"><strong>1</strong><span>Partido</span></div>
+        <div class="flow-step"><strong>2</strong><span>Jugadores</span></div>
+        <div class="flow-step"><strong>3</strong><span>Anotar</span></div>
+    </div>
+
+    <form asp-action="Create" method="post" id="form-crear-partido" class="row g-4">
+        @Html.AntiForgeryToken()
+        <div class="col-12 col-xl-8">
+            <section class="work-panel">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-3"></div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold" asp-for="Fecha">Fecha</label>
+                    <input asp-for="Fecha" type="datetime-local" class="form-control form-control-lg" />
+                    <span asp-validation-for="Fecha" class="text-danger small"></span>
+                </div>
+
+                <div class="matchup-picker">
+                    <div class="team-pick">
+                        <span>Visitante</span>
+                        <label class="form-label fw-bold" asp-for="EquipoVisitaId">Equipo visitante</label>
+                        <select asp-for="EquipoVisitaId" class="form-select form-select-lg" asp-items="ViewBag.EquiposVisita"></select>
+                        <span asp-validation-for="EquipoVisitaId" class="text-danger small"></span>
+                    </div>
+                    <div class="versus-badge">VS</div>
+                    <div class="team-pick home-pick">
+                        <span>Casa</span>
+                        <label class="form-label fw-bold" asp-for="EquipoCasaId">Equipo casa</label>
+                        <select asp-for="EquipoCasaId" class="form-select form-select-lg" asp-items="ViewBag.EquiposCasa"></select>
+                        <span asp-validation-for="EquipoCasaId" class="text-danger small"></span>
                     </div>
                 </div>
-                <div class="card-body p-4 p-lg-5">
-                    <form asp-action="Create" method="post" id="form-crear-partido" class="row g-4">
-                        @Html.AntiForgeryToken()
-                        <div class="col-12">
-                            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 shadow-sm mb-3"></div>
-                        </div>
 
-                        <div class="col-12 col-lg-8">
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <div class="mb-4">
-                                        <label class="form-label fw-semibold">Fecha y hora</label>
-                                        <input asp-for="Fecha" type="datetime-local" class="form-control form-control-lg rounded-3 shadow-sm" />
-                                        <span asp-validation-for="Fecha" class="text-danger small"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-4">
-                                        <label class="form-label fw-semibold">Equipo de casa</label>
-                                        <select asp-for="EquipoCasaId" class="form-select form-select-lg rounded-3 shadow-sm" asp-items="ViewBag.EquiposCasa"></select>
-                                        <small class="text-muted">Selecciona al anfitrión del encuentro.</small>
-                                        <span asp-validation-for="EquipoCasaId" class="text-danger small"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-4">
-                                        <label class="form-label fw-semibold">Equipo visitante</label>
-                                        <select asp-for="EquipoVisitaId" class="form-select form-select-lg rounded-3 shadow-sm" asp-items="ViewBag.EquiposVisita"></select>
-                                        <small class="text-muted">No selecciones el mismo equipo que en casa.</small>
-                                        <span asp-validation-for="EquipoVisitaId" class="text-danger small"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-4">
-                                        <label class="form-label fw-semibold">Carreras casa</label>
-                                        <input asp-for="CarrerasCasa" class="form-control form-control-lg rounded-3 shadow-sm" readonly />
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-4">
-                                        <label class="form-label fw-semibold">Carreras visita</label>
-                                        <input asp-for="CarrerasVisita" class="form-control form-control-lg rounded-3 shadow-sm" readonly />
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
-                                    <div id="equipos-iguales-alert" class="alert alert-warning d-none rounded-3">
-                                        Los equipos de casa y visita deben ser diferentes.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-lg-4">
-                            <div class="bg-light rounded-4 h-100 p-4 shadow-sm">
-                                <h5 class="fw-semibold">Notas rápidas</h5>
-                                <ul class="list-unstyled small text-muted mb-0">
-                                    <li class="mb-2">
-                                        <i class="bi bi-calendar-week text-primary me-2"></i>Define fecha y hora oficial del juego.
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-people text-primary me-2"></i>Verifica que ambos equipos existan antes de programar.
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-shield-check text-primary me-2"></i>Las carreras inician en cero y se actualizarán automáticamente.
-                                    </li>
-                                    <li>
-                                        <i class="bi bi-info-circle text-primary me-2"></i>Podrás definir lineups después de crear el partido.
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="col-12 d-flex justify-content-center flex-wrap gap-3 pt-3">
-                            <a asp-action="Index" class="btn btn-outline-secondary btn-lg rounded-3 px-4">
-                                <i class="bi bi-arrow-left me-2"></i>Cancelar
-                            </a>
-                            <button type="submit" class="btn btn-primary btn-lg rounded-3 shadow px-5">
-                                <i class="bi bi-check-circle me-2"></i>Crear partido
-                            </button>
-                        </div>
-                    </form>
+                <div id="equipos-iguales-alert" class="alert alert-warning d-none mt-3">
+                    El equipo de casa y el visitante deben ser diferentes.
                 </div>
-            </div>
+
+                <input asp-for="CarrerasCasa" type="hidden" value="0" />
+                <input asp-for="CarrerasVisita" type="hidden" value="0" />
+
+                <div class="d-flex flex-wrap gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg action-primary">
+                        <i class="bi bi-arrow-right-circle me-2"></i>Continuar
+                    </button>
+                    <a asp-controller="Equipos" asp-action="Create" class="btn btn-outline-primary btn-lg">
+                        <i class="bi bi-shield-plus me-2"></i>Crear equipo
+                    </a>
+                </div>
+            </section>
         </div>
-    </div>
+
+        <div class="col-12 col-xl-4">
+            <aside class="work-panel h-100 next-panel">
+                <span class="score-kicker">Luego</span>
+                <div class="next-big-step">
+                    <i class="bi bi-people"></i>
+                    <strong>Quita ausentes</strong>
+                </div>
+                <div class="next-big-step">
+                    <i class="bi bi-clipboard2-pulse"></i>
+                    <strong>Anota</strong>
+                </div>
+                <div class="next-big-step">
+                    <i class="bi bi-download"></i>
+                    <strong>Descarga</strong>
+                </div>
+            </aside>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
@@ -113,22 +91,20 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('form-crear-partido');
-            if (!form) return;
             const casa = document.getElementById('EquipoCasaId');
             const visita = document.getElementById('EquipoVisitaId');
             const warning = document.getElementById('equipos-iguales-alert');
 
             function validateTeams() {
-                if (!casa || !visita) return true;
-                const invalid = casa.value && visita.value && casa.value === visita.value;
-                if (warning) warning.classList.toggle('d-none', !invalid);
+                const invalid = casa?.value && visita?.value && casa.value === visita.value;
+                warning?.classList.toggle('d-none', !invalid);
                 return !invalid;
             }
 
             casa?.addEventListener('change', validateTeams);
             visita?.addEventListener('change', validateTeams);
 
-            form.addEventListener('submit', function (e) {
+            form?.addEventListener('submit', function (e) {
                 if (!validateTeams()) {
                     e.preventDefault();
                     visita?.focus();

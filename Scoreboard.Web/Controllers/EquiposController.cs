@@ -6,13 +6,46 @@ using Scoreboard.Web.Modelos.ViewModels;
 
 namespace Scoreboard.Web.Controllers
 {
+    /// <summary>
+    /// Controlador MVC para administrar equipos.
+    ///
+    /// Se conecta con:
+    /// - ContextoMarcador: para leer y guardar equipos.
+    /// - Views/Equipos: para listar, crear, editar, ver detalles y estadisticas.
+    /// - EstadisticasService: para datos agregados cuando aplica.
+    ///
+    /// Flujo simple:
+    /// 1. Recibe acciones sobre equipos.
+    /// 2. Consulta o modifica la tabla Equipos.
+    /// 3. Devuelve una vista o redirecciona.
+    ///
+    /// Cuidado:
+    /// Un equipo puede estar relacionado con jugadores y partidos; borrar o cambiar ids afecta esas relaciones.
+    /// </summary>
     public class EquiposController : Controller
     {
-        private readonly ContextoMarcador _db;
+        private const long LogoTamanoMaximoBytes = 2 * 1024 * 1024;
+        private static readonly HashSet<string> ExtensionesLogoPermitidas = new(StringComparer.OrdinalIgnoreCase)
+        {
+            ".jpg",
+            ".jpeg",
+            ".png",
+            ".webp"
+        };
+        private static readonly HashSet<string> TiposLogoPermitidos = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        };
 
-        public EquiposController(ContextoMarcador db)
+        private readonly ContextoMarcador _db;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+
+        public EquiposController(ContextoMarcador db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: /Equipos
@@ -62,9 +95,13 @@ namespace Scoreboard.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
     [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Create(Equipo equipo)
+    public async Task<IActionResult> Create(Equipo equipo, IFormFile? logoEquipo)
         {
+            ValidarLogoEquipo(logoEquipo);
+
             if (!ModelState.IsValid) return View(equipo);
+
+            equipo.LogoRuta = await GuardarLogoEquipoAsync(logoEquipo);
 
             _db.Add(equipo);
             await _db.SaveChangesAsync();
@@ -84,14 +121,28 @@ namespace Scoreboard.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
     [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Edit(int id, Equipo equipo)
+    public async Task<IActionResult> Edit(int id, Equipo equipo, IFormFile? logoEquipo)
         {
             if (id != equipo.Id) return BadRequest();
+
+            ValidarLogoEquipo(logoEquipo);
+
             if (!ModelState.IsValid) return View(equipo);
+
+            var existente = await _db.Equipos.FindAsync(id);
+            if (existente == null) return NotFound();
 
             try
             {
-                _db.Update(equipo);
+                existente.Nombre = equipo.Nombre;
+                existente.Ciudad = equipo.Ciudad;
+
+                var nuevoLogo = await GuardarLogoEquipoAsync(logoEquipo);
+                if (!string.IsNullOrWhiteSpace(nuevoLogo))
+                {
+                    existente.LogoRuta = nuevoLogo;
+                }
+
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -125,6 +176,46 @@ namespace Scoreboard.Web.Controllers
                 await _db.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        private void ValidarLogoEquipo(IFormFile? logoEquipo)
+        {
+            if (logoEquipo == null || logoEquipo.Length == 0)
+                return;
+
+            if (logoEquipo.Length > LogoTamanoMaximoBytes)
+            {
+                ModelState.AddModelError("logoEquipo", "El logo no puede pesar mas de 2 MB.");
+            }
+
+            var extension = Path.GetExtension(logoEquipo.FileName);
+            if (!ExtensionesLogoPermitidas.Contains(extension))
+            {
+                ModelState.AddModelError("logoEquipo", "El logo debe ser JPG, PNG o WEBP.");
+            }
+
+            if (!TiposLogoPermitidos.Contains(logoEquipo.ContentType))
+            {
+                ModelState.AddModelError("logoEquipo", "El tipo de archivo del logo no es valido.");
+            }
+        }
+
+        private async Task<string?> GuardarLogoEquipoAsync(IFormFile? logoEquipo)
+        {
+            if (logoEquipo == null || logoEquipo.Length == 0)
+                return null;
+
+            var extension = Path.GetExtension(logoEquipo.FileName).ToLowerInvariant();
+            var nombreArchivo = $"{Guid.NewGuid():N}{extension}";
+            var carpetaRelativa = Path.Combine("uploads", "equipos");
+            var carpetaFisica = Path.Combine(_webHostEnvironment.WebRootPath, carpetaRelativa);
+            Directory.CreateDirectory(carpetaFisica);
+
+            var rutaFisica = Path.Combine(carpetaFisica, nombreArchivo);
+            await using var stream = new FileStream(rutaFisica, FileMode.CreateNew);
+            await logoEquipo.CopyToAsync(stream);
+
+            return "/" + Path.Combine(carpetaRelativa, nombreArchivo).Replace('\\', '/');
         }
     }
 }

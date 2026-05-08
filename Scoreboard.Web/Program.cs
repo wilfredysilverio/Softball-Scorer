@@ -1,19 +1,32 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Scoreboard.Web.Datos;
 using Scoreboard.Web.Modelos;
 using System.Linq;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 // DbContext
 builder.Services.AddDbContext<ContextoMarcador>(options =>
 {
     var cs = builder.Configuration.GetConnectionString("PorDefecto");
-    options.UseMySql(cs, ServerVersion.AutoDetect(cs));
+    if (string.IsNullOrWhiteSpace(cs))
+    {
+        throw new InvalidOperationException("Falta configurar ConnectionStrings:PorDefecto.");
+    }
+
+    options.UseMySql(
+        cs,
+        new MariaDbServerVersion(new Version(10, 4, 32)));
 });
 
 // SignalR (tiempo real)
@@ -50,14 +63,17 @@ builder.Services
 
 // Identity con roles y tokens
 builder.Services
-    .AddIdentity<IdentityUser, IdentityRole>(options =>
+    .AddIdentity<UsuarioAplicacion, IdentityRole>(options =>
     {
-        options.Password.RequireDigit = false;
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 6;
-        options.User.RequireUniqueEmail = false;
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = true;
+        options.Password.RequiredLength = 8;
+        options.User.RequireUniqueEmail = true;
+        options.Lockout.AllowedForNewUsers = true;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+        options.Lockout.MaxFailedAccessAttempts = 5;
     })
     .AddEntityFrameworkStores<ContextoMarcador>()
     .AddDefaultTokenProviders();
@@ -66,8 +82,24 @@ builder.Services
 builder.Services.ConfigureApplicationCookie(o =>
 {
     o.LoginPath = "/Account/Login";
-    o.AccessDeniedPath = "/Account/AccessDenied";
+    o.AccessDeniedPath = "/Account/AccesoDenegado";
     o.SlidingExpiration = true;
+    o.Cookie.HttpOnly = true;
+    o.Cookie.SameSite = SameSiteMode.Lax;
+    o.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+        ? CookieSecurePolicy.SameAsRequest
+        : CookieSecurePolicy.Always;
+});
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddFixedWindowLimiter("auth", limiter =>
+    {
+        limiter.PermitLimit = 8;
+        limiter.Window = TimeSpan.FromMinutes(1);
+        limiter.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        limiter.QueueLimit = 0;
+    });
 });
 
 builder.Services.AddControllersWithViews(options =>
@@ -95,14 +127,22 @@ builder.Services.AddScoped<Scoreboard.Web.Servicios.IReportesService, Scoreboard
 
 var app = builder.Build();
 
-// Semilla de roles/usuario admin (antes de mapear endpoints)
-await Scoreboard.Web.Infra.IdentitySeeder.SeedAsync(app.Services);
-// Seed inicial de equipos y jugadores (idempotente)
-await Scoreboard.Web.Datos.Seed.InitialSeed.EnsureAsync(app.Services);
+// Semillas idempotentes. En Development la app puede arrancar aunque MySQL no este levantado.
+try
+{
+    await Scoreboard.Web.Infra.IdentitySeeder.SeedAsync(app.Services);
+    await Scoreboard.Web.Datos.Seed.InitialSeed.EnsureAsync(app.Services);
+}
+catch (Exception ex) when (app.Environment.IsDevelopment())
+{
+    app.Logger.LogWarning(ex, "No se pudo ejecutar el seed inicial. Revise que MySQL este activo y que la cadena PorDefecto sea correcta.");
+}
 
 // HTTPS opcional en Dev (déjalo activo en Prod)
 if (!app.Environment.IsDevelopment())
 {
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHttpsRedirection();
     app.UseHsts();
 }
 else
@@ -110,10 +150,17 @@ else
     // app.UseHttpsRedirection(); // si tus pruebas locales con HTTP simple fallan al redirigir, déjalo comentado
 }
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.TryAdd("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.TryAdd("X-Frame-Options", "DENY");
+    context.Response.Headers.TryAdd("Referrer-Policy", "strict-origin-when-cross-origin");
+    context.Response.Headers.TryAdd("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+    await next();
+});
+
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthentication();
-app.UseAuthorization();
 
 // Verificación de CORS en arranque y logging de orígenes permitidos
 var startupOrigins = app.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
@@ -121,12 +168,17 @@ var startupOrigins = app.Configuration.GetSection("Cors:AllowedOrigins").Get<str
     .ToArray();
 if (startupOrigins == null || startupOrigins.Length == 0)
 {
-    throw new InvalidOperationException("CORS: falta configurar 'Cors:AllowedOrigins' en appsettings por entorno.");
+    app.Logger.LogInformation("CORS 'rt' sin origenes externos configurados; se usara solo mismo dominio.");
 }
-app.Logger.LogInformation("CORS 'rt' orígenes permitidos: {Origins}", string.Join(", ", startupOrigins));
+else
+{
+    app.Logger.LogInformation("CORS 'rt' orígenes permitidos: {Origins}", string.Join(", ", startupOrigins));
+    app.UseCors("rt");
+}
 
-// CORS tras autenticación/autorización y antes de mapear endpoints
-app.UseCors("rt");
+app.UseRateLimiter();
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Mapa del hub de marcador
 app.MapHub<Scoreboard.Web.Hubs.MarcadorHub>("/hubs/marcador");
@@ -192,6 +244,11 @@ if (app.Environment.IsDevelopment())
 
 // Razor Pages (Identity UI)
 app.MapRazorPages();
+
+app.MapGet("/", (HttpContext context) =>
+    context.User.Identity?.IsAuthenticated == true
+        ? Results.Redirect("/Home/Index")
+        : Results.Redirect("/Account/Login"));
 
 app.MapControllerRoute(
     name: "default",

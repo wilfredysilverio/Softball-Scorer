@@ -2,40 +2,63 @@
 @{
     ViewData["Title"] = "Editar partido";
 }
-<h1>Editar partido</h1>
 
-<form asp-action="Edit" method="post" class="needs-validation" novalidate>
-    <input type="hidden" asp-for="Id" />
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-    <div class="mb-3">
-        <label class="form-label">Fecha y hora</label>
-        <input asp-for="Fecha" type="datetime-local" class="form-control" />
-        <span asp-validation-for="Fecha" class="text-danger"></span>
+<div class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="score-kicker">Editar</span>
+            <h1>Partido</h1>
+        </div>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Volver
+        </a>
     </div>
 
-    <div class="mb-3">
-        <label class="form-label">Equipo de casa</label>
-        <select asp-for="EquipoCasaId" class="form-select" asp-items="ViewBag.EquiposCasa"></select>
-        <span asp-validation-for="EquipoCasaId" class="text-danger"></span>
-    </div>
+    <form asp-action="Edit" method="post" class="form-panel">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
 
-    <div class="mb-3">
-        <label class="form-label">Equipo visitante</label>
-        <select asp-for="EquipoVisitaId" class="form-select" asp-items="ViewBag.EquiposVisita"></select>
-        <span asp-validation-for="EquipoVisitaId" class="text-danger"></span>
-    </div>
+        <section class="work-panel">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-    <div class="mb-3">
-        <label class="form-label">Carreras casa</label>
-        <input asp-for="CarrerasCasa" class="form-control" />
-    </div>
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label fw-bold" asp-for="Fecha">Fecha</label>
+                    <input asp-for="Fecha" type="datetime-local" class="form-control form-control-lg" />
+                    <span asp-validation-for="Fecha" class="text-danger small"></span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-bold" asp-for="EquipoVisitaId">Visitante</label>
+                    <select asp-for="EquipoVisitaId" class="form-select form-select-lg" asp-items="ViewBag.EquiposVisita"></select>
+                    <span asp-validation-for="EquipoVisitaId" class="text-danger small"></span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-bold" asp-for="EquipoCasaId">Casa</label>
+                    <select asp-for="EquipoCasaId" class="form-select form-select-lg" asp-items="ViewBag.EquiposCasa"></select>
+                    <span asp-validation-for="EquipoCasaId" class="text-danger small"></span>
+                </div>
+                <div class="col-6">
+                    <label class="form-label fw-bold" asp-for="CarrerasVisita">Carreras visitante</label>
+                    <input asp-for="CarrerasVisita" class="form-control form-control-lg" />
+                    <span asp-validation-for="CarrerasVisita" class="text-danger small"></span>
+                </div>
+                <div class="col-6">
+                    <label class="form-label fw-bold" asp-for="CarrerasCasa">Carreras casa</label>
+                    <input asp-for="CarrerasCasa" class="form-control form-control-lg" />
+                    <span asp-validation-for="CarrerasCasa" class="text-danger small"></span>
+                </div>
+            </div>
 
-    <div class="mb-3">
-        <label class="form-label">Carreras visita</label>
-        <input asp-for="CarrerasVisita" class="form-control" />
-    </div>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-save me-2"></i>Guardar
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-lg">Cancelar</a>
+            </div>
+        </section>
+    </form>
+</div>
 
-    <button type="submit" class="btn btn-primary">Guardar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

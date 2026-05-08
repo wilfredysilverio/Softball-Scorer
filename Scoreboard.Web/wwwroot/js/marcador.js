@@ -3,8 +3,6 @@
 (function () {
     'use strict';
 
-    const EVENT_HELP_DEFAULT = 'Usa esta opción para registrar robos o avances por passed ball / wild pitch antes de la jugada.';
-
     function valueFrom(obj, ...aliases) {
         if (!obj) return undefined;
         for (const aliasRaw of aliases) {
@@ -74,7 +72,7 @@
         if (!message) return;
         let alertDiv = document.getElementById('live-alert');
         if (!alertDiv) {
-            const container = document.querySelector('.container');
+            const container = document.querySelector('.scorekeeper-shell, .page-shell, .container, main');
             if (!container) return;
             alertDiv = document.createElement('div');
             alertDiv.id = 'live-alert';
@@ -90,7 +88,6 @@
     function updateRunnerEventOptions(b1, b2, b3) {
         const baseSelect = document.getElementById('baseEvento');
         const eventSelect = document.getElementById('eventoCorredor');
-        const helper = document.getElementById('eventoCorredorHelp');
         const actionBtn = document.getElementById('btn-evento-corredor');
         const hasRunners = !!(b1 || b2 || b3);
 
@@ -117,12 +114,6 @@
             if (!hasRunners) {
                 eventSelect.value = '';
             }
-        }
-
-        if (helper) {
-            helper.textContent = hasRunners
-                ? EVENT_HELP_DEFAULT
-                : 'Necesitas corredores en base para habilitar un evento antes del turno.';
         }
 
         if (actionBtn) {
@@ -310,6 +301,7 @@
 
     // ==== SignalR conexión global ====
     let connection = null;
+    let ultimoEquipoBateando = null;
     const partidoId = (window.marcadorConfig && window.marcadorConfig.partidoId) ? window.marcadorConfig.partidoId : null;
     const groupName = partidoId ? `partido-${partidoId}` : null;
 
@@ -435,7 +427,8 @@
     function updateBateadorDisplays(bateadorPayload) {
         const proximoDiv = document.getElementById('proximo-bateador');
         const lineupDiv = document.getElementById('lineup-proximo-bateador');
-        const hiddenJugador = document.getElementById('turnoJugadorId');
+        const jugadorInput = document.getElementById('turnoJugadorId');
+        const expectedInput = document.getElementById('turnoBateadorEsperadoId');
         const hasBatter = !!bateadorPayload;
         const nombre = valueFrom(bateadorPayload, 'nombre', 'Nombre') || '';
         const apellido = valueFrom(bateadorPayload, 'apellido', 'Apellido') || '';
@@ -449,9 +442,21 @@
             }
         }
 
-        if (hiddenJugador) {
-            const nextId = valueFrom(bateadorPayload, 'id', 'Id');
-            hiddenJugador.value = hasBatter && nextId !== undefined && nextId !== null ? nextId : '';
+        const nextId = valueFrom(bateadorPayload, 'id', 'Id');
+        const nextIdValue = hasBatter && nextId !== undefined && nextId !== null ? String(nextId) : '';
+
+        if (jugadorInput) {
+            jugadorInput.dataset.expectedId = nextIdValue;
+            if (jugadorInput.tagName === 'SELECT') {
+                const option = Array.from(jugadorInput.options).find(o => o.value === nextIdValue);
+                if (option) jugadorInput.value = nextIdValue;
+            } else {
+                jugadorInput.value = nextIdValue;
+            }
+        }
+
+        if (expectedInput) {
+            expectedInput.value = nextIdValue;
         }
 
         if (proximoDiv) {
@@ -464,7 +469,60 @@
         }
     }
 
+    function rebuildBatterSelect(lineupPayload) {
+        const jugadorInput = document.getElementById('turnoJugadorId');
+        if (!jugadorInput || jugadorInput.tagName !== 'SELECT' || !Array.isArray(lineupPayload)) return;
+
+        const currentOptions = Array.from(jugadorInput.options)
+            .map(option => option.value)
+            .join('|');
+        const nextOptions = lineupPayload
+            .map(jugador => String(valueFrom(jugador, 'id', 'Id') ?? ''))
+            .filter(Boolean)
+            .join('|');
+        if (currentOptions === nextOptions) return;
+
+        jugadorInput.innerHTML = '';
+        lineupPayload.forEach(jugador => {
+            const id = valueFrom(jugador, 'id', 'Id');
+            if (id === undefined || id === null) return;
+            const nombre = valueFrom(jugador, 'nombre', 'Nombre') || '';
+            const apellido = valueFrom(jugador, 'apellido', 'Apellido') || '';
+            const numero = valueFrom(jugador, 'numeroUniforme', 'NumeroUniforme');
+            const labelBase = [nombre, apellido].filter(Boolean).join(' ').trim() || 'Jugador';
+            const option = document.createElement('option');
+            option.value = String(id);
+            option.textContent = numero === undefined || numero === null || numero === ''
+                ? labelBase
+                : `${labelBase} (${numero})`;
+            jugadorInput.appendChild(option);
+        });
+    }
+
     function applyTurnoState(payload) {
+        const lineup = valueFrom(payload, 'lineupBateando', 'LineupBateando');
+        rebuildBatterSelect(lineup);
+
+        const equipoBateando = valueFrom(payload, 'equipoBateando', 'EquipoBateando');
+        const estado = valueFrom(payload, 'estado', 'Estado') || {};
+        const entradaActual = valueFrom(payload, 'entradaActual', 'EntradaActual') ?? valueFrom(estado, 'entradaActual', 'EntradaActual');
+        const mitad = valueFrom(payload, 'mitad', 'Mitad') ?? valueFrom(estado, 'mitad', 'Mitad');
+        const equipoBateandoEl = document.getElementById('equipo-bateando');
+        const turnoEquipoEl = document.getElementById('turno-equipo-bateando');
+        const estadoMitadEl = document.getElementById('estado-mitad');
+
+        if (equipoBateando) {
+            if (equipoBateandoEl) equipoBateandoEl.textContent = equipoBateando;
+            if (turnoEquipoEl) turnoEquipoEl.textContent = equipoBateando;
+            if (ultimoEquipoBateando && ultimoEquipoBateando !== equipoBateando) {
+                showAlert(`Cambio de turno: ahora batea ${equipoBateando}.`, 'info');
+            }
+            ultimoEquipoBateando = equipoBateando;
+        }
+        if (estadoMitadEl && mitad && entradaActual !== undefined && entradaActual !== null) {
+            estadoMitadEl.textContent = `${mitad} del ${entradaActual} ini`;
+        }
+
         const bateador = valueFrom(payload, 'bateador', 'Bateador', 'BateadorEsperado', 'ProximoBateador');
         updateBateadorDisplays(bateador);
 
@@ -493,6 +551,31 @@
         }
     }
 
+    function prepararConfirmacionFueraTurno(form, fd) {
+        if (!form || form.dataset.live !== 'registrar') return true;
+        const jugadorInput = document.getElementById('turnoJugadorId');
+        const expectedInput = document.getElementById('turnoBateadorEsperadoId');
+        const confirmInput = document.getElementById('confirmarFueraTurno');
+        const jugadorId = jugadorInput ? String(jugadorInput.value || '') : '';
+        const esperadoId = expectedInput ? String(expectedInput.value || jugadorInput?.dataset.expectedId || '') : '';
+
+        if (!jugadorId || !esperadoId || jugadorId === esperadoId) {
+            if (confirmInput) confirmInput.value = 'false';
+            fd.set('ConfirmarFueraTurno', 'false');
+            return true;
+        }
+
+        const accepted = window.confirm('Este jugador no es el bateador que sigue en el orden. ¿Seguro que deseas anotar esta jugada para él?');
+        if (!accepted) {
+            if (jugadorInput) jugadorInput.value = esperadoId;
+            return false;
+        }
+
+        if (confirmInput) confirmInput.value = 'true';
+        fd.set('ConfirmarFueraTurno', 'true');
+        return true;
+    }
+
     // Intercept only the Registrar Turno form to update marcador without full reload
     function bindLiveForms() {
         const forms = document.querySelectorAll('form[data-live]');
@@ -505,11 +588,28 @@
                 if (form.dataset.submitting === '1') return;
                 clearAlert();
                 const fd = new FormData(form);
+                if (!prepararConfirmacionFueraTurno(form, fd)) {
+                    showAlert('Se mantuvo el bateador que sigue en el lineup.', 'warning');
+                    return;
+                }
                 form.dataset.submitting = '1';
                 setFormBusy(form, true);
                 try {
                     const payload = await postForm(form, fd);
                     if (!payload || payload.ok === false) {
+                        if (payload?.requiereConfirmacion) {
+                            const accepted = window.confirm(payload.message || 'Este jugador no es el bateador que sigue en el orden. ¿Seguro que deseas anotar esta jugada para él?');
+                            if (accepted) {
+                                fd.set('ConfirmarFueraTurno', 'true');
+                                const confirmInput = document.getElementById('confirmarFueraTurno');
+                                if (confirmInput) confirmInput.value = 'true';
+                                const retryPayload = await postForm(form, fd);
+                                await refrescarMarcador();
+                                applyTurnoState(retryPayload);
+                                showAlert(retryPayload.message || 'Turno registrado como corrección manual.', 'success');
+                                return;
+                            }
+                        }
                         const msg = payload?.message || 'Acción rechazada.';
                         showAlert(msg, 'danger');
                     } else {
@@ -532,6 +632,8 @@
                     console.error(err);
                     showAlert(err.message || 'Error en la comunicación.', 'danger');
                 } finally {
+                    const confirmInput = document.getElementById('confirmarFueraTurno');
+                    if (confirmInput) confirmInput.value = 'false';
                     form.dataset.submitting = '0';
                     setFormBusy(form, false);
                 }
@@ -539,8 +641,25 @@
         });
     }
 
+    function bindQuickResultButtons() {
+        const resultado = document.getElementById('resultadoSelect');
+        if (!resultado) return;
+
+        document.querySelectorAll('[data-result-text]').forEach(button => {
+            button.addEventListener('click', () => {
+                const text = button.getAttribute('data-result-text');
+                const option = Array.from(resultado.options).find(o => o.text === text || o.value === text);
+                if (option) {
+                    resultado.value = option.value;
+                    resultado.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+        });
+    }
+
     // Init on DOM ready
     function initFormsAndData() {
+        bindQuickResultButtons();
         bindLiveForms();
         refrescarMarcador();
     }

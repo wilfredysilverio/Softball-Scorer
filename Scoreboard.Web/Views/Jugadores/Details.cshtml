@@ -1,25 +1,44 @@
-@model Scoreboard.Web.Modelos.Jugador
+ï»¿@model Scoreboard.Web.Modelos.Jugador
 @{
-    ViewData["Title"] = "Detalles del jugador";
+    ViewData["Title"] = "Jugador";
 }
-<h1 class="mb-4">Detalles del jugador</h1>
 
-<dl class="row">
-    <dt class="col-sm-3">Nombre</dt>
-    <dd class="col-sm-9">@Model.Nombre @Model.Apellido</dd>
+<div class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="score-kicker">Jugador</span>
+            <h1>@Model.Nombre @Model.Apellido</h1>
+        </div>
+        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i>Volver</a>
+    </div>
 
-    <dt class="col-sm-3">Número</dt>
-    <dd class="col-sm-9">@Model.NumeroUniforme</dd>
+    <section class="work-panel">
+        <div class="detail-hero">
+            @if (!string.IsNullOrWhiteSpace(Model.FotoPerfilRuta))
+            {
+                <img src="@Model.FotoPerfilRuta" alt="Foto de @Model.Nombre @Model.Apellido" class="player-avatar player-avatar-lg" />
+            }
+            else
+            {
+                <div class="player-avatar player-avatar-lg player-avatar-fallback" aria-hidden="true">
+                    @Model.Nombre.FirstOrDefault()@Model.Apellido.FirstOrDefault()
+                </div>
+            }
+            <div>
+                <h2>@Model.Nombre @Model.Apellido</h2>
+                <p>#@Model.NumeroUniforme Â· @(Model.Equipo?.Nombre ?? "Sin equipo")</p>
+            </div>
+        </div>
 
-    <dt class="col-sm-3">Equipo</dt>
-    <dd class="col-sm-9">@Model.Equipo?.Nombre</dd>
+        <div class="detail-grid mt-3">
+            <div><span>Equipo</span><strong>@(Model.Equipo?.Nombre ?? "-")</strong></div>
+            <div><span>Posicion</span><strong>@Model.Posicion</strong></div>
+            <div><span>Numero</span><strong>@Model.NumeroUniforme</strong></div>
+        </div>
 
-    <dt class="col-sm-3">Posición</dt>
-    <dd class="col-sm-9">@Model.Posicion</dd>
-</dl>
-
-<div class="d-flex gap-2">
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
-    <a asp-action="Index" class="btn btn-secondary">Volver</a>
-    <a asp-action="Estadisticas" asp-route-id="@Model.Id" class="btn btn-outline-dark">Estadísticas</a>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+            <a asp-action="Estadisticas" asp-route-id="@Model.Id" class="btn btn-primary"><i class="bi bi-bar-chart me-2"></i>Estadisticas</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary"><i class="bi bi-pencil me-2"></i>Editar</a>
+        </div>
+    </section>
 </div>

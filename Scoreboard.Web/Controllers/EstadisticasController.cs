@@ -5,6 +5,21 @@ using Scoreboard.Web.Modelos.ViewModels;
 
 namespace Scoreboard.Web.Controllers
 {
+    /// <summary>
+    /// Controlador MVC para la pantalla general de estadisticas.
+    ///
+    /// Se conecta con:
+    /// - ContextoMarcador: para consultar partidos, equipos, jugadores y stats.
+    /// - Views/Estadisticas/Index.cshtml: para mostrar resumenes y lideres.
+    ///
+    /// Flujo simple:
+    /// 1. Lee datos acumulados de la base.
+    /// 2. Calcula totales y rankings simples.
+    /// 3. Devuelve la vista de estadisticas.
+    ///
+    /// Cuidado:
+    /// Si los calculos crecen, conviene moverlos a EstadisticasService.
+    /// </summary>
     public class EstadisticasController : Controller
     {
         private readonly ContextoMarcador _db;
@@ -18,7 +33,9 @@ namespace Scoreboard.Web.Controllers
             var totalJugadores = await _db.Jugadores.CountAsync();
 
             // Carreras totales en todos los partidos
-            var totalCarreras = await _db.Partidos.SumAsync(p => p.CarrerasCasa + p.CarrerasVisita);
+            var totalCarreras = await _db.Partidos
+                .Select(p => (int?)(p.CarrerasCasa + p.CarrerasVisita))
+                .SumAsync() ?? 0;
 
             ViewData["TotalPartidos"] = totalPartidos;
             ViewData["TotalEquipos"] = totalEquipos;

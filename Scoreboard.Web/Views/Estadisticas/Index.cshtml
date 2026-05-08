@@ -1,126 +1,89 @@
+﻿@using System.Text.Json
 @{
-    ViewData["Title"] = "Estadísticas globales";
+    ViewData["Title"] = "Estadisticas";
     var labelsJson = ViewData["TeamLabels"] as string ?? "[]";
     var dataJson = ViewData["TeamData"] as string ?? "[]";
+    var labels = JsonSerializer.Deserialize<List<string>>(labelsJson) ?? new List<string>();
+    var data = JsonSerializer.Deserialize<List<int>>(dataJson) ?? new List<int>();
+    var maxCarreras = data.DefaultIfEmpty(0).Max();
 }
 
-<div class="d-flex align-items-center justify-content-between mb-4">
-    <div>
-        <h1 class="mb-0">Dashboard · Estadísticas</h1>
-        <div class="text-muted">Visión general de equipos, jugadores y partidos</div>
+<div class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="score-kicker">Resumen</span>
+            <h1>Estadisticas</h1>
+        </div>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Inicio
+        </a>
     </div>
-    <div>
-        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Volver</a>
-    </div>
-</div>
 
-<div class="row g-3">
-    <div class="col-6 col-md-3">
-        <div class="card shadow-sm p-3">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-people-fill fs-3 text-primary me-3"></i>
-                <div>
-                    <div class="text-muted small">Equipos</div>
-                    <div class="h4">@ViewData["TotalEquipos"]</div>
+    <section class="stat-grid mb-4">
+        <div class="metric-tile"><span>Equipos</span><strong>@ViewData["TotalEquipos"]</strong></div>
+        <div class="metric-tile"><span>Jugadores</span><strong>@ViewData["TotalJugadores"]</strong></div>
+        <div class="metric-tile"><span>Partidos</span><strong>@ViewData["TotalPartidos"]</strong></div>
+        <div class="metric-tile"><span>Carreras</span><strong>@ViewData["TotalCarreras"]</strong></div>
+        <div class="metric-tile"><span>Promedio</span><strong>@ViewData["PromedioGeneral"]</strong></div>
+        <div class="metric-tile metric-live"><span>Lider</span><strong>@(ViewData["EquipoMasCarrerasTotal"] ?? 0)</strong></div>
+    </section>
+
+    <div class="row g-4">
+        <div class="col-12 col-xl-8">
+            <section class="work-panel">
+                <div class="panel-title">
+                    <div>
+                        <span class="score-kicker">Equipos</span>
+                        <h2>Carreras</h2>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="card shadow-sm p-3">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-person-badge-fill fs-3 text-success me-3"></i>
-                <div>
-                    <div class="text-muted small">Jugadores</div>
-                    <div class="h4">@ViewData["TotalJugadores"]</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="card shadow-sm p-3">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-calendar-event-fill fs-3 text-warning me-3"></i>
-                <div>
-                    <div class="text-muted small">Partidos</div>
-                    <div class="h4">@ViewData["TotalPartidos"]</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="card shadow-sm p-3">
-            <div class="d-flex align-items-center">
-                <i class="bi bi-bar-chart-line-fill fs-3 text-danger me-3"></i>
-                <div>
-                    <div class="text-muted small">Carreras totales</div>
-                    <div class="h4">@ViewData["TotalCarreras"]</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="row mt-4">
-    <div class="col-12 col-lg-8">
-        <div class="card shadow-sm p-3">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <div>
-                    <strong>Carreras por equipo</strong>
-                    <div class="text-muted small">Comparativa por equipos</div>
-                </div>
-            </div>
-            <canvas id="chartTeams" height="120"></canvas>
-        </div>
-    </div>
-    <div class="col-12 col-lg-4">
-        <div class="card shadow-sm p-3 mb-3">
-            <div class="text-muted small">Promedio general (carreras / partido)</div>
-            <div class="h3 mt-2">@ViewData["PromedioGeneral"]</div>
-        </div>
-
-        @if(ViewData["EquipoMasCarreras"] != null)
-        {
-            <div class="card shadow-sm p-3">
-                <div class="text-muted small">Equipo con más carreras</div>
-                <div class="h5 mt-2">@ViewData["EquipoMasCarreras"] (@ViewData["EquipoMasCarrerasTotal"])</div>
-            </div>
-        }
-    </div>
-</div>
-
-<section class="mt-4">
-    <a class="btn btn-outline-primary" asp-controller="Jugadores" asp-action="Index"><i class="bi bi-people"></i> Ver jugadores</a>
-    <a class="btn btn-outline-secondary ms-2" asp-controller="Equipos" asp-action="Index"><i class="bi bi-shield"></i> Ver equipos</a>
-</section>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    (function () {
-        const labels = @Html.Raw(labelsJson ?? "[]");
-        const data = @Html.Raw(dataJson ?? "[]");
-
-        const ctx = document.getElementById('chartTeams');
-        if (ctx) {
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Carreras',
-                        data: data,
-                        backgroundColor: 'rgba(13,110,253,0.7)',
-                        borderColor: 'rgba(13,110,253,1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
+                @if (!labels.Any())
+                {
+                    <div class="empty-state compact">
+                        <i class="bi bi-bar-chart"></i>
+                        <p>Sin datos.</p>
+                    </div>
                 }
-            });
-        }
-    })();
-</script>
+                else
+                {
+                    <div class="bar-list">
+                        @for (var i = 0; i < labels.Count; i++)
+                        {
+                            var value = i < data.Count ? data[i] : 0;
+                            var width = maxCarreras > 0 ? Math.Max(8, (int)Math.Round(value * 100m / maxCarreras)) : 8;
+                            <div class="bar-row">
+                                <div class="bar-row__head">
+                                    <strong>@labels[i]</strong>
+                                    <span>@value</span>
+                                </div>
+                                <div class="bar-track"><span style="width:@width%"></span></div>
+                            </div>
+                        }
+                    </div>
+                }
+            </section>
+        </div>
+
+        <div class="col-12 col-xl-4">
+            <section class="work-panel h-100">
+                <div class="panel-title">
+                    <div>
+                        <span class="score-kicker">Top</span>
+                        <h2>Mas carreras</h2>
+                    </div>
+                </div>
+                <div class="scoreboard-card">
+                    <div class="team-line">
+                        <span>@(ViewData["EquipoMasCarreras"] ?? "-")</span>
+                        <strong>@(ViewData["EquipoMasCarrerasTotal"] ?? 0)</strong>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 mt-3">
+                    <a class="btn btn-primary" asp-controller="Jugadores" asp-action="Index"><i class="bi bi-people me-2"></i>Jugadores</a>
+                    <a class="btn btn-outline-primary" asp-controller="Equipos" asp-action="Index"><i class="bi bi-shield me-2"></i>Equipos</a>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

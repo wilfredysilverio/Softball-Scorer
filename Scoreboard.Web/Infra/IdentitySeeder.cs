@@ -1,15 +1,35 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Scoreboard.Web.Modelos;
 
 namespace Scoreboard.Web.Infra
 {
+    /// <summary>
+    /// Crea datos iniciales de seguridad para Identity.
+    ///
+    /// Se conecta con:
+    /// - RoleManager: para crear roles.
+    /// - UserManager: para crear el usuario administrador.
+    /// - IConfiguration: para leer datos de configuracion.
+    ///
+    /// Flujo simple:
+    /// 1. Crea roles base si no existen.
+    /// 2. Crea el usuario admin si no existe.
+    /// 3. Asigna el rol Admin.
+    ///
+    /// Cuidado:
+    /// Cambiar credenciales o roles puede afectar el acceso al sistema.
+    /// </summary>
     public static class IdentitySeeder
     {
         public static async Task SeedAsync(IServiceProvider sp)
         {
             using var scope = sp.CreateScope();
             var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<UsuarioAplicacion>>();
+            var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+            var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
             var logger = scope.ServiceProvider.GetService<ILoggerFactory>()?.CreateLogger("IdentitySeeder");
 
             string[] roles = ["Admin", "Anotador", "Viewer"];
@@ -32,17 +52,29 @@ namespace Scoreboard.Web.Infra
             }
 
             // Usuario admin principal
-            var email = "admin@local";
+            var email = config["Auth:AdminUser"];
+            var password = config["Auth:AdminPass"];
+            if (env.IsDevelopment())
+            {
+                email ??= "admin@softball.local";
+            }
+
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            {
+                throw new InvalidOperationException("Falta configurar Auth:AdminUser y Auth:AdminPass como secretos o variables de entorno.");
+            }
+
             var admin = await userMgr.FindByEmailAsync(email);
             if (admin == null)
             {
-                admin = new IdentityUser
+                admin = new UsuarioAplicacion
                 {
                     UserName = email,
                     Email = email,
-                    EmailConfirmed = true
+                    EmailConfirmed = true,
+                    NombreCompleto = "Administrador del sistema"
                 };
-                var createUser = await userMgr.CreateAsync(admin, "Admin!2025");
+                var createUser = await userMgr.CreateAsync(admin, password);
                 if (!createUser.Succeeded)
                 {
                     logger?.LogError("No se pudo crear usuario admin: {Errores}", string.Join(",", createUser.Errors.Select(e => e.Description)));
@@ -53,6 +85,30 @@ namespace Scoreboard.Web.Infra
             else
             {
                 logger?.LogInformation("Usuario admin ya existe {Email}", email);
+            }
+
+            if (string.IsNullOrWhiteSpace(admin.NombreCompleto))
+            {
+                admin.NombreCompleto = "Administrador del sistema";
+                var updateName = await userMgr.UpdateAsync(admin);
+                if (!updateName.Succeeded)
+                {
+                    logger?.LogError("No se pudo actualizar nombre del admin: {Errores}", string.Join(",", updateName.Errors.Select(e => e.Description)));
+                    throw new Exception("No se pudo actualizar el nombre del usuario admin");
+                }
+            }
+
+            if (!await userMgr.CheckPasswordAsync(admin, password))
+            {
+                var resetToken = await userMgr.GeneratePasswordResetTokenAsync(admin);
+                var resetPassword = await userMgr.ResetPasswordAsync(admin, resetToken, password);
+                if (!resetPassword.Succeeded)
+                {
+                    logger?.LogError("No se pudo restablecer la clave admin: {Errores}", string.Join(",", resetPassword.Errors.Select(e => e.Description)));
+                    throw new Exception("No se pudo restablecer la clave del usuario admin");
+                }
+
+                logger?.LogInformation("Clave admin restablecida para {Email}", email);
             }
 
             if (!await userMgr.IsInRoleAsync(admin, "Admin"))

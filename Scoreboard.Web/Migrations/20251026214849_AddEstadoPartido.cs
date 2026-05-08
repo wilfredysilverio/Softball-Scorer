@@ -10,6 +10,13 @@ namespace Scoreboard.Web.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "Estado",
+                table: "Partidos",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
             migrationBuilder.CreateTable(
                 name: "PlayLogs",
                 columns: table => new
@@ -46,6 +53,10 @@ namespace Scoreboard.Web.Migrations
         {
             migrationBuilder.DropTable(
                 name: "PlayLogs");
+
+            migrationBuilder.DropColumn(
+                name: "Estado",
+                table: "Partidos");
         }
     }
 }

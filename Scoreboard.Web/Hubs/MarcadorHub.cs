@@ -3,6 +3,21 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Scoreboard.Web.Hubs
 {
+    /// <summary>
+    /// Hub de SignalR para actualizacion en tiempo real del marcador.
+    ///
+    /// Se conecta con:
+    /// - marcador.js: para unirse a grupos y recibir cambios.
+    /// - MarcadorService: que notifica cuando cambia un partido.
+    ///
+    /// Flujo simple:
+    /// 1. El navegador se une al grupo de un partido.
+    /// 2. El servicio envia eventos al grupo cuando cambia el marcador.
+    /// 3. JavaScript refresca la pantalla.
+    ///
+    /// Cuidado:
+    /// Cambiar nombres de metodos o grupos requiere actualizar marcador.js.
+    /// </summary>
     public class MarcadorHub : Hub
     {
         // Métodos existentes para compatibilidad

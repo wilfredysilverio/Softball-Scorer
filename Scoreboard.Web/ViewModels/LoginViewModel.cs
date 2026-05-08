@@ -2,6 +2,22 @@
 
 namespace Scoreboard.Web.ViewModels
 {
+    /// <summary>
+    /// ViewModel del formulario de login.
+    ///
+    /// Se conecta con:
+    /// - AccountController.Login.
+    /// - Views/Account/Login.cshtml.
+    /// - ASP.NET Core Identity.
+    ///
+    /// Flujo simple:
+    /// 1. Recibe correo, contrasena y RememberMe.
+    /// 2. AccountController valida contra Identity.
+    /// 3. Si es correcto, inicia sesion.
+    ///
+    /// Cuidado:
+    /// Cambiar nombres de propiedades requiere revisar el formulario de login.
+    /// </summary>
     public class LoginViewModel
     {
         [Required(ErrorMessage = "Escribe tu correo.")]

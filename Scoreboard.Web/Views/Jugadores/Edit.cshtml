@@ -1,58 +1,74 @@
-@model Scoreboard.Web.Modelos.Jugador
-@using Microsoft.AspNetCore.Mvc.Rendering
-
+﻿@model Scoreboard.Web.Modelos.Jugador
 @{
     ViewData["Title"] = "Editar jugador";
 }
 
-<h1 class="mb-4">Editar jugador</h1>
-
-<form asp-action="Edit" method="post" class="needs-validation" novalidate>
-    @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="Id" />
-
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-    <div class="mb-3">
-        <label asp-for="Nombre" class="form-label"></label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
+<div class="page-shell">
+    <div class="page-header">
+        <div>
+            <span class="score-kicker">Editar</span>
+            <h1>Jugador</h1>
+        </div>
+        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-2"></i>Volver</a>
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Apellido" class="form-label"></label>
-        <input asp-for="Apellido" class="form-control" />
-        <span asp-validation-for="Apellido" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="NumeroUniforme" class="form-label"></label>
-        <input asp-for="NumeroUniforme" class="form-control" />
-        <span asp-validation-for="NumeroUniforme" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="EquipoId" class="form-label">Equipo</label>
-        <select asp-for="EquipoId" class="form-select" asp-items="ViewBag.EquipoId">
-            <option value="">-- Selecciona un equipo --</option>
-        </select>
-        <span asp-validation-for="EquipoId" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Posicion" class="form-label">Posici�n</label>
-        <select asp-for="Posicion" class="form-select"
-                asp-items="Html.GetEnumSelectList<Scoreboard.Web.Modelos.Posicion>()">
-            <option value="">-- Selecciona una posici�n --</option>
-        </select>
-        <span asp-validation-for="Posicion" class="text-danger"></span>
-    </div>
-
-    <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-primary">Guardar cambios</button>
-        <a asp-action="Index" class="btn btn-secondary">Volver</a>
-    </div>
-</form>
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="form-panel">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <section class="work-panel">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <div class="player-photo-edit mb-3">
+                @if (!string.IsNullOrWhiteSpace(Model.FotoPerfilRuta))
+                {
+                    <img src="@Model.FotoPerfilRuta" alt="Foto de @Model.Nombre @Model.Apellido" class="player-avatar player-avatar-lg" />
+                }
+                else
+                {
+                    <div class="player-avatar player-avatar-lg player-avatar-fallback" aria-hidden="true">
+                        @Model.Nombre.FirstOrDefault()@Model.Apellido.FirstOrDefault()
+                    </div>
+                }
+                <div>
+                    <label for="fotoPerfil" class="form-label fw-bold">Foto de perfil</label>
+                    <input id="fotoPerfil" name="fotoPerfil" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" />
+                    <span class="text-danger small field-validation-valid" data-valmsg-for="fotoPerfil" data-valmsg-replace="true"></span>
+                    <div class="form-text">Opcional. Si subes una nueva, reemplaza la foto visible del jugador.</div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label asp-for="Nombre" class="form-label fw-bold"></label>
+                    <input asp-for="Nombre" class="form-control form-control-lg" />
+                    <span asp-validation-for="Nombre" class="text-danger small"></span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <label asp-for="Apellido" class="form-label fw-bold"></label>
+                    <input asp-for="Apellido" class="form-control form-control-lg" />
+                    <span asp-validation-for="Apellido" class="text-danger small"></span>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label asp-for="NumeroUniforme" class="form-label fw-bold">Numero</label>
+                    <input asp-for="NumeroUniforme" class="form-control form-control-lg" />
+                    <span asp-validation-for="NumeroUniforme" class="text-danger small"></span>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label asp-for="EquipoId" class="form-label fw-bold">Equipo</label>
+                    <select asp-for="EquipoId" class="form-select form-select-lg" asp-items="ViewBag.EquipoId"></select>
+                    <span asp-validation-for="EquipoId" class="text-danger small"></span>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label asp-for="Posicion" class="form-label fw-bold">Posicion</label>
+                    <select asp-for="Posicion" class="form-select form-select-lg" asp-items="Html.GetEnumSelectList<Scoreboard.Web.Modelos.Posicion>()"></select>
+                    <span asp-validation-for="Posicion" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-save me-2"></i>Guardar</button>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-lg">Cancelar</a>
+            </div>
+        </section>
+    </form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

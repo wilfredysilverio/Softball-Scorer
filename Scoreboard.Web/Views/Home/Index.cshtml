@@ -1,108 +1,250 @@
-﻿@model Scoreboard.Web.Modelos.ViewModels.HomeDashboardVm
+@model Scoreboard.Web.Modelos.ViewModels.HomeDashboardVm
 @{
     ViewData["Title"] = "Inicio";
+    var partido = Model.PartidoPrincipal;
 }
 
-<div class="container-fluid py-4">
-    <div class="d-flex align-items-center mb-4">
-        <h1 class="me-auto">Inicio</h1>
-        <div>
-            <a asp-controller="Equipos" asp-action="Create" class="btn btn-outline-primary me-2">Crear Equipo</a>
-            <a asp-controller="Jugadores" asp-action="Create" class="btn btn-outline-success me-2">Crear Jugador</a>
-            <a asp-controller="Partidos" asp-action="Create" class="btn btn-outline-warning">Crear Partido</a>
+<div class="home-page">
+    <section class="home-hero">
+        <div class="home-hero__content">
+            <span class="score-kicker">Softbol RD</span>
+            <h1>¿Qué vas a hacer?</h1>
+            <div class="home-hero__actions">
+                <a asp-controller="Partidos" asp-action="Create" class="btn btn-light btn-lg">
+                    <i class="bi bi-plus-circle me-2"></i>Nuevo partido
+                </a>
+                <a asp-controller="Partidos" asp-action="Index" class="btn btn-outline-light btn-lg">
+                    <i class="bi bi-clipboard2-pulse me-2"></i>Anotar partido
+                </a>
+            </div>
         </div>
-    </div>
 
-    <div class="row g-3">
-        <div class="col-12 col-md-3">
-            <div class="card shadow-sm p-3 h-100 dashboard-card">
-                <div class="d-flex align-items-center">
-                    <div class="me-3 display-6 text-primary"><i class="bi bi-people-fill"></i></div>
-                    <div>
-                        <div class="text-muted small">Equipos</div>
-                        <div class="h4">@Model.TotalEquipos</div>
-                    </div>
-                </div>
-            </div>
+        <div class="home-hero__field" aria-hidden="true">
+            <span class="diamond diamond-home"></span>
+            <span class="diamond diamond-first"></span>
+            <span class="diamond diamond-second"></span>
+            <span class="diamond diamond-third"></span>
+            <span class="ball-orbit"></span>
         </div>
-        <div class="col-12 col-md-3">
-            <div class="card shadow-sm p-3 h-100 dashboard-card">
-                <div class="d-flex align-items-center">
-                    <div class="me-3 display-6 text-success"><i class="bi bi-person-lines-fill"></i></div>
-                    <div>
-                        <div class="text-muted small">Jugadores</div>
-                        <div class="h4">@Model.TotalJugadores</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-3">
-            <div class="card shadow-sm p-3 h-100 dashboard-card">
-                <div class="d-flex align-items-center">
-                    <div class="me-3 display-6 text-warning"><i class="bi bi-trophy-fill"></i></div>
-                    <div>
-                        <div class="text-muted small">Partidos</div>
-                        <div class="h4">@Model.TotalPartidos</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-3">
-            <div class="card shadow-sm p-3 h-100 dashboard-card">
-                <div class="d-flex align-items-center">
-                    <div class="me-3 display-6 text-info"><i class="bi bi-calendar-event-fill"></i></div>
-                    <div>
-                        <div class="text-muted small">Próximo juego</div>
-                        <div class="h6">@((Model.ProximoJuego.HasValue) ? Model.ProximoJuego.Value.ToLocalTime().ToString("g") : "—")</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </section>
 
-    <div class="row mt-4 g-3">
-        <div class="col-12 col-lg-6">
-            <div class="card shadow-sm p-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h5 class="mb-0">Actividad reciente: Jugadores</h5>
-                </div>
-                <ul class="list-group list-group-flush">
-                    @foreach (var j in Model.JugadoresRecientes)
+    <section class="home-quick-actions" aria-label="Accesos rápidos">
+        <a asp-controller="Equipos" asp-action="Create" class="quick-action">
+            <i class="bi bi-shield-plus"></i>
+            <span>Equipo</span>
+        </a>
+        <a asp-controller="Jugadores" asp-action="Create" class="quick-action">
+            <i class="bi bi-person-plus"></i>
+            <span>Jugador</span>
+        </a>
+        <a asp-controller="Partidos" asp-action="Create" class="quick-action">
+            <i class="bi bi-calendar2-plus"></i>
+            <span>Partido</span>
+        </a>
+        <a asp-controller="Estadisticas" asp-action="Index" class="quick-action">
+            <i class="bi bi-bar-chart-line"></i>
+            <span>Líderes</span>
+        </a>
+    </section>
+
+    <section class="home-stats-grid" aria-label="Resumen del sistema">
+        <div class="metric-tile">
+            <span>Equipos</span>
+            <strong>@Model.TotalEquipos</strong>
+        </div>
+        <div class="metric-tile">
+            <span>Jugadores</span>
+            <strong>@Model.TotalJugadores</strong>
+        </div>
+        <div class="metric-tile">
+            <span>Partidos</span>
+            <strong>@Model.TotalPartidos</strong>
+        </div>
+        <div class="metric-tile metric-live">
+            <span>En curso</span>
+            <strong>@Model.PartidosEnCurso</strong>
+        </div>
+        <div class="metric-tile">
+            <span>Carreras</span>
+            <strong>@Model.CarrerasAnotadas</strong>
+        </div>
+        <div class="metric-tile">
+            <span>Jonrones</span>
+            <strong>@Model.Jonrones</strong>
+        </div>
+    </section>
+
+    <section class="home-content-grid">
+        <div class="home-main-column">
+            <section class="work-panel dashboard-card">
+                <div class="panel-title">
+                    <div>
+                        <span class="score-kicker">Ahora</span>
+                        <h2>Partido principal</h2>
+                    </div>
+                    @if (partido != null)
                     {
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <a asp-controller="Jugadores" asp-action="Details" asp-route-id="@j.Id">@j.NombreCompleto</a>
-                                <div class="text-muted small">@j.Fecha.ToLocalTime().ToString("g")</div>
-                            </div>
-                            <div>
-                                <a asp-controller="Jugadores" asp-action="Edit" asp-route-id="@j.Id" class="btn btn-sm btn-outline-primary">Editar</a>
-                            </div>
-                        </li>
+                        <span class="status-pill">@partido.Estado</span>
                     }
-                </ul>
-            </div>
+                </div>
+
+                @if (partido == null)
+                {
+                    <div class="empty-state">
+                        <i class="bi bi-calendar-x"></i>
+                        <p>No hay partidos.</p>
+                        <a asp-controller="Partidos" asp-action="Create" class="btn btn-primary">Crear el primero</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="scoreboard-card">
+                        <div class="team-line">
+                            <span>@partido.EquipoVisita</span>
+                            <strong>@partido.CarrerasVisita</strong>
+                        </div>
+                        <div class="team-line team-home">
+                            <span>@partido.EquipoCasa</span>
+                            <strong>@partido.CarrerasCasa</strong>
+                        </div>
+                        <div class="game-situation">
+                            <span>@partido.Mitad @partido.EntradaActual</span>
+                            <span>@partido.Outs outs</span>
+                            <span>@partido.Fecha.ToString("dd/MM/yyyy h:mm tt")</span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <a asp-controller="Partidos" asp-action="VerPartido" asp-route-id="@partido.Id" class="btn btn-primary">
+                                <i class="bi bi-play-circle me-2"></i>Anotar
+                            </a>
+                            <a asp-controller="Partidos" asp-action="DefinirLineup" asp-route-id="@partido.Id" class="btn btn-outline-primary">
+                                <i class="bi bi-people me-2"></i>Jugadores
+                            </a>
+                            <a asp-controller="Partidos" asp-action="BoxScoreCsv" asp-route-id="@partido.Id" class="btn btn-outline-secondary">
+                                <i class="bi bi-download me-2"></i>Box score
+                            </a>
+                        </div>
+                    </div>
+                }
+            </section>
+
+            <section class="work-panel dashboard-card">
+                <div class="panel-title">
+                    <div>
+                        <span class="score-kicker">Agenda</span>
+                        <h2>Últimos partidos</h2>
+                    </div>
+                    <a asp-controller="Partidos" asp-action="Index" class="icon-link" title="Ver partidos">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </a>
+                </div>
+
+                @if (!Model.PartidosRecientes.Any())
+                {
+                    <div class="empty-state compact">
+                        <i class="bi bi-calendar-week"></i>
+                        <p>No hay partidos recientes.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0 home-table">
+                            <thead>
+                                <tr>
+                                    <th>Partido</th>
+                                    <th>Fecha</th>
+                                    <th>Marcador</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var p in Model.PartidosRecientes)
+                                {
+                                    <tr>
+                                        <td><a asp-controller="Partidos" asp-action="VerPartido" asp-route-id="@p.Id">@p.Descripcion</a></td>
+                                        <td>@p.Fecha.ToString("dd/MM/yyyy")</td>
+                                        <td>@p.CarrerasVisita - @p.CarrerasCasa</td>
+                                        <td><span class="status-pill subtle">@p.Estado</span></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </section>
         </div>
 
-        <div class="col-12 col-lg-6">
-            <div class="card shadow-sm p-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h5 class="mb-0">Actividad reciente: Partidos</h5>
+        <aside class="home-side-column">
+            <section class="work-panel dashboard-card">
+                <div class="panel-title">
+                    <div>
+                        <span class="score-kicker">Top</span>
+                        <h2>Bateadores</h2>
+                    </div>
+                    <a asp-controller="Estadisticas" asp-action="Index" class="icon-link" title="Ver estadísticas">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </a>
                 </div>
-                <ul class="list-group list-group-flush">
-                    @foreach (var p in Model.PartidosRecientes)
-                    {
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <a asp-controller="Partidos" asp-action="Details" asp-route-id="@p.Id">@p.Descripcion</a>
-                                <div class="text-muted small">@p.Fecha.ToLocalTime().ToString("g")</div>
-                            </div>
-                            <div>
-                                <a asp-controller="Partidos" asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-outline-primary">Editar</a>
-                            </div>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </div>
+
+                @if (!Model.MejoresJugadores.Any())
+                {
+                    <div class="empty-state compact">
+                        <i class="bi bi-graph-up"></i>
+                        <p>Sin turnos.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="leader-list">
+                        @foreach (var jugador in Model.MejoresJugadores)
+                        {
+                            <a asp-controller="Jugadores" asp-action="Details" asp-route-id="@jugador.Id" class="leader-row">
+                                <div>
+                                    <strong>@jugador.NombreCompleto</strong>
+                                    <span>@jugador.Equipo</span>
+                                </div>
+                                <div class="leader-stats">
+                                    <span>AVG @jugador.AVG.ToString("0.000")</span>
+                                    <span>OPS @jugador.OPS.ToString("0.000")</span>
+                                    <span>HR @jugador.HR</span>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                }
+            </section>
+
+            <section class="work-panel dashboard-card">
+                <div class="panel-title">
+                    <div>
+                        <span class="score-kicker">Roster</span>
+                        <h2>Jugadores recientes</h2>
+                    </div>
+                    <a asp-controller="Jugadores" asp-action="Index" class="icon-link" title="Ver jugadores">
+                        <i class="bi bi-arrow-up-right"></i>
+                    </a>
+                </div>
+
+                @if (!Model.JugadoresRecientes.Any())
+                {
+                    <div class="empty-state compact">
+                        <i class="bi bi-person-badge"></i>
+                        <p>No hay jugadores recientes.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="simple-list">
+                        @foreach (var j in Model.JugadoresRecientes)
+                        {
+                            <a asp-controller="Jugadores" asp-action="Details" asp-route-id="@j.Id">
+                                <i class="bi bi-person-badge"></i>
+                                <span>@j.NombreCompleto</span>
+                            </a>
+                        }
+                    </div>
+                }
+            </section>
+        </aside>
+    </section>
 </div>

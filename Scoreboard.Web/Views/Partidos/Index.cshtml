@@ -1,63 +1,71 @@
-﻿@model IEnumerable<Scoreboard.Web.Modelos.Partido>
-    @{
+@model IEnumerable<Scoreboard.Web.Modelos.Partido>
+@{
     ViewData["Title"] = "Partidos";
-    }
-    <h2 class="mb-1">Partidos</h2>
-    <p class="text-muted">Selecciona un partido para ver acciones rápidas como marcador, detalles, edición o eliminación.</p>
+}
 
-    <p>
-        <a class="btn btn-primary" asp-action="Create">Crear partido</a>
-    </p>
+<div class="page-header">
+    <div>
+        <span class="score-kicker">Juegos</span>
+        <h2 class="mb-1">Partidos</h2>
+        <p class="text-muted mb-0">Programa juegos, define lineups, anota jugadas y descarga los reportes del partido.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">
+        <i class="bi bi-calendar2-plus me-2"></i>Crear partido
+    </a>
+</div>
 
 <div class="card shadow-sm">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover table-striped align-middle mb-0">
+            <table class="table table-hover align-middle mb-0 mobile-stack-table">
                 <thead class="table-light">
                     <tr>
                         <th scope="col">Fecha</th>
+                        <th scope="col">Visitante</th>
                         <th scope="col">Casa</th>
-                        <th scope="col">Visita</th>
                         <th scope="col">Marcador</th>
-                        <th scope="col" class="text-end" style="width: 60px;"></th>
+                        <th scope="col">Estado</th>
+                        <th scope="col" class="text-end">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model == null || !Model.Any())
                     {
                         <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">No hay partidos para mostrar.</td>
+                            <td colspan="6" class="text-center py-5 text-muted">No hay partidos para mostrar.</td>
                         </tr>
                     }
                     else
                     {
                         foreach (var p in Model)
                         {
-                            <tr class="fila-partido" data-id="@p.Id" tabindex="0" role="button" aria-controls="acciones-partido-@p.Id" aria-expanded="false">
-                                <td>@p.Fecha.ToString("yyyy-MM-dd HH:mm")</td>
-                                <td class="fw-semibold">@p.EquipoCasa?.Nombre</td>
-                                <td>@p.EquipoVisita?.Nombre</td>
-                                <td>@p.CarrerasCasa - @p.CarrerasVisita</td>
-                                <td class="text-end small text-muted">
-                                    <span class="toggle-caret" aria-hidden="true">▸</span>
-                                    <span class="visually-hidden">Mostrar acciones</span>
-                                </td>
-                            </tr>
-                            <tr class="collapse acciones-partido" id="acciones-partido-@p.Id">
-                                <td colspan="5" class="py-3">
-                                    <div class="d-flex gap-2 flex-wrap justify-content-end align-items-center">
-                                        <a asp-action="VerPartido" asp-route-id="@p.Id" class="btn btn-outline-info btn-sm">⚾ Ver partido</a>
-                                        <div class="btn-group">
-                                            <a asp-action="Details" asp-route-id="@p.Id" class="btn btn-outline-secondary btn-sm">Detalles</a>
-                                            <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <span class="visually-hidden">Opciones</span>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li>
-                                                    <a class="dropdown-item text-danger" asp-action="Delete" asp-route-id="@p.Id" data-confirm="¿Eliminar partido?">Eliminar</a>
-                                                </li>
-                                            </ul>
-                                        </div>
+                            <tr>
+                                <td data-label="Fecha">@p.Fecha.ToString("dd/MM/yyyy h:mm tt")</td>
+                                <td data-label="Visitante">@p.EquipoVisita?.Nombre</td>
+                                <td data-label="Casa" class="fw-semibold">@p.EquipoCasa?.Nombre</td>
+                                <td data-label="Marcador"><strong>@p.CarrerasVisita - @p.CarrerasCasa</strong></td>
+                                <td data-label="Estado"><span class="status-pill subtle">@p.Estado</span></td>
+                                <td data-label="Acciones" class="text-end">
+                                    <div class="btn-group btn-group-sm game-actions">
+                                        <a asp-action="VerPartido" asp-route-id="@p.Id" class="btn btn-outline-primary" title="Anotar partido">
+                                            <i class="bi bi-play-circle"></i><span>Anotar</span>
+                                        </a>
+                                        <a asp-action="DefinirLineup" asp-route-id="@p.Id" class="btn btn-outline-secondary" title="Lineup">
+                                            <i class="bi bi-list-ol"></i><span>Lineup</span>
+                                        </a>
+                                        <a asp-action="BoxScoreCsv" asp-route-id="@p.Id" class="btn btn-outline-success" title="Descargar box score">
+                                            <i class="bi bi-filetype-csv"></i><span>CSV</span>
+                                        </a>
+                                        <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="visually-hidden">Opciones</span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" asp-action="Details" asp-route-id="@p.Id">Detalles</a></li>
+                                            <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@p.Id">Editar</a></li>
+                                            <li><a class="dropdown-item" asp-action="PlayByPlayCsv" asp-route-id="@p.Id">Descargar jugada por jugada</a></li>
+                                            <li><hr class="dropdown-divider" /></li>
+                                            <li><a class="dropdown-item text-danger" asp-action="Delete" asp-route-id="@p.Id" data-confirm="Eliminar partido?">Eliminar</a></li>
+                                        </ul>
                                     </div>
                                 </td>
                             </tr>

@@ -8,6 +8,21 @@ using Scoreboard.Web.Modelos.ViewModels;
 
 namespace Scoreboard.Web.Servicios
 {
+    /// <summary>
+    /// Servicio que calcula estadisticas de jugadores y equipos.
+    ///
+    /// Se conecta con:
+    /// - ContextoMarcador: para leer jugadores, partidos y PlayerBattingStats.
+    /// - ViewModels de estadisticas: para devolver datos listos para pantallas.
+    ///
+    /// Flujo simple:
+    /// 1. Busca datos crudos en la base.
+    /// 2. Suma apariciones, hits, jonrones y otros indicadores.
+    /// 3. Devuelve un ViewModel para mostrar en la vista.
+    ///
+    /// Cuidado:
+    /// Las estadisticas dependen de lo que guarda MarcadorService en cada jugada.
+    /// </summary>
     public class EstadisticasService : IEstadisticasService
     {
         private readonly ContextoMarcador _db;

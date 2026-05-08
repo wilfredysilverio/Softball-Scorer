@@ -7,6 +7,22 @@ using Scoreboard.Web.Modelos;
 
 namespace Scoreboard.Web.Servicios
 {
+    /// <summary>
+    /// Servicio para generar reportes descargables del partido.
+    ///
+    /// Se conecta con:
+    /// - ContextoMarcador: para leer partido, entradas, lineups, stats e historial.
+    /// - PlayLogSnapshotHelper: para interpretar snapshots de jugadas.
+    /// - PartidosController: que devuelve los CSV al usuario.
+    ///
+    /// Flujo simple:
+    /// 1. Carga los datos del partido.
+    /// 2. Arma texto CSV con columnas legibles.
+    /// 3. Devuelve bytes para descargar.
+    ///
+    /// Cuidado:
+    /// Si cambian nombres de columnas o snapshots, revisar exportaciones.
+    /// </summary>
     public class ReportesService : IReportesService
     {
         private readonly ContextoMarcador _db;

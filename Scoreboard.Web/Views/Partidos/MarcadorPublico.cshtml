@@ -7,7 +7,7 @@
     var maxInnings = Math.Max(9, Math.Max(partido.EntradaActual, entradas.Select(e => e.NumeroInning).DefaultIfEmpty(0).Max()));
     decimal SafeDiv(int numerator, int denominator) => denominator == 0 ? 0m : Math.Round((decimal)numerator / denominator, 3, MidpointRounding.AwayFromZero);
 }
-<div class="container py-3">
+<div class="container py-3 public-scoreboard">
     <div class="d-flex align-items-center justify-content-between mb-3">
         <h2 class="mb-0">
             @partido.EquipoVisita?.Nombre
@@ -31,7 +31,7 @@
                             {
                                 <th class="text-center" data-inning="@i">@i</th>
                             }
-                            <th class="text-center">C</th>
+                            <th class="text-center" data-total="true">C</th>
                             <th class="text-center">H</th>
                             <th class="text-center">E</th>
                         </tr>
@@ -47,7 +47,7 @@
                                     <div class="r fw-semibold">@r</div>
                                 </td>
                             }
-                            <td class="text-center" id="totCarrerasVisita">@partido.CarrerasVisita</td>
+                            <td class="text-center" data-total="true" id="totCarrerasVisita">@partido.CarrerasVisita</td>
                             <td class="text-center" id="totHitsVisita">@partido.HitsVisita</td>
                             <td class="text-center" id="totErroresVisita">@partido.ErroresVisita</td>
                         </tr>
@@ -61,7 +61,7 @@
                                     <div class="r fw-semibold">@r</div>
                                 </td>
                             }
-                            <td class="text-center" id="totCarrerasCasa">@partido.CarrerasCasa</td>
+                            <td class="text-center" data-total="true" id="totCarrerasCasa">@partido.CarrerasCasa</td>
                             <td class="text-center" id="totHitsCasa">@partido.HitsCasa</td>
                             <td class="text-center" id="totErroresCasa">@partido.ErroresCasa</td>
                         </tr>
@@ -82,7 +82,7 @@
                         }
                     </div>
                 </div>
-                <div class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-2 public-bases">
                     <span id="base1" class="base @(partido.B1 ? "activa" : string.Empty)"></span>
                     <span id="base2" class="base @(partido.B2 ? "activa" : string.Empty)"></span>
                     <span id="base3" class="base @(partido.B3 ? "activa" : string.Empty)"></span>
@@ -268,15 +268,6 @@
 </div>
 
 @section Scripts {
-    <style>
-        .base { width:14px; height:14px; display:inline-block; border:1px solid #333; transform: rotate(45deg); }
-        .base.activa { background-color:#28a745; }
-        .outs-indicator { display:inline-flex; gap:4px; }
-        .out-dot { width:12px; height:12px; border-radius:50%; border:1px solid #333; background-color:#e0e0e0; transition:background-color .2s ease; }
-        .out-dot.active, .out-dot.filled { background-color:#ff4d4d; }
-        .flash { animation: flash 0.8s linear 1; }
-        @@keyframes flash { 0% { background:#fff3cd; } 100% { background:transparent; } }
-    </style>
     <script>
         window.marcadorConfig = {
             partidoId: @partido.Id,
